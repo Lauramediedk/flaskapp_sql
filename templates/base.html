@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Titel{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="header">
+    <div class="logo">
+        <h1>BikeMate</h1>
+    </div>
+    <div class="links">
+        <a href="#">About</a>
+        <a href="#">Log ind</a>
+    </div>
+</div>
+
+{% block content %}
+{% endblock %}
+
+<h1>
+    This is the footer
+</h1>
+
+</body>
+</html>
