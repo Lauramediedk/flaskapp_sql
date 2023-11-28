@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, session
 import sqlite3 
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import SignupForm
+from forms import SignupForm, LoginForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -21,15 +21,39 @@ def make_table():
     conn.commit()
     conn.close()
 
+#Validering
+def validate_user(email, password):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT password FROM users WHERE email = ?', (email,))
+    result = cursor.fetchone()  # Fetch the hashed password
+    conn.close()
+
+    if result:
+        hashed_password = result[0]
+        if check_password_hash(hashed_password, password):
+            return True #Passwords matcher
+        return False #Intet match med password eller user
+
 #Routes
 @app.route("/")
 def index():
     return render_template("index.html")
 
+#Login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        if validate_user(email, password):
+            session['email'] = email
+            return redirect(url_for('dashboard'))
+        else: 
+            return redirect(url_for('login'))
 
+#Signup
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
     form = SignupForm()

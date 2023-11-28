@@ -6,6 +6,15 @@
 
 <div class="login">
     <h1>Log ind</h1>
+
+    <div class="loginform">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }} <!--csrf_tokens for hvert inputfield-->
+            {{ form.email }}
+            {{ form.password }}
+            {{ form.submit }}
+        </form>
+
     <p>Eller opret en bruger</p>
     <a href="{{url_for('signup')}}">Opret bruger</a>
 </div>
