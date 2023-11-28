@@ -56,6 +56,8 @@ def register_user_db(name, email, hashed_password):
     except sqlite3.Error as e:
         print(f"Error inserting user: {e}")
         return False
+    finally: 
+        conn.close()
 
 
 #app run
