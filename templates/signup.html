@@ -8,4 +8,13 @@
     <h1>Opret en bruger</h1>
 </div>
 
+<div class="signupform">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }} <!--csrf_tokens for hvert inputfield-->
+        {{ form.name }}
+        {{ form.email }}
+        {{ form.password }}
+        {{ form.submit }}
+    </form>
+
 {% endblock %}
