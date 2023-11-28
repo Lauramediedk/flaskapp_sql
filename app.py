@@ -26,11 +26,11 @@ def make_table():
 def index():
     return render_template("index.html")
 
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     return render_template("login.html")
 
-@app.route("/signup")
+@app.route("/signup", methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
