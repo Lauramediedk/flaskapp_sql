@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, flash
 import sqlite3 
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import SignupForm, LoginForm
@@ -40,6 +40,10 @@ def validate_user(email, password):
 def index():
     return render_template("index.html")
 
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
 #Login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -52,6 +56,8 @@ def login():
             return redirect(url_for('dashboard'))
         else: 
             return redirect(url_for('login'))
+        
+    return render_template('login.html', form=form)
 
 #Signup
 @app.route("/signup", methods=['GET', 'POST'])
@@ -64,8 +70,10 @@ def signup():
         hashed_password = generate_password_hash(password)
 
         if register_user_db(name, email, hashed_password):
-            raise Exception('Succes')
-        return redirect(url_for('login'))
+            return redirect(url_for('login'))
+        else: 
+            flash('Registrering mislykkedes, prøv igen', 'error')
+            return redirect(url_for('signup'))
 
     return render_template('signup.html', form=form)
 
