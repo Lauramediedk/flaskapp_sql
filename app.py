@@ -91,6 +91,10 @@ def register_user_db(name, email, hashed_password):
     finally: 
         conn.close()
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 #app run
 if __name__=="__main__":
