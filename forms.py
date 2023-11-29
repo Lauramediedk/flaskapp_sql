@@ -1,13 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, Email, Regexp
+from wtforms.validators import InputRequired, Length, Email
 
 #Vores registrerings form som bruger wtforms
 class SignupForm(FlaskForm):
-    name = StringField(validators=[InputRequired(), Regexp(r'^[^*?!\'^+%&/()=}][{$#]*$', message='Ugyldige tegn'), Length(
+    name = StringField(validators=[InputRequired(), Length(
         min=2, max=12)], render_kw={"placeholder": "Navn"})
 
-    email = StringField('Email', validators=[InputRequired(), Regexp(r'^[^*?!\'^+%&/()=}][{$#]*$', message='Ugyldige tegn'), Email(), Length(
+    email = StringField('Email', validators=[InputRequired(), Email(), Length(
         min=2, max=20)], render_kw={"placeholder": "Email"})
 
     password = PasswordField(validators=[InputRequired(), Length(
