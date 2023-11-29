@@ -8,6 +8,13 @@
     <h1>Log ind</h1>
 
     <div class="loginform">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <p><strong>{{ message }}</strong></p>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
         <form method="POST" action="">
             {{ form.hidden_tag() }} <!--csrf_tokens for hvert inputfield-->
             {{ form.email }}
@@ -15,8 +22,9 @@
             {{ form.submit }}
         </form>
 
-    <p>Eller opret en bruger</p>
-    <a href="{{url_for('signup')}}">Opret bruger</a>
+        <p>Eller opret en bruger</p>
+        <a href="{{url_for('signup')}}">Opret bruger</a>
+    </div>
 </div>
 
 {% endblock %}

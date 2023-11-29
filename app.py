@@ -54,7 +54,8 @@ def login():
         if validate_user(email, password):
             session['email'] = email
             return redirect(url_for('dashboard'))
-        else: 
+        else:
+            flash('Email eller password matchede ikke, prøv igen', 'error')
             return redirect(url_for('login'))
         
     return render_template('login.html', form=form)
