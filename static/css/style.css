@@ -1,0 +1,28 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard_message{
+    padding: 3rem 0.8rem 3rem 0.8rem;
+}
+.dashboard_message h1{
+    font-size: 1.5em;
+}
+
+.rewards{
+    padding: 0rem 0.8rem 3rem 0.8rem;
+}
+.rewards h1{
+    font-size: 1.5em;
+    padding-bottom: 0.5rem;
+}
+.content{
+    border: solid 1px #adadad;
+    border-radius: 1rem;
+    padding: 2rem 0rem;
+    background: #bababa;
+    display: flex;
+    justify-content: space-evenly;
+}

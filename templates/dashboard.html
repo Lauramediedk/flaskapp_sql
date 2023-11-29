@@ -4,10 +4,19 @@
 
 {% block content %} <!--Custom content goes inside these blocks-->
 
-<div class="dashboard">
+<div class="dashboard_message">
     {% if session %}
-        <h3>Velkommen tilbage {{session.name}}</h3>
+        <h1>Velkommen tilbage {{session.name}}</h1>
     {% endif %}
+</div>
+
+<div class="rewards">
+    <h1>Dine belønninger</h1>
+    <div class="content">
+        <div>Test</div>
+        <div>Test</div>
+        <div>Test</div>
+    </div>
 </div>
 
 {% endblock %}
