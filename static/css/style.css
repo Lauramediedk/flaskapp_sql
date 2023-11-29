@@ -4,6 +4,8 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* NAVBAR */
+
 
 .dashboard_message{
     padding: 3rem 0.8rem 3rem 0.8rem;
@@ -12,7 +14,7 @@
     font-size: 1.5em;
 }
 
-
+/* REWARDS - DASHBOARD */
 .rewards{
     padding: 0rem 0.8rem 3rem 0.8rem;
 }
@@ -29,6 +31,7 @@
     justify-content: space-evenly;
 }
 
+/* POSTS - DASHBOARD */
 .posts{
     padding: 0rem 0.8rem 3rem 0.8rem;
 }
