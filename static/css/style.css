@@ -4,12 +4,14 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+
 .dashboard_message{
     padding: 3rem 0.8rem 3rem 0.8rem;
 }
 .dashboard_message h1{
     font-size: 1.5em;
 }
+
 
 .rewards{
     padding: 0rem 0.8rem 3rem 0.8rem;
@@ -25,4 +27,42 @@
     background: #bababa;
     display: flex;
     justify-content: space-evenly;
+}
+
+.posts{
+    padding: 0rem 0.8rem 3rem 0.8rem;
+}
+.background{
+    background: #bababa;
+    border: solid 1px #adadad;
+    border-radius: 1rem;
+}
+.posts h1{
+    font-size: 1.5em;
+    padding-bottom: 0.5rem;
+}
+.user_image{
+    width: 20%;
+    margin-right: 10px;
+}
+.user_image img{
+    width: 100%;
+    border: solid 1px;
+    border-radius: 50%;
+    display: block;
+}
+.user_info{
+    display: flex;
+    align-items: center;
+    padding: 1rem 0rem 1rem 0.8rem
+}
+.user_details p{
+    display: flex;
+    flex-direction: column;
+}
+.post_content{
+    background: #cfcfcf;
+    border: solid 1px #cfcfcf;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
 }
