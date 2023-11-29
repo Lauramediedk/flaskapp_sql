@@ -70,6 +70,19 @@ def login():
         password = form.password.data
         if validate_user(email, password):
             session['email'] = email
+            #Hent navn på bruger
+            conn = get_connection()
+            cursor = conn.cursor()
+            cursor.execute('SELECT name FROM users WHERE email = ?', (email,))
+            user = cursor.fetchone()
+            conn.close()
+            #Brug navn i session
+            if user:
+                user_name = user['name']
+                session['name'] = user_name
+            else: 
+                flash('Navn ikke fundet', 'error')
+
             return redirect(url_for('dashboard'))
         else:
             flash('Email eller password matchede ikke, prøv igen', 'error')
