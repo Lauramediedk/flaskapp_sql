@@ -42,13 +42,16 @@
     padding-bottom: 0.5rem;
 }
 .user_image{
-    width: 20%;
+    width: 80px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
     margin-right: 10px;
 }
 .user_image img{
     width: 100%;
-    border: solid 1px;
-    border-radius: 50%;
+    height: 100%;
+    object-fit: cover;
     display: block;
 }
 .user_info{
