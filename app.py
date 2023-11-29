@@ -56,6 +56,9 @@ def index():
 
 @app.route("/dashboard")
 def dashboard():
+    if not is_logged_in():
+        flash('Du skal være logget ind for at tilgå dashboard', 'error')
+        return redirect(url_for('login'))
     return render_template("dashboard.html")
 
 #Login
@@ -73,6 +76,9 @@ def login():
             return redirect(url_for('login'))
         
     return render_template('login.html', form=form)
+
+def is_logged_in():
+    return 'email' in session
 
 #Signup
 @app.route("/signup", methods=['GET', 'POST'])
