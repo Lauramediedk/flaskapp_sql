@@ -34,6 +34,20 @@ def validate_user(email, password):
         if check_password_hash(hashed_password, password):
             return True #Passwords matcher
         return False #Intet match med password eller user
+    
+#Email validering for signup
+def check_for_emails(email):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
+    result = cursor.fetchone()
+    conn.close
+
+    if result:
+        print("Existing email found:", email)  # Add this line for debugging purposes
+        return True
+
+    return False
 
 #Routes
 @app.route("/")
@@ -42,6 +56,9 @@ def index():
 
 @app.route("/dashboard")
 def dashboard():
+    if not is_logged_in():
+        flash('Du skal være logget ind for at tilgå dashboard', 'error')
+        return redirect(url_for('login'))
     return render_template("dashboard.html")
 
 #Login
@@ -53,11 +70,28 @@ def login():
         password = form.password.data
         if validate_user(email, password):
             session['email'] = email
+            #Hent navn på bruger
+            conn = get_connection()
+            cursor = conn.cursor()
+            cursor.execute('SELECT name FROM users WHERE email = ?', (email,))
+            user = cursor.fetchone()
+            conn.close()
+            #Brug navn i session
+            if user:
+                user_name = user['name']
+                session['name'] = user_name
+            else: 
+                flash('Navn ikke fundet', 'error')
+
             return redirect(url_for('dashboard'))
-        else: 
+        else:
+            flash('Email eller password matchede ikke, prøv igen', 'error')
             return redirect(url_for('login'))
         
     return render_template('login.html', form=form)
+
+def is_logged_in():
+    return 'email' in session
 
 #Signup
 @app.route("/signup", methods=['GET', 'POST'])
@@ -68,8 +102,13 @@ def signup():
         email = form.email.data
         password = form.password.data
         hashed_password = generate_password_hash(password)
-
+        #Check for eksisterende email
+        if check_for_emails(email):
+            flash('Den indtastede email er allerede i brug', 'error')
+            return render_template('signup.html', form=form)
+        #Hvis alt er godkendt
         if register_user_db(name, email, hashed_password):
+            flash('Registrering godkendt', 'succes')
             return redirect(url_for('login'))
         else: 
             flash('Registrering mislykkedes, prøv igen', 'error')
