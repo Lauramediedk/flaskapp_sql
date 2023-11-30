@@ -4,6 +4,12 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 /* NAVBAR */
 .links_user{
     display: flex;
@@ -132,7 +138,7 @@
 
 /* CHALLENGES - DASHBOARD */
 .challenges{
-    padding:  0rem 1rem 0.8rem;
+    padding:  0rem 1rem 5rem 0.8rem;
 }
 .challenges h1{
     font-size: 1.5em;
@@ -150,12 +156,26 @@
     background: #e7e7e7;
 }
 
+/* FOOTER */
+.footer{
+    width: 100%;
+    height: 10rem;
+    margin-top: auto;
+    background: #2D728f;
+    display: flex;
+    justify-content: space-evenly;
+}
+.footer h1{
+    color: #f49e4c;
+    padding: 2rem 0.8rem;
+}
+.footer p{
+    padding: 2.8rem 0.8rem;
+}
+
 
 /* FOR BIGGER DEVICES */
 @media only screen and (min-width: 700px) {
-    body{
-        padding:  0.8rem 3rem 0.8rem;
-    }
     .rewards{
         width: 40%;
     }
@@ -171,5 +191,9 @@
     }
     .challenges{
         width: 30%;
+    }
+    .footer{
+        display: block;
+        height: fit-content;
     }
 }
