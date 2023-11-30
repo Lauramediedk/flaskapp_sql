@@ -130,6 +130,13 @@ def register_user_db(name, email, hashed_password):
     finally: 
         conn.close()
 
+@app.route("/challenges")
+def challenges():
+    if not is_logged_in():
+        flash('Du skal være logget ind for at tilgå dashboard', 'error')
+        return redirect(url_for('login'))
+    return render_template("challenges.html")
+
 @app.route("/logout")
 def logout():
     session.clear()

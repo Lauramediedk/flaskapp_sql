@@ -5,7 +5,7 @@
 {% block content %} <!--Custom content goes inside these blocks-->
 
 <div class="dashboard_message">
-    {% if session %}
+    {% if session.email %}
         <h1>Velkommen tilbage {{session.name}}</h1>
     {% endif %}
 </div>
