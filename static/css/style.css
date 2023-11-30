@@ -39,12 +39,17 @@
     background: #2D728f;
     border-radius: 5px;
     padding: 0rem 1rem 0rem 1.5rem;
+    box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.352);
 }
 .menu_links a{
     padding: 0.5rem;
     color: #f0f0f0;
     padding: 0.8rem 0rem;
     font-weight: 500;
+}
+.menu_links a:hover{
+    transition: 0.5s;
+    color: #f49e4c;
 }
 
 /* DASHBOARD */
@@ -67,7 +72,7 @@
     border: solid 1px #adadad;
     border-radius: 1rem;
     padding: 2rem 0rem;
-    background: #bababa;
+    background: #3b8ea5;
     display: flex;
     justify-content: space-evenly;
 }
