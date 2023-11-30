@@ -5,24 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Titel{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <script src="https://kit.fontawesome.com/422cf8348a.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="header">
-    <div class="logo">
-        <h1>BikeMate</h1>
+    <div class="header">
+        {% if session.email %}
+        <div class="links_user">
+            <h1><a href="{{url_for('dashboard')}}">BikeMate</a></h1>
+            
+            <div class="menu_container" x-data="{open: false }" x-on:click.outside="open: false"> <!--menu lukker når klik udenfor-->
+                <a x-on:click="open = !open">
+                    <div :class="{'menu':open}" class="menu"><i class="fa-solid fa-bars" style="color: #3b3e45;"></i></div>
+                </a>
+                <div class="menu_links" x-show="open">
+                <a href="{{url_for('logout')}}">Log ud</a>
+                <a href="{{url_for('dashboard')}}">Dashboard</a>
+                <a href="#">Fællesskab</a>
+                <a href="#">Udfordringer</a>
+                <a href="#">Profil</a>
+                </div>
+            </div>
+        </div>
+            {% else %}
+        <div class="links">
+            <h1><a href="{{url_for('index')}}">BikeMate</a></h1>
+            <a href="#">About</a>
+            <a href="{{url_for('login')}}">Log ind</a>
+        </div>
+            {% endif %}
     </div>
-    <div class="links">
-        <a href="#">About</a>
-        <a href="{{url_for('login')}}">Log ind</a>
-    </div>
-</div>
 
 {% block content %}
 {% endblock %}
 
-<h1>
-    This is the footer
-</h1>
-
 </body>
+
+<div class="footer">
+    <h1>BikeMate</h1>
+    <div class="footer_info">
+        <p>bikeMate@info.com</p>
+    </div>
+</div>
+
 </html>

@@ -1,0 +1,203 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* NAVBAR */
+.header{
+    background: #2D728f;
+}
+
+.links_user{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem 1rem 1rem;
+}
+
+.links_user h1{
+    margin: 0;
+}
+
+.links_user a{
+    display: block;
+    text-decoration: none;
+    color: #f49e4c;
+}
+.menu_container {
+    position: relative;
+    width: 40px;
+    font-size: 20px;
+}
+.menu{
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+}
+.menu_links{
+    position: absolute;
+    top: 100%;
+    right: 0;
+    flex-direction: column;
+    background: #2D728f;
+    border-radius: 5px;
+    padding: 0rem 1rem 0rem 1.5rem;
+    box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.352);
+}
+.menu_links a{
+    padding: 0.5rem;
+    color: #f0f0f0;
+    padding: 0.8rem 0rem;
+    font-weight: 500;
+}
+.menu_links a:hover{
+    transition: 0.5s;
+    color: #f49e4c;
+}
+
+/* DASHBOARD */
+.dashboard_message{
+    padding: 3rem 0.8rem 3rem 0.8rem;
+}
+.dashboard_message h1{
+    font-size: 1.5em;
+}
+
+/* REWARDS - DASHBOARD */
+.rewards{
+    padding: 0rem 0.8rem 3rem 0.8rem;
+}
+.rewards h1{
+    font-size: 1.5em;
+    padding-bottom: 0.5rem;
+}
+.content{
+    border-radius: 1rem;
+    padding: 2rem 0rem;
+    background: #d6d6d6;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* POSTS - DASHBOARD */
+.posts{
+    padding: 0rem 0.8rem 3rem 0.8rem;
+}
+.post_container{
+    background: #d6d6d6;
+    border-radius: 1rem;
+    overflow-y: scroll;
+}
+.post_container::-webkit-scrollbar{
+    background: #e7e7e7;
+    width: 10px;
+    border-radius: 5px;
+}
+.post_container::-webkit-scrollbar-thumb{
+    background: #2D728f;
+    border-radius: 5px;
+    min-height: 10px;
+}
+.post_content{
+    height: 100px;
+}
+.posts h1{
+    font-size: 1.5em;
+    padding-bottom: 0.5rem;
+}
+.user_image{
+    width: 80px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+.user_image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.user_info{
+    display: flex;
+    align-items: center;
+    padding: 1rem 0rem 1rem 0.8rem
+}
+.user_details p{
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0.5rem;
+}
+.post_content{
+    padding: 0.5rem 1rem;
+}
+
+
+/* CHALLENGES - DASHBOARD */
+.challenges{
+    padding:  0rem 1rem 5rem 0.8rem;
+}
+.challenges h1{
+    font-size: 1.5em;
+    padding-bottom: 0.5rem;
+}
+.challenge_container{
+    background: #d6d6d6;
+    border-radius: 1rem;
+    padding: 2rem;
+}
+.challenge_container p{
+    font-size: 1.2em;
+    padding: 1rem;
+    text-align: center;
+    background: #e7e7e7;
+}
+
+/* FOOTER */
+.footer{
+    width: 100%;
+    height: 10rem;
+    margin-top: auto;
+    background: #2D728f;
+    display: flex;
+    justify-content: space-evenly;
+}
+.footer h1{
+    color: #f49e4c;
+    padding: 2rem 0.8rem;
+}
+.footer p{
+    padding: 2.8rem 0.8rem;
+}
+
+
+/* FOR BIGGER DEVICES */
+@media only screen and (min-width: 700px) {
+    .rewards{
+        width: 40%;
+    }
+    .main_content{
+        display: flex;
+        width: 100%;
+    }
+    .posts{
+        width: 30%;
+    }
+    .post_container::-webkit-scrollbar{
+        display: none;
+    }
+    .challenges{
+        width: 30%;
+    }
+    .footer{
+        display: block;
+        height: fit-content;
+    }
+}
