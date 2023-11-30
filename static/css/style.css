@@ -69,10 +69,9 @@
     padding-bottom: 0.5rem;
 }
 .content{
-    border: solid 1px #adadad;
     border-radius: 1rem;
     padding: 2rem 0rem;
-    background: #3b8ea5;
+    background: #d6d6d6;
     display: flex;
     justify-content: space-evenly;
 }
@@ -82,8 +81,7 @@
     padding: 0rem 0.8rem 3rem 0.8rem;
 }
 .background{
-    background: #bababa;
-    border: solid 1px #adadad;
+    background: #d6d6d6;
     border-radius: 1rem;
 }
 .posts h1{
@@ -111,10 +109,8 @@
 .user_details p{
     display: flex;
     flex-direction: column;
+    padding: 0.5rem 0.5rem;
 }
 .post_content{
-    background: #cfcfcf;
-    border: solid 1px #cfcfcf;
-    border-radius: 1rem;
-    padding: 1.5rem 1rem;
+    padding: 0.5rem 1rem;
 }
