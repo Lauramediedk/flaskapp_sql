@@ -71,14 +71,14 @@ body{
 }
 
 /* REWARDS - DASHBOARD */
-.rewards{
+.rewards_component{
     padding: 0rem 0.8rem 3rem 0.8rem;
 }
-.rewards h1{
+.rewards_component h1{
     font-size: 1.5em;
     padding-bottom: 0.5rem;
 }
-.content{
+.rewards_content{
     border-radius: 1rem;
     padding: 2rem 0rem;
     background: #d6d6d6;
@@ -87,7 +87,7 @@ body{
 }
 
 /* POSTS - DASHBOARD */
-.posts{
+.posts_component{
     padding: 0rem 0.8rem 3rem 0.8rem;
 }
 .post_container{
@@ -108,7 +108,7 @@ body{
 .post_content{
     height: 100px;
 }
-.posts h1{
+.posts_component h1{
     font-size: 1.5em;
     padding-bottom: 0.5rem;
 }
@@ -141,10 +141,10 @@ body{
 
 
 /* CHALLENGES - DASHBOARD */
-.challenges{
+.challenges_component{
     padding:  0rem 1rem 5rem 0.8rem;
 }
-.challenges h1{
+.challenges_component h1{
     font-size: 1.5em;
     padding-bottom: 0.5rem;
 }
@@ -159,6 +159,17 @@ body{
     text-align: center;
     background: #e7e7e7;
 }
+
+
+/* CHALLENGES */
+.challenges_page{
+    background: #d6d6d6;
+}
+.challenges_page h1{
+    font-size: 1.5em;
+    padding-bottom: 0.5rem;
+}
+
 
 /* FOOTER */
 .footer{
@@ -180,20 +191,20 @@ body{
 
 /* FOR BIGGER DEVICES */
 @media only screen and (min-width: 700px) {
-    .rewards{
+    .rewards_component{
         width: 40%;
     }
     .main_content{
         display: flex;
         width: 100%;
     }
-    .posts{
+    .posts_component{
         width: 30%;
     }
     .post_container::-webkit-scrollbar{
         display: none;
     }
-    .challenges{
+    .challenges_component{
         width: 30%;
     }
     .footer{
