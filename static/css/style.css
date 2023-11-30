@@ -80,9 +80,23 @@
 .posts{
     padding: 0rem 0.8rem 3rem 0.8rem;
 }
-.background{
+.post_container{
     background: #d6d6d6;
     border-radius: 1rem;
+    overflow-y: scroll;
+}
+.post_container::-webkit-scrollbar{
+    background: #e7e7e7;
+    width: 10px;
+    border-radius: 5px;
+}
+.post_container::-webkit-scrollbar-thumb{
+    background: #2D728f;
+    border-radius: 5px;
+    min-height: 10px;
+}
+.post_content{
+    height: 100px;
 }
 .posts h1{
     font-size: 1.5em;
@@ -113,4 +127,49 @@
 }
 .post_content{
     padding: 0.5rem 1rem;
+}
+
+
+/* CHALLENGES - DASHBOARD */
+.challenges{
+    padding:  0rem 1rem 0.8rem;
+}
+.challenges h1{
+    font-size: 1.5em;
+    padding-bottom: 0.5rem;
+}
+.challenge_container{
+    background: #d6d6d6;
+    border-radius: 1rem;
+    padding: 2rem;
+}
+.challenge_container p{
+    font-size: 1.2em;
+    padding: 1rem;
+    text-align: center;
+    background: #e7e7e7;
+}
+
+
+/* FOR BIGGER DEVICES */
+@media only screen and (min-width: 700px) {
+    body{
+        padding:  0.8rem 3rem 0.8rem;
+    }
+    .rewards{
+        width: 40%;
+    }
+    .main_content{
+        display: flex;
+        width: 100%;
+    }
+    .posts{
+        width: 30%;
+    }
+    .post_container::-webkit-scrollbar{
+        display: none;
+    }
+    .challenges{
+        width: 30%;
+    }
 }
