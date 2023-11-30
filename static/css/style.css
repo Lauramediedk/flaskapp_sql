@@ -11,6 +11,10 @@ body{
 }
 
 /* NAVBAR */
+.header{
+    background: #2D728f;
+}
+
 .links_user{
     display: flex;
     justify-content: space-between;
