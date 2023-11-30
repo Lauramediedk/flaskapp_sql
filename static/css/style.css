@@ -5,8 +5,49 @@
 }
 
 /* NAVBAR */
+.links_user{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem 1rem 1rem;
+}
 
+.links_user h1{
+    margin: 0;
+}
 
+.links_user a{
+    display: block;
+    text-decoration: none;
+    color: #f49e4c;
+}
+.menu_container {
+    position: relative;
+    width: 40px;
+    font-size: 20px;
+}
+.menu{
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+}
+.menu_links{
+    position: absolute;
+    top: 100%;
+    right: 0;
+    flex-direction: column;
+    background: #2D728f;
+    border-radius: 5px;
+    padding: 0rem 1rem 0rem 1.5rem;
+}
+.menu_links a{
+    padding: 0.5rem;
+    color: #f0f0f0;
+    padding: 0.8rem 0rem;
+    font-weight: 500;
+}
+
+/* DASHBOARD */
 .dashboard_message{
     padding: 3rem 0.8rem 3rem 0.8rem;
 }
