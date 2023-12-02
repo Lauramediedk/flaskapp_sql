@@ -182,7 +182,6 @@ body{
 }
 .challenge{
     display: flex;
-    flex-direction: row;
     padding: 2rem 1rem;
     width: 80%;
     height: fit-content;
@@ -231,9 +230,17 @@ body{
 
     /* CHALLENGES */
     .challenges_content{
+        display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
+        width: 100%;
+        align-items: start;
+        justify-content: center;
     }
+    .challenge{
+        width: 45%;
+    }
+
+    /* FOOTER */
     .footer{
         display: block;
         height: fit-content;
