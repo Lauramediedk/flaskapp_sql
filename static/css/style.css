@@ -162,12 +162,32 @@ body{
 
 
 /* CHALLENGES */
-.challenges_page{
-    background: #d6d6d6;
+.challenges{
+    padding: 3rem 1rem 5rem 0.8rem;
 }
-.challenges_page h1{
+.challenges_content{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem 0rem;
+    background: #d6d6d6;
+    border-radius: 1rem;
+    height: 100vh;
+    width: 100%;
+    gap: 1rem;
+}
+.challenges h1{
     font-size: 1.5em;
-    padding-bottom: 0.5rem;
+    padding: 1rem;
+}
+.challenge{
+    display: flex;
+    flex-direction: row;
+    padding: 2rem 0rem;
+    width: 80%;
+    height: fit-content;
+    background: #2D728f;
+    border-radius: 5px;
 }
 
 
@@ -206,6 +226,12 @@ body{
     }
     .challenges_component{
         width: 30%;
+    }
+
+    /* CHALLENGES */
+    .challenges_content{
+        flex-direction: row;
+        flex-wrap: wrap;
     }
     .footer{
         display: block;
