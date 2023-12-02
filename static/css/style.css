@@ -183,7 +183,7 @@ body{
 .challenge{
     display: flex;
     flex-direction: row;
-    padding: 2rem 0rem;
+    padding: 2rem 1rem;
     width: 80%;
     height: fit-content;
     background: #2D728f;
