@@ -5,7 +5,11 @@
 {% block content %} <!--Custom content goes inside these blocks-->
 
 <div class="people">
-    
+    <div class="profiles">
+        <img src="/static/images/user_image.jpg" alt="person">
+        <p>{{session.name}}</p>
+        <button>Tilføj bruger</button>
+    </div>
 </div>
 
 {% endblock %}
