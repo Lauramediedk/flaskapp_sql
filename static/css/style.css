@@ -95,7 +95,41 @@ body{
     width: 100%;
     filter: blur(1.5px);
 }
-
+.index_content{
+    text-align: center;
+    padding: 1rem;
+}
+.index_content button{
+    margin-top: 1.5rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 20px;
+    background: #f49e4c;
+}
+.index_content a{
+    text-decoration: none;
+    color: #e7e7e7;
+    font-size: 1.2em;
+    font-weight: 500;
+}
+.bike_icon{
+    padding-top: 2rem;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+}
+.index i{
+    color: #28657f;
+    text-align: center;
+    font-size: 2.5em;
+    position: absolute;
+    animation: slidein 4s infinite;
+}
+@keyframes slidein {
+    0% { left: 0px; }
+    50% { left: 45%; }
+    100% { left: 110%; }
+}
 
 /* DASHBOARD */
 .dashboard_message{
