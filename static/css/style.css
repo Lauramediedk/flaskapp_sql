@@ -207,7 +207,23 @@ body{
 }
 
 /* FEED */
-
+.fællesskab{
+    padding: 3rem 1rem 5rem 0.8rem;
+}
+.f_categories{
+    display: flex;
+    justify-content: space-evenly;
+    justify-items: center;
+    padding: 1rem 0rem 2rem 0rem;
+}
+.f_categories a{
+    text-decoration: none;
+    color: #e7e7e7;
+    font-size: 1.1em;
+    background: #9e9e9e;
+    border-radius: 23px;
+    padding: 0.8em 2em;
+}
 
 
 /* FOOTER */
