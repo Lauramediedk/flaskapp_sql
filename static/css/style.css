@@ -78,6 +78,25 @@ body{
     font-weight: 500;
 }
 
+/* INDEX / FORSIDE */
+.index_cta{
+    position: relative;
+    text-align: center;
+}
+.image_text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #e7e7e7;
+    backdrop-filter: blur(2px);
+}
+.index_cta img{
+    width: 100%;
+    filter: blur(1.5px);
+}
+
+
 /* DASHBOARD */
 .dashboard_message{
     padding: 3rem 0.8rem 3rem 0.8rem;
