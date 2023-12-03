@@ -1,7 +1,41 @@
 {% extends "base.html" %}
 
-{% block title %}BikeMate{% endblock %} <!--Title-->
+{% block title %}Fællesskab{% endblock %} <!--Title-->
 
 {% block content %} <!--Custom content goes inside these blocks-->
+
+<section class="fællesskab">
+    <div class="f_background">
+        <div class="f_categories">
+            <a href="{{url_for('feed')}}">Feed</a>
+            <a href="#">Grupper</a>
+            <a href="#">Personer</a>
+        </div>
+        <div class="make_post">
+            <p>Skriv noget du vil dele...</p>
+            <button>Vedhæft billede</button>
+            <button>Slå op</button>
+        </div>
+        <div class="post_container">
+            <div class="user_info">
+                <div class="user_image">
+                    <img src="/static/images/user_image.jpg" alt="user">
+                </div>
+                <div class="user_details">
+                    <p>{{session.name}}</p>
+                    <p>Dato</p> <!--Later use db for this-->
+                </div>
+            </div>
+            <div class="post_content"> <!--Later use db for this-->
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                    A quae veritatis ad, voluptate beatae debitis harum numquam 
+                    recusandae aut. Porro perspiciatis expedita aspernatur, 
+                    doloribus incidunt voluptatibus illo necessitatibus commodi 
+                    magni nisi ut temporibus corrupti consectetur libero molestiae 
+                    qui vel sed.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}
