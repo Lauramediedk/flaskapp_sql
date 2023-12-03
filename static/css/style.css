@@ -255,6 +255,9 @@ body{
     .challenge{
         width: 45%;
     }
+    .input_field{
+        width: 50%;
+    }
 
     /* FOOTER */
     .footer{
