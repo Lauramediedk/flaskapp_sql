@@ -220,7 +220,7 @@ body{
     text-decoration: none;
     color: #e7e7e7;
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 500;
     background: #2D728f;
     border-radius: 23px;
     padding: 0.8em 1.5em;
@@ -231,6 +231,23 @@ body{
 }
 .f_categories a:active{
     color: #f49e4c;
+}
+.make_post{
+    border: solid 1px;
+    border-radius: 5px;
+    margin: 1rem 0rem;
+}
+.post_actions{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.2rem;
+    background: #d6d6d6;
+}
+.post_actions button{
+    background: #2D728f;
+    padding: 0.2rem;
+    border-radius: 5px;
+    color: #e7e7e7;
 }
 
 /* FOOTER */
