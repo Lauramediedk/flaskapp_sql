@@ -10,7 +10,7 @@ body{
     flex-direction: column;
 }
 
-/* NAVBAR */
+/* NAVBAR - LOGGED IN */
 .header{
     background: #2D728f;
 }
@@ -61,6 +61,21 @@ body{
 .menu_links a:hover{
     transition: 0.5s;
     color: #f49e4c;
+}
+
+/* NAVBAR - NOT LOGGED IN */
+.links{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem 1rem 1rem;
+}
+.links a{
+    display: block;
+    text-decoration: none;
+    color: #f49e4c;
+    font-size: 1.2em;
+    font-weight: 500;
 }
 
 /* DASHBOARD */
