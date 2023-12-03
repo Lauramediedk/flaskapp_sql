@@ -5,21 +5,21 @@
 {% block content %} <!--Custom content goes inside these blocks-->
 
 <div class="dashboard_message">
-    {% if session %}
+    {% if session.email %}
         <h1>Velkommen tilbage {{session.name}}</h1>
     {% endif %}
 </div>
 
-<div class="rewards"> <!--Later use db for this-->
+<div class="rewards_component"> <!--Later use db for this-->
     <h1>Dine belønninger</h1>
-    <div class="content">
+    <div class="rewards_content">
         <div>Test</div>
         <div>Test</div>
         <div>Test</div>
     </div>
 </div>
 <section class="main_content">
-<div class="posts">
+<div class="posts_component">
     <h1>Seneste opslag</h1>
     <div class="post_container">
         <div class="user_info">
@@ -41,7 +41,7 @@
         </div>
     </div>
 </div>
-<div class="challenges">
+<div class="challenges_component">
     <h1>Dine udfordringer</h1>
     <div class="challenge_container">
         <p>Challenge</p>
