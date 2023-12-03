@@ -43,6 +43,7 @@ body{
 }
 .menu_links{
     position: absolute;
+    z-index: 2;
     top: 100%;
     right: 0;
     flex-direction: column;
@@ -206,6 +207,65 @@ body{
     border-radius: 5px;
 }
 
+/* FEED */
+.fællesskab{
+    padding: 1.5rem 1rem 2rem 0.8rem;
+}
+.f_categories{
+    display: flex;
+    justify-content: space-evenly;
+    justify-items: center;
+    padding: 1rem 0rem 2rem 0rem;
+}
+.f_categories a{
+    text-decoration: none;
+    color: #e7e7e7;
+    font-size: 1.1em;
+    font-weight: 500;
+    background: #2D728f;
+    border-radius: 23px;
+    padding: 0.8em 1.5em;
+}
+.f_categories a:hover{
+    transition: 0.5s;
+    color: #f49e4c;
+}
+.f_categories a:active{
+    color: #f49e4c;
+}
+.make_post{
+    border: none;
+    border: solid 1px #9e9e9e;
+    border-radius: 5px;
+    margin: 0rem 0rem 2rem 0rem;
+    position: relative;
+}
+.post_content input{
+    width: 100%;
+    border: none;
+    outline: none;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+.post_actions{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem;
+    background: #d6d6d6;
+}
+.post_actions button{
+    background: #2D728f;
+    padding: 0.2rem;
+    border: none;
+    outline: none;
+    border: solid 1px #28657f;
+    border-radius: 5px;
+    color: #e7e7e7;
+}
 
 /* FOOTER */
 .footer{
@@ -257,6 +317,16 @@ body{
     }
     .input_field{
         width: 50%;
+    }
+    /* FEED */
+    .make_post{
+        width: 50%;
+        margin: 0 auto;
+    }
+    .posts{
+        width: 50%;
+        padding: 3rem 0rem;
+        margin: 0 auto;
     }
 
     /* FOOTER */
