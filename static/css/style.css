@@ -314,7 +314,8 @@ body{
     border: solid 1px;
     border-radius: 5px;
     background: #2D728f;
-    color: #f49e4c;
+    color: #e7e7e7;
+    font-weight: 500;
 }
 
 /* FOOTER */
