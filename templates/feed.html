@@ -6,13 +6,16 @@
 
 <section class="fællesskab">
         <div class="f_categories">
-            <a href="{{url_for('feed')}}" tabindex="1">Feed</a>
-            <a href="#" tabindex="2">Grupper</a>
-            <a href="{{url_for('people')}}" tabindex="3">Personer</a>
+            <a href="{{url_for('feed')}}" hx-get="/posts" hx-target=".custom_content">Feed</a>
+            <a href="#" hx-get="/groups" hx-target=".custom_content">Grupper</a>
+            <a href="{{url_for('people')}}" hx-get="/people" hx-target=".custom_content">Personer</a>
         </div>
         <div class="search">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input class="input_field" type="search" placeholder="Søg...">
+        </div>
+        <div class="custom_content">
+
         </div>
 </section>
 
