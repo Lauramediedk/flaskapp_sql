@@ -220,11 +220,18 @@ body{
     text-decoration: none;
     color: #e7e7e7;
     font-size: 1.1em;
-    background: #9e9e9e;
+    font-weight: bold;
+    background: #2D728f;
     border-radius: 23px;
-    padding: 0.8em 2em;
+    padding: 0.8em 1.5em;
 }
-
+.f_categories a:hover{
+    transition: 0.5s;
+    color: #f49e4c;
+}
+.f_categories a:active{
+    color: #f49e4c;
+}
 
 /* FOOTER */
 .footer{
