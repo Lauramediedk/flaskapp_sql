@@ -234,7 +234,8 @@ body{
     color: #f49e4c;
 }
 .make_post{
-    border: solid 1px;
+    border: none;
+    border: solid 1px #9e9e9e;
     border-radius: 5px;
     margin: 0rem 0rem 2rem 0rem;
     position: relative;
@@ -316,6 +317,16 @@ body{
     }
     .input_field{
         width: 50%;
+    }
+    /* FEED */
+    .make_post{
+        width: 50%;
+        margin: 0 auto;
+    }
+    .posts{
+        width: 50%;
+        padding: 3rem 0rem;
+        margin: 0 auto;
     }
 
     /* FOOTER */
