@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Find personer{% endblock %} <!--Title-->
+
+{% block content %} <!--Custom content goes inside these blocks-->
+
+<div class="people">
+    <div class="profiles">
+        <div class="user" x-data="{open: false }">
+            <img src="/static/images/user_image.jpg" alt="person">
+            <p>Test</p>
+            <button x-on:click="open = ! open">Tilføj bruger</button>
+            <div class="message" x-show="open" @click.outside="open = false">
+                <p>Anmodning afsendt</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
