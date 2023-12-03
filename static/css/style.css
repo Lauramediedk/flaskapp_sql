@@ -253,12 +253,15 @@ body{
 .post_actions{
     display: flex;
     justify-content: space-between;
-    padding: 0.2rem;
+    padding: 0.3rem;
     background: #d6d6d6;
 }
 .post_actions button{
     background: #2D728f;
     padding: 0.2rem;
+    border: none;
+    outline: none;
+    border: solid 1px #28657f;
     border-radius: 5px;
     color: #e7e7e7;
 }
