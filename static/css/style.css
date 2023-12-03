@@ -315,8 +315,10 @@ body{
     .challenge{
         width: 45%;
     }
-    .input_field{
+    .search{
         width: 50%;
+        margin: 0 auto;
+        padding: 1rem 0rem;
     }
     /* FEED */
     .make_post{

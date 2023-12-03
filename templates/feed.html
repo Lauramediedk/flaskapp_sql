@@ -8,7 +8,11 @@
         <div class="f_categories">
             <a href="{{url_for('feed')}}" tabindex="1">Feed</a>
             <a href="#" tabindex="2">Grupper</a>
-            <a href="#" tabindex="3">Personer</a>
+            <a href="{{url_for('people')}}" tabindex="3">Personer</a>
+        </div>
+        <div class="search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input class="input_field" type="search" placeholder="Søg...">
         </div>
         <div class="make_post">
             <div class="post_content">
