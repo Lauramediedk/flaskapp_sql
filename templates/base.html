@@ -14,11 +14,11 @@
         <div class="links_user">
             <h1><a href="{{url_for('dashboard')}}">BikeMate</a></h1>
             
-            <div class="menu_container" x-data="{open: false }" x-on:click.outside="open: false"> <!--menu lukker når klik udenfor-->
+            <div class="menu_container" x-data="{open: false }"> <!--menu lukker når klik udenfor-->
                 <a x-on:click="open = !open">
                     <div :class="{'menu':open}" class="menu"><i class="fa-solid fa-bars" style="color: #3b3e45;"></i></div>
                 </a>
-                <div class="menu_links" x-show="open">
+                <div class="menu_links" x-show="open" @click.outside="open = false">
                 <a href="{{url_for('logout')}}">Log ud</a>
                 <a href="{{url_for('dashboard')}}">Dashboard</a>
                 <a href="{{url_for('feed')}}">Fællesskab</a>

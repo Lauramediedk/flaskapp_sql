@@ -302,6 +302,19 @@ body{
     border: none;
     border-radius: 5px;
 }
+.profiles button:hover{
+    color: #f49e4c;
+}
+.message{
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    border: solid 1px;
+    border-radius: 5px;
+    background: #2D728f;
+    color: #f49e4c;
+    backdrop-filter: blur(2px);
+}
 
 /* FOOTER */
 .footer{
