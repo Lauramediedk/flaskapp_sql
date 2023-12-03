@@ -144,6 +144,13 @@ def feed():
         return redirect(url_for('login'))
     return render_template("feed.html")
 
+@app.route("/people")
+def people():
+    if not is_logged_in():
+        flash('Du skal være logget ind for at tilgå feed', 'error')
+        return redirect(url_for('login'))
+    return render_template("people.html")
+
 @app.route("/logout")
 def logout():
     session.clear()
