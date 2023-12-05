@@ -71,11 +71,15 @@ body{
     padding: 1rem 2rem 1rem 1rem;
 }
 .links a{
-    display: block;
     text-decoration: none;
     color: #f49e4c;
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: 500;
+}
+.sublinks a{
+    color: #d6d6d6;
+    font-size: 1.2em;
+    padding: 0.3rem;
 }
 
 /* INDEX / FORSIDE */
@@ -97,7 +101,7 @@ body{
 }
 .index_content{
     text-align: center;
-    padding: 1rem;
+    padding: 3rem 1rem 2rem 1rem;
 }
 .index_content button{
     margin-top: 1.5rem;
@@ -396,6 +400,7 @@ body{
         width: 50%;
     }
     .index_content{
+        padding: 1rem 0rem 3rem 0rem;
         width: 50%;
         margin: 0 auto;
         text-align: center;
