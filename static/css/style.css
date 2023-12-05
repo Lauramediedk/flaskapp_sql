@@ -117,6 +117,89 @@ body{
     font-weight: 500;
 }
 
+/* LOGIN */
+.login{
+    padding: 0rem 0.8rem 3rem 0.8rem;
+}
+.login h1{
+    text-align: center;
+    padding: 2rem 0rem;
+    color: #f49e4c;
+}
+.loginform{
+    padding: 1rem;
+    background: #d6d6d6;
+    border-radius: 5px;
+}
+.new_user{
+    padding: 3rem 0rem 1rem 0rem;
+    text-align: center;
+    font-size: 1.2em;
+}
+.divider{
+    margin-top: 3rem;
+}
+.new_user a{
+    text-decoration: underline;
+    color: #2D728f;
+    font-weight: bold;
+}
+.form_fields{
+    padding-top: 1rem;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+}
+.form_field{
+    font-size: 1.1em;
+    padding: 0.8rem 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+.submit_btn{
+    margin: 0 auto;
+    padding: 1rem 1.8rem;
+    border: none;
+    border-radius: 5px;
+    background: #2D728f;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #d6d6d6;
+    display: block;
+}
+
+/* SIGNUP */
+.signup{
+    padding: 0rem 0.8rem 3rem 0.8rem;
+}
+.error_messages{
+    color: red;
+    text-align: center;
+    font-size: 1.1em;
+}
+.signup h1{
+    text-align: center;
+    padding: 2rem 0rem;
+    color: #f49e4c;
+}
+.signupform{
+    padding: 1rem;
+    background: #d6d6d6;
+    border-radius: 5px;
+}
+.signup_fields{
+    padding-top: 1rem;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+}
+.signup_field{
+    font-size: 1.1em;
+    padding: 0.8rem 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
 
 /* DASHBOARD */
 .dashboard_message{
@@ -406,6 +489,35 @@ body{
         text-align: center;
     }
 
+    /* LOGIN */
+    .login{
+        margin: 0 auto;
+        width: 50%;
+    }
+    .form_fields{
+        padding-top: 2rem;
+    }
+    .form_field{
+        margin: 0 auto;
+        display: block;
+        margin-bottom: 2rem;
+    }
+
+    /* SIGNUP */
+    .signup{
+        margin: 0 auto;
+        width: 50%;
+    }
+    .signup_fields{
+        padding-top: 2rem;
+    }
+    .signup_field{
+        margin: 0 auto;
+        display: block;
+        margin-bottom: 2rem;
+    }
+
+    /* DASHBOARD */
     .rewards_component{
         width: 40%;
     }

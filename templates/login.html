@@ -15,15 +15,19 @@
                 {% endif %}
             {% endfor %}
         {% endwith %}
+        <div class="form_fields">
         <form method="POST" action="">
             {{ form.hidden_tag() }} <!--csrf_tokens for hvert inputfield-->
-            {{ form.email }}
-            {{ form.password }}
-            {{ form.submit }}
+            {{ form.email(class_="form_field", placeholder="Email") }}
+            {{ form.password(class_="form_field", placeholder="Password") }}
+            {{ form.submit(class_="submit_btn") }}
         </form>
-
-        <p>Eller opret en bruger</p>
-        <a href="{{url_for('signup')}}">Opret bruger</a>
+        <hr class="divider">
+        </div>
+        <div class="new_user">
+            <p>Eller opret en</p>
+            <a href="{{url_for('signup')}}">Ny bruger?</a>
+        </div>
     </div>
 </div>
 

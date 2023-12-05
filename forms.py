@@ -8,10 +8,10 @@ class SignupForm(FlaskForm):
         min=2, max=12)], render_kw={"placeholder": "Navn"})
 
     email = StringField('Email', validators=[InputRequired(), Email(), Length(
-        min=2, max=20)], render_kw={"placeholder": "Email"})
+        min=4, max=20)], render_kw={"placeholder": "Email"})
 
     password = PasswordField(validators=[InputRequired(), Length(
-        min=4, max=20)], render_kw={"placeholder": "Kodeord"})
+        min=8, max=20)], render_kw={"placeholder": "Kodeord"})
 
     submit = SubmitField("Opret en bruger")
 
