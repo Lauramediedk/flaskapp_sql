@@ -503,6 +503,20 @@ body{
         margin-bottom: 2rem;
     }
 
+    /* SIGNUP */
+    .signup{
+        margin: 0 auto;
+        width: 50%;
+    }
+    .signup_fields{
+        padding-top: 2rem;
+    }
+    .signup_field{
+        margin: 0 auto;
+        display: block;
+        margin-bottom: 2rem;
+    }
+
     /* DASHBOARD */
     .rewards_component{
         width: 40%;
