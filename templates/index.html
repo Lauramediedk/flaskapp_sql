@@ -4,4 +4,22 @@
 
 {% block content %} <!--Custom content goes inside these blocks-->
 
+<section class="index">
+        <div class="index_cta">
+            <img src="/static/images/index_image.jpg" alt="BikeMate">
+            <div class="image_text">
+                <h1>BikeMate</h1>
+                <h2>Din <span style="color: #f49e4c;">cykelmakker</span></h2>
+            </div>
+        </div>
+        <div class="index_content">
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                Quas, iste ullam fuga aliquid ratione molestias architecto 
+                sit dignissimos laborum harum!
+                Lorem ipsum dolor sit amet.
+            </p>
+            <button><a href="{{url_for('signup')}}">Prøv BikeMate <i class="fa-solid fa-bicycle fa-bounce" style="--fa-animation-duration: 2s; color: #2D728f;"></i></a></button>
+        </div>
+</section>
+
 {% endblock %}

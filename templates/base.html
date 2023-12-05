@@ -31,8 +31,10 @@
             {% else %}
         <div class="links">
             <h1><a href="{{url_for('index')}}">BikeMate</a></h1>
-            <a href="#">About</a>
-            <a href="{{url_for('login')}}">Log ind</a>
+            <div class="sublinks">
+                <a href="#">About</a>
+                <a href="{{url_for('login')}}">Log ind</a>
+            </div>
         </div>
             {% endif %}
     </div>
