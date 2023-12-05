@@ -6,22 +6,26 @@
 
 <div class="signup">
     <h1>Opret en bruger</h1>
-</div>
 
-<div class="signupform">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-            {% for category, message in messages %}
-                {% if category == 'error' %}
-                    <p><strong>{{ message }}</strong></p>
-                {% endif %}
-            {% endfor %}
-        {% endwith %}
-    <form method="POST" action="">
-        {{ form.hidden_tag() }} <!--csrf_tokens for hvert inputfield-->
-        {{ form.name }}
-        {{ form.email }}
-        {{ form.password }}
-        {{ form.submit }}
-    </form>
+
+    <div class="signupform">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    {% if category == 'error' %}
+                        <p><strong>{{ message }}</strong></p>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        <div class="signup_fields">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }} <!--csrf_tokens for hvert inputfield-->
+                {{ form.name(class_="signup_field", placeholder="Navn") }}
+                {{ form.email(class_="signup_field", placeholder="Email") }}
+                {{ form.password(class_="signup_field", placeholder="Password") }}
+                {{ form.submit(class_="submit_btn") }}
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

@@ -117,7 +117,7 @@ body{
     font-weight: 500;
 }
 
-/* LOGIN AND SIGNUP */
+/* LOGIN */
 .login{
     padding: 0rem 0.8rem 3rem 0.8rem;
 }
@@ -167,6 +167,34 @@ body{
     color: #d6d6d6;
     display: block;
 }
+
+/* SIGNUP */
+.signup{
+    padding: 0rem 0.8rem 3rem 0.8rem;
+}
+.signup h1{
+    text-align: center;
+    padding: 2rem 0rem;
+    color: #f49e4c;
+}
+.signupform{
+    padding: 1rem;
+    background: #d6d6d6;
+    border-radius: 5px;
+}
+.signup_fields{
+    padding-top: 1rem;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+}
+.signup_field{
+    font-size: 1.1em;
+    padding: 0.8rem 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
 
 /* DASHBOARD */
 .dashboard_message{
