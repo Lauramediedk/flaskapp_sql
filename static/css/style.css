@@ -489,6 +489,21 @@ body{
         text-align: center;
     }
 
+    /* LOGIN */
+    .login{
+        margin: 0 auto;
+        width: 50%;
+    }
+    .form_fields{
+        padding-top: 2rem;
+    }
+    .form_field{
+        margin: 0 auto;
+        display: block;
+        margin-bottom: 2rem;
+    }
+
+    /* DASHBOARD */
     .rewards_component{
         width: 40%;
     }
