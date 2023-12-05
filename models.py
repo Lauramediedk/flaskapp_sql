@@ -115,7 +115,7 @@ def check_for_emails(email):
     conn.close()
 
     if result:
-        print("Existing email found:", email)  # Add this line for debugging purposes
+        print("Existing email found:", email)
         return True
 
     return False
