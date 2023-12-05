@@ -172,6 +172,11 @@ body{
 .signup{
     padding: 0rem 0.8rem 3rem 0.8rem;
 }
+.error_messages{
+    color: red;
+    text-align: center;
+    font-size: 1.1em;
+}
 .signup h1{
     text-align: center;
     padding: 2rem 0rem;
