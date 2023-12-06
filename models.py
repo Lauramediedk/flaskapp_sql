@@ -67,6 +67,17 @@ def users_groups():
     conn.commit()
     conn.close()
 
+def users_rewards():
+    conn = get_connection()
+    conn.execute('CREATE TABLE IF NOT EXISTS users_rewards('
+                 'users_id INTEGER, '
+                 'rewards_id INTEGER, '
+                 'FOREIGN KEY(users_id) REFERENCES users(id), '
+                 'FOREIGN KEY(rewards_id) REFERENCES rewards(id)'
+                 ')')
+    conn.commit()
+    conn.close()
+
 def rewards_table():
     conn = get_connection()
     conn.execute('CREATE TABLE IF NOT EXISTS rewards('
@@ -83,7 +94,6 @@ def challenges_table():
                  'id INTEGER PRIMARY KEY AUTOINCREMENT, ' 
                  'name TEXT, '
                  'created DATETIME DEFAULT CURRENT_TIMESTAMP, ' 
-                 'expires DATETIME DEFAULT (datetime("now", "+30 days")), ' 
                  'topic TEXT, '
                  'participants INTEGER, '
                  'reward_id INTEGER, '
@@ -91,6 +101,18 @@ def challenges_table():
                  ')')
     conn.commit()
     conn.close()
+
+#Validering
+def get_rewards(users_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users_rewards WHERE users_id = ?', (users_id,))
+    rewards = cursor.fetchall()
+    conn.close()
+
+    if rewards:
+            return rewards #Der er et match
+    return None #Intet match
 
 #Validering
 def validate_user(email, password):
@@ -133,3 +155,11 @@ def register_user_db(name, email, hashed_password):
         return False
     finally: 
         conn.close()
+
+friends_table()
+posts_table()
+groups_table()
+users_groups()
+users_rewards()
+rewards_table()
+challenges_table()

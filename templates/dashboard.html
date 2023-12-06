@@ -13,9 +13,11 @@
 <div class="rewards_component"> <!--Later use db for this-->
     <h1>Dine belønninger</h1>
     <div class="rewards_content">
-        <div>Test</div>
-        <div>Test</div>
-        <div>Test</div>
+        {% if rewards %}
+        <div class="reward">Belønning</div>
+        {% else %}
+        <p>{{ no_rewards_found }}</p>
+        {% endif %}
     </div>
 </div>
 <section class="main_content">

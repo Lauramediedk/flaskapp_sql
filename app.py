@@ -1,9 +1,7 @@
-from flask import Flask, redirect, url_for, render_template, request, session, flash
-import sqlite3 
+from flask import Flask, redirect, url_for, render_template, request, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import SignupForm, LoginForm
-from models import get_connection, make_table, validate_user, check_for_emails, register_user_db
-from config import DATABASE
+from models import get_connection, get_rewards, validate_user, check_for_emails, register_user_db 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -18,7 +16,15 @@ def dashboard():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå dashboard', 'error')
         return redirect(url_for('login'))
-    return render_template("dashboard.html")
+    
+    user_id = session.get('user_id')
+    rewards = get_rewards(user_id)
+
+    if rewards: 
+        return render_template("dashboard.html", rewards=rewards)
+    else:
+        no_rewards_found = "Du har ingen belønninger endnu"
+        return render_template("dashboard.html", no_rewards_found=no_rewards_found)
 
 #Login
 @app.route("/login", methods=['GET', 'POST'])
@@ -29,15 +35,17 @@ def login():
         password = form.password.data
         if validate_user(email, password):
             session['email'] = email
-            #Hent navn på bruger
+            #Hent id og navn på bruger
             conn = get_connection()
             cursor = conn.cursor()
-            cursor.execute('SELECT name FROM users WHERE email = ?', (email,))
+            cursor.execute('SELECT id, name FROM users WHERE email = ?', (email,))
             user = cursor.fetchone()
             conn.close()
-            #Brug navn i session
+            #Brug info i session
             if user:
+                user_id = user['id']
                 user_name = user['name']
+                session['user_id'] = user_id
                 session['name'] = user_name
             else: 
                 flash('Navn ikke fundet', 'error')
@@ -49,7 +57,7 @@ def login():
         
     return render_template('login.html', form=form)
 
-def is_logged_in():
+def is_logged_in(): #Check om email er inkluderet i vores session
     return 'email' in session
 
 #Signup
