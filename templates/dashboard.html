@@ -46,9 +46,16 @@
 <div class="challenges_component">
     <h1>Dine udfordringer</h1>
     <div class="challenge_container">
-        <p>Challenge</p>
-        <p>Challenge</p>
-        <p>Challenge</p>
+        {% if challenges %}
+                    <div class="challenge">
+                        <h3>{{ challenges.name }}</h3>
+                        <p>Oprettet: <i class="fa-solid fa-clock"></i> {{ challenges.created }}</p>
+                        <p>Emne: {{ challenges.topic }}</p>
+                        <p>Deltagere: <i class="fa-solid fa-user-group"></i> {{ challenges.participants}}</p>
+                    </div>
+            {% else %}
+                <p>{{ no_challenges_found }}</p>
+            {% endif %}
     </div>
 </div>
 </section>

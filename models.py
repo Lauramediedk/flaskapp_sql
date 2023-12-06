@@ -114,6 +114,17 @@ def users_challenges():
     conn.close()
 
 #Hent oplysninger
+def get_users_challenges(users_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users_challenges WHERE users_id = ?', (users_id,))
+    challenges = cursor.fetchall()
+    conn.close()
+
+    if challenges:
+            return challenges #Der er et match
+    return None #Intet match
+
 def get_rewards(users_id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -211,3 +222,4 @@ users_groups()
 users_rewards()
 rewards_table()
 challenges_table()
+users_challenges()

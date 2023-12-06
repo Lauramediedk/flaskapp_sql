@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import SignupForm, LoginForm
-from models import get_connection, get_rewards, get_challenges, validate_user, check_for_emails, register_user_db 
+from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -19,12 +19,22 @@ def dashboard():
     
     user_id = session.get('user_id')
     rewards = get_rewards(user_id)
+    challenges = get_users_challenges(user_id)
 
     if rewards: 
-        return render_template("dashboard.html", rewards=rewards)
+        if challenges:
+            return render_template("dashboard.html", rewards=rewards, challenges=challenges)
+        else:
+            no_challenges_found = "Du har ingen udfordringer endnu"
+        return render_template("dashboard.html", challenges=challenges, no_rewards_found=no_rewards_found)
     else:
-        no_rewards_found = "Du har ingen belønninger endnu"
-        return render_template("dashboard.html", no_rewards_found=no_rewards_found)
+        if challenges:
+            no_rewards_found = "Du har ingen belønninger endnu"
+            return render_template("dashboard.html", rewards=rewards, no_challenges_found=no_challenges_found)
+        else: 
+            no_rewards_found = "Du har ingen belønninger endnu"
+            no_challenges_found = "Du har ingen udfordringer endnu"
+            return render_template("dashboard.html", no_rewards_found=no_rewards_found, no_challenges_found=no_challenges_found)
 
 #Login
 @app.route("/login", methods=['GET', 'POST'])
