@@ -114,6 +114,17 @@ def get_rewards(users_id):
             return rewards #Der er et match
     return None #Intet match
 
+def get_challenges():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM challenges')
+    challenges = cursor.fetchone()
+    conn.close()
+
+    if challenges:
+            return challenges #Der er et match
+    return None #Intet match
+
 #Opret udfordringer
 def make_challenge(name, topic, participants, reward_id=None):
     conn = get_connection()

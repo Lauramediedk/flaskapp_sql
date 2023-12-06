@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import SignupForm, LoginForm
-from models import get_connection, get_rewards, validate_user, check_for_emails, register_user_db 
+from models import get_connection, get_rewards, get_challenges, validate_user, check_for_emails, register_user_db 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -88,7 +88,14 @@ def challenges():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå dashboard', 'error')
         return redirect(url_for('login'))
-    return render_template("challenges.html")
+    
+    challenges = get_challenges()
+
+    if challenges: 
+        return render_template("challenges.html", challenges=challenges)
+    else:
+        no_challenge_found = "Der er i øjeblikket ingen udfordringer"
+        return render_template("challenges.html", no_challenge_found=no_challenge_found)
 
 @app.route("/feed")
 def feed():

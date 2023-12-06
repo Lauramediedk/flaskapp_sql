@@ -11,8 +11,17 @@
             <input class="input_field" type="search" placeholder="Søg...">
         </div>
         <div class="challenges_content">
-                <div class="challenge">Test</div>
-                <div class="challenge">Test</div>
+            {% if challenges %}
+                    <div class="challenge">
+                        <h3>{{ challenges.name }}</h3>
+                        <p>Oprettet: <i class="fa-solid fa-clock"></i> {{ challenges.created }}</p>
+                        <p>Emne: {{ challenges.topic }}</p>
+                        <p>Deltagere: <i class="fa-solid fa-user-group"></i> {{ challenges.participants}}</p>
+                    </div>
+                    <button class="join_challenge">Deltag nu</button>
+            {% else %}
+                <p>{{ no_challenge_found }}</p>
+            {% endif %}
         </div>
 </section>
 

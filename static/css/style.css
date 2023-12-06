@@ -336,13 +336,29 @@ body{
     padding: 1rem;
 }
 .challenge{
-    display: flex;
     padding: 2rem 1rem;
     width: 80%;
     height: fit-content;
     background: #2D728f;
     color: #e7e7e7;
     border-radius: 5px;
+}
+.challenge h3{
+    padding: 0.3rem;
+}
+.challenge p{
+    padding: 0.3rem;
+    font-size: 1.2em;
+}
+.join_challenge{
+    margin: 0 auto;
+    width: 90%;
+    padding: 0.7rem;
+    border: solid 2px #28657f;
+    border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background: #e7e7e7;
 }
 
 /* FEED */
@@ -536,21 +552,28 @@ body{
     }
 
     /* CHALLENGES */
+    .challenges{
+        text-align: center;
+    }
     .challenges_content{
         display: flex;
-        flex-direction: row;
-        width: 100%;
-        align-items: start;
+        flex-direction: column;
         justify-content: center;
-    }
-    .challenge{
-        width: 45%;
+        width: 50%;
+        margin: 0 auto;
     }
     .search{
         width: 50%;
         margin: 0 auto;
         padding: 1rem 0rem;
     }
+    .challenge{
+        width: 50%;
+    }
+    .join_challenge{
+        width: 50%;
+    }
+
     /* FEED */
     .make_post{
         width: 50%;
