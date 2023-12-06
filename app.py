@@ -1,53 +1,10 @@
-from flask import Flask, redirect, url_for, render_template, request, session, flash
-import sqlite3 
+from flask import Flask, redirect, url_for, render_template, request, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import SignupForm, LoginForm
+from models import get_connection, get_rewards, validate_user, check_for_emails, register_user_db 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
-DATABASE = 'database.db'
-
-#DB connect
-def get_connection():
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    conn.row_factory = sqlite3.Row
-    return conn
-
-#DB table
-def make_table():
-    conn = get_connection()
-    conn.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)')
-    conn.commit()
-    conn.close()
-
-#Validering
-def validate_user(email, password):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute('SELECT password FROM users WHERE email = ?', (email,))
-    result = cursor.fetchone()  # Fetch the hashed password
-    conn.close()
-
-    if result:
-        hashed_password = result[0]
-        if check_password_hash(hashed_password, password):
-            return True #Passwords matcher
-        return False #Intet match med password eller user
-    
-#Email validering for signup
-def check_for_emails(email):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
-    result = cursor.fetchone()
-    conn.close
-
-    if result:
-        print("Existing email found:", email)  # Add this line for debugging purposes
-        return True
-
-    return False
 
 #Routes
 @app.route("/")
@@ -59,7 +16,15 @@ def dashboard():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå dashboard', 'error')
         return redirect(url_for('login'))
-    return render_template("dashboard.html")
+    
+    user_id = session.get('user_id')
+    rewards = get_rewards(user_id)
+
+    if rewards: 
+        return render_template("dashboard.html", rewards=rewards)
+    else:
+        no_rewards_found = "Du har ingen belønninger endnu"
+        return render_template("dashboard.html", no_rewards_found=no_rewards_found)
 
 #Login
 @app.route("/login", methods=['GET', 'POST'])
@@ -70,15 +35,17 @@ def login():
         password = form.password.data
         if validate_user(email, password):
             session['email'] = email
-            #Hent navn på bruger
+            #Hent id og navn på bruger
             conn = get_connection()
             cursor = conn.cursor()
-            cursor.execute('SELECT name FROM users WHERE email = ?', (email,))
+            cursor.execute('SELECT id, name FROM users WHERE email = ?', (email,))
             user = cursor.fetchone()
             conn.close()
-            #Brug navn i session
+            #Brug info i session
             if user:
+                user_id = user['id']
                 user_name = user['name']
+                session['user_id'] = user_id
                 session['name'] = user_name
             else: 
                 flash('Navn ikke fundet', 'error')
@@ -90,7 +57,7 @@ def login():
         
     return render_template('login.html', form=form)
 
-def is_logged_in():
+def is_logged_in(): #Check om email er inkluderet i vores session
     return 'email' in session
 
 #Signup
@@ -115,20 +82,6 @@ def signup():
             return redirect(url_for('signup'))
 
     return render_template('signup.html', form=form)
-
-#Registrer bruger i DB
-def register_user_db(name, email, hashed_password):
-    conn = get_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', (name, email, hashed_password))
-        conn.commit()
-        return True 
-    except sqlite3.Error as e:
-        print(f"Error inserting user: {e}")
-        return False
-    finally: 
-        conn.close()
 
 @app.route("/challenges")
 def challenges():
