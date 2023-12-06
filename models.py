@@ -114,6 +114,32 @@ def get_rewards(users_id):
             return rewards #Der er et match
     return None #Intet match
 
+#Opret udfordringer
+def make_challenge(name, topic, participants, reward_id=None):
+    conn = get_connection()
+
+    if reward_id is None:
+        query =  'INSERT INTO challenges (name, topic, participants) VALUES (?, ?, ?)'
+        values = (name, topic, participants)
+    else: 
+        query = 'INSERT INTO challenges (name, topic, participants, reward_id) VALUES (?, ?, ?, ?)'
+        values = (name, topic, participants, reward_id)
+    
+    conn.execute(query, values)
+    conn.commit()
+    conn.close()
+
+#Antal af deltagere i en challenge
+def count_participants():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT COUNT(*) FROM challenges')
+    count = cursor.fetchone()[0]
+
+    conn.close()
+    return count
+
 #Validering
 def validate_user(email, password):
     conn = get_connection()
