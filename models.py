@@ -102,6 +102,17 @@ def challenges_table():
     conn.commit()
     conn.close()
 
+def users_challenges():
+    conn = get_connection()
+    conn.execute('CREATE TABLE IF NOT EXISTS users_challenges('
+                 'users_id INTEGER, '
+                 'challenges_id INTEGER, '
+                 'FOREIGN KEY(users_id) REFERENCES users(id), '
+                 'FOREIGN KEY(challenges_id) REFERENCES challenges(id)'
+                 ')')
+    conn.commit()
+    conn.close()
+
 #Hent oplysninger
 def get_rewards(users_id):
     conn = get_connection()
