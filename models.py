@@ -102,7 +102,7 @@ def challenges_table():
     conn.commit()
     conn.close()
 
-#Validering
+#Hent oplysninger
 def get_rewards(users_id):
     conn = get_connection()
     cursor = conn.cursor()
