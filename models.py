@@ -113,11 +113,18 @@ def users_challenges():
     conn.commit()
     conn.close()
 
-#Hent oplysninger
+#Handlinger
+################################################################################
+
+#Hent oplysninger om brugerens specifikke challenges
 def get_users_challenges(users_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users_challenges WHERE users_id = ?', (users_id,))
+    cursor.execute('''
+                   SELECT challenges.* FROM users_challenges
+                   INNER JOIN challenges ON users_challenges.challenges_id = challenges_id
+                    WHERE users_challenges.users_id = ?
+                   ''',(users_id,))
     challenges = cursor.fetchall()
     conn.close()
 
@@ -125,17 +132,8 @@ def get_users_challenges(users_id):
             return challenges #Der er et match
     return None #Intet match
 
-def get_rewards(users_id):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users_rewards WHERE users_id = ?', (users_id,))
-    rewards = cursor.fetchall()
-    conn.close()
 
-    if rewards:
-            return rewards #Der er et match
-    return None #Intet match
-
+#Hent udfordringer fra databasen
 def get_challenges():
     conn = get_connection()
     cursor = conn.cursor()
@@ -147,20 +145,15 @@ def get_challenges():
             return challenges #Der er et match
     return None #Intet match
 
-#Opret udfordringer
-def make_challenge(name, topic, participants, reward_id=None):
-    conn = get_connection()
 
-    if reward_id is None:
-        query =  'INSERT INTO challenges (name, topic, participants) VALUES (?, ?, ?)'
-        values = (name, topic, participants)
-    else: 
-        query = 'INSERT INTO challenges (name, topic, participants, reward_id) VALUES (?, ?, ?, ?)'
-        values = (name, topic, participants, reward_id)
-    
-    conn.execute(query, values)
+#Brugere kan deltage i challenges når de klikker deltag
+def join_challenge_action(users_id, challenges_id):
+    conn = get_connection()
+    query =  'INSERT INTO users_challenges (users_id, challenges_id) VALUES (?, ?)'
+    conn.execute(query, (users_id, challenges_id))
     conn.commit()
     conn.close()
+
 
 #Antal af deltagere i en challenge
 def count_participants():
@@ -172,6 +165,20 @@ def count_participants():
 
     conn.close()
     return count
+
+
+#Hent belønninger
+def get_rewards(users_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users_rewards WHERE users_id = ?', (users_id,))
+    rewards = cursor.fetchall()
+    conn.close()
+
+    if rewards:
+            return rewards #Der er et match
+    return None #Intet match
+
 
 #Validering
 def validate_user(email, password):
@@ -214,6 +221,9 @@ def register_user_db(name, email, hashed_password):
         return False
     finally: 
         conn.close()
+
+#Lav tables
+#################################################################################
 
 friends_table()
 posts_table()

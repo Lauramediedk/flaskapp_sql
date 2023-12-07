@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import SignupForm, LoginForm
-from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db 
+from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -21,19 +21,18 @@ def dashboard():
     rewards = get_rewards(user_id)
     challenges = get_users_challenges(user_id)
 
+    no_rewards_found = "Du har ingen belønninger endnu"
+    no_challenges_found = "Du har ingen udfordringer endnu"
+
     if rewards: 
         if challenges:
             return render_template("dashboard.html", rewards=rewards, challenges=challenges)
         else:
-            no_challenges_found = "Du har ingen udfordringer endnu"
-        return render_template("dashboard.html", challenges=challenges, no_rewards_found=no_rewards_found)
+            return render_template("dashboard.html", rewards=rewards, no_challenges_found=no_challenges_found)
     else:
         if challenges:
-            no_rewards_found = "Du har ingen belønninger endnu"
-            return render_template("dashboard.html", rewards=rewards, no_challenges_found=no_challenges_found)
+            return render_template("dashboard.html", challenges=challenges, no_rewards_found=no_rewards_found)
         else: 
-            no_rewards_found = "Du har ingen belønninger endnu"
-            no_challenges_found = "Du har ingen udfordringer endnu"
             return render_template("dashboard.html", no_rewards_found=no_rewards_found, no_challenges_found=no_challenges_found)
 
 #Login
@@ -104,8 +103,18 @@ def challenges():
     if challenges: 
         return render_template("challenges.html", challenges=challenges)
     else:
-        no_challenge_found = "Der er i øjeblikket ingen udfordringer"
-        return render_template("challenges.html", no_challenge_found=no_challenge_found)
+        no_challenges_found = "Der er i øjeblikket ingen udfordringer"
+        return render_template("challenges.html", no_challenges_found=no_challenges_found)
+
+#join challenge
+@app.route("/join_challenge/<int:challenges_id>", methods=['POST'])
+def join_challenge(challenges_id):
+    user_id = session.get('user_id')
+    
+    join_challenge_action(user_id, challenges_id)
+    print(f"User ID: {user_id}, Challenge ID: {challenges_id}")
+
+    return redirect(url_for('challenges'))
 
 @app.route("/feed")
 def feed():

@@ -47,15 +47,17 @@
     <h1>Dine udfordringer</h1>
     <div class="challenge_container">
         {% if challenges %}
-                    <div class="challenge">
-                        <h3>{{ challenges.name }}</h3>
-                        <p>Oprettet: <i class="fa-solid fa-clock"></i> {{ challenges.created }}</p>
-                        <p>Emne: {{ challenges.topic }}</p>
-                        <p>Deltagere: <i class="fa-solid fa-user-group"></i> {{ challenges.participants}}</p>
-                    </div>
-            {% else %}
-                <p>{{ no_challenges_found }}</p>
-            {% endif %}
+            {% for challenge in challenges %}
+                <div class="challenge">
+                    <h3>{{ challenge.name }}</h3>
+                        <p>Oprettet: <i class="fa-solid fa-clock"></i> {{ challenge.created }}</p>
+                        <p>Emne: {{ challenge.topic }}</p>
+                        <p>Deltagere: <i class="fa-solid fa-user-group"></i> {{ challenge.participants}}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>{{ no_challenges_found }}</p>
+        {% endif %}
     </div>
 </div>
 </section>

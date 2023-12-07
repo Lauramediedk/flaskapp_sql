@@ -18,7 +18,12 @@
                         <p>Emne: {{ challenges.topic }}</p>
                         <p>Deltagere: <i class="fa-solid fa-user-group"></i> {{ challenges.participants}}</p>
                     </div>
-                    <button class="join_challenge">Deltag nu</button>
+                        <form action="{{ url_for('join_challenge', challenges_id=challenges.id) }}" method="POST" x-data="{open: false }">
+                            <button type="submit" x-on:click="open = ! open">Deltag i udfordring</button>
+                            <div class="message" x-show="open" @click.outside="open = false">
+                                <p>Din detagelse er modtaget</p>
+                            </div>
+                        </form>
             {% else %}
                 <p>{{ no_challenges_found }}</p>
             {% endif %}
