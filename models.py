@@ -121,10 +121,10 @@ def get_users_challenges(users_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('''
-                   SELECT challenges.*, COUNT(users_challenges.users_id) AS participants_count 
+                   SELECT challenges.*, COUNT(users_challenges.users_id) AS participants_count
                    FROM users_challenges
                    INNER JOIN challenges ON users_challenges.challenges_id = challenges_id
-                    WHERE users_challenges.users_id = ?
+                   WHERE users_challenges.users_id = ?
                    GROUP BY challenges.id
                    ''',(users_id,))
     challenges = cursor.fetchall()
@@ -139,14 +139,16 @@ def get_users_challenges(users_id):
 def get_challenges():
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT challenges.id, '
-                   'challenges.name, ' 
-                   'challenges.created, ' 
-                   'challenges.topic, ' 
-                   'COUNT(users_challenges.users_id) AS participants_count '
-                   'FROM challenges ' 
-                   'LEFT JOIN users_challenges ON challenges.id = users_challenges.challenges_id '
-                   'GROUP BY challenges.id')
+    cursor.execute('''
+                   SELECT challenges.id,
+                   challenges.name,
+                   challenges.created,  
+                   challenges.topic,  
+                   COUNT(users_challenges.users_id) AS participants_count 
+                   FROM challenges  
+                   LEFT JOIN users_challenges ON challenges.id = users_challenges.challenges_id 
+                   GROUP BY challenges.id
+                   ''')
     challenges = cursor.fetchall()
     conn.close()
 
