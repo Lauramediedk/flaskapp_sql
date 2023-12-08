@@ -133,16 +133,23 @@ def get_users_challenges(users_id):
     return None #Intet match
 
 
-#Hent udfordringer fra databasen
+#Hent udfordringer fra databasen og find antal deltagere
 def get_challenges():
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM challenges')
+    cursor.execute('SELECT challenges.id, '
+                   'challenges.name, ' 
+                   'challenges.created, ' 
+                   'challenges.topic, ' 
+                   'COUNT(users_challenges.users_id) AS participants_count '
+                   'FROM challenges ' 
+                   'LEFT JOIN users_challenges ON challenges.id = users_challenges.challenges_id '
+                   'GROUP BY challenges.id')
     challenges = cursor.fetchall()
     conn.close()
 
     if challenges:
-            return challenges #Der er et match
+        return challenges #Der er et match
     return None #Intet match
 
 
@@ -160,7 +167,7 @@ def count_participants():
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute('SELECT COUNT(*) FROM challenges')
+    cursor.execute('SELECT COUNT(users_id) AS participants_count FROM users_challenges WHERE challenges_id = ') #Skal ændres til users_challenges
     count = cursor.fetchone()[0]
 
     conn.close()
