@@ -94,6 +94,7 @@ def challenges_table():
                  'id INTEGER PRIMARY KEY AUTOINCREMENT, ' 
                  'name TEXT, '
                  'created DATETIME DEFAULT CURRENT_TIMESTAMP, ' 
+                 'end_date DATETIME DEFAULT (datetime("now", "+30 days")), '
                  'topic TEXT, '
                  'participants INTEGER, '
                  'reward_id INTEGER, '
@@ -142,7 +143,8 @@ def get_challenges():
     cursor.execute('''
                    SELECT challenges.id,
                    challenges.name,
-                   challenges.created,  
+                   challenges.created,
+                   challenges.end_date,
                    challenges.topic,  
                    COUNT(users_challenges.users_id) AS participants_count 
                    FROM challenges  
