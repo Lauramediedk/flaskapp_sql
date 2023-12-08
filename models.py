@@ -181,6 +181,15 @@ def get_rewards(users_id):
     return None #Intet match
 
 
+def get_posts():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM posts')
+    posts = cursor.fetchall()
+    conn.close()
+
+    return posts
+
 #Validering
 def validate_user(email, password):
     conn = get_connection()
@@ -221,6 +230,18 @@ def check_joined_challenges(users_id, challenges_id):
         return True
 
     return False
+
+# Indsæt
+################################################################################
+
+#Lav post opslag
+def make_post(content):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO posts (content) VALUES (?)', (content,))
+    conn.commit()
+    conn.close()
+
 
 #Registrer bruger i DB
 def register_user_db(name, email, hashed_password):

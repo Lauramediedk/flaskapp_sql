@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import SignupForm, LoginForm
-from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges
+from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -135,7 +135,14 @@ def posts():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
-    return render_template("posts.html")
+    
+    posts_data = get_posts()
+
+    if posts_data: 
+        return render_template("posts.html", posts_data=posts_data)
+    else: 
+        flash('Ingen opslag i øjeblikket', 'error')
+        return render_template("posts.html")
 
 @app.route("/logout")
 def logout():
