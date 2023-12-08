@@ -116,14 +116,16 @@ def users_challenges():
 #Handlinger
 ################################################################################
 
-#Hent oplysninger om brugerens specifikke challenges
+#Hent oplysninger om brugerens specifikke challenges og benyt count her til antal af deltagere
 def get_users_challenges(users_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('''
-                   SELECT challenges.* FROM users_challenges
+                   SELECT challenges.*, COUNT(users_challenges.users_id) AS participants_count 
+                   FROM users_challenges
                    INNER JOIN challenges ON users_challenges.challenges_id = challenges_id
                     WHERE users_challenges.users_id = ?
+                   GROUP BY challenges.id
                    ''',(users_id,))
     challenges = cursor.fetchall()
     conn.close()
@@ -160,18 +162,6 @@ def join_challenge_action(users_id, challenges_id):
     conn.execute(query, (users_id, challenges_id))
     conn.commit()
     conn.close()
-
-
-#Antal af deltagere i en challenge
-def count_participants():
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute('SELECT COUNT(users_id) AS participants_count FROM users_challenges WHERE challenges_id = ') #Skal ændres til users_challenges
-    count = cursor.fetchone()[0]
-
-    conn.close()
-    return count
 
 
 #Hent belønninger
