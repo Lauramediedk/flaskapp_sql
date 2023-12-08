@@ -12,18 +12,27 @@
         </div>
         <div class="challenges_content">
             {% if challenges %}
+                {% for challenge in challenges %}
                     <div class="challenge">
-                        <h3>{{ challenges.name }}</h3>
-                        <p>Oprettet: <i class="fa-solid fa-clock"></i> {{ challenges.created }}</p>
-                        <p>Emne: {{ challenges.topic }}</p>
-                        <p>Deltagere: <i class="fa-solid fa-user-group"></i> {{ challenges.participants}}</p>
+                        <h3>{{ challenge.name }}</h3>
+                        <p>Oprettet: <i class="fa-solid fa-clock"></i> {{ challenge.created }}</p>
+                        <p>Emne: {{ challenge.topic }}</p>
+                        <p>Deltagere: <i class="fa-solid fa-user-group"></i> {{ challenge.participants}}</p>
                     </div>
-                        <form action="{{ url_for('join_challenge', challenges_id=challenges.id) }}" method="POST" x-data="{open: false }">
+                        <form action="{{ url_for('join_challenge', challenges_id=challenge.id) }}" method="POST" x-data="{open: false }">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% for category, message in messages %}
+                                    {% if category == 'error' %}
+                                        <p>{{ message }}</p> <!--Vis error message hvis de allerede er tilmeldt-->
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
                             <button type="submit" x-on:click="open = ! open">Deltag i udfordring</button>
                             <div class="message" x-show="open" @click.outside="open = false">
                                 <p>Din detagelse er modtaget</p>
                             </div>
                         </form>
+                    {% endfor %}
             {% else %}
                 <p>{{ no_challenges_found }}</p>
             {% endif %}

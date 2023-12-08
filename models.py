@@ -138,7 +138,7 @@ def get_challenges():
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM challenges')
-    challenges = cursor.fetchone()
+    challenges = cursor.fetchall()
     conn.close()
 
     if challenges:
@@ -204,6 +204,19 @@ def check_for_emails(email):
 
     if result:
         print("Existing email found:", email)
+        return True
+
+    return False
+
+
+def check_joined_challenges(users_id, challenges_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users_challenges WHERE users_id = ? AND challenges_id = ?', (users_id, challenges_id))
+    result = cursor.fetchone()
+    conn.close()
+
+    if result:
         return True
 
     return False
