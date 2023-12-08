@@ -94,6 +94,7 @@ def challenges_table():
                  'id INTEGER PRIMARY KEY AUTOINCREMENT, ' 
                  'name TEXT, '
                  'created DATETIME DEFAULT CURRENT_TIMESTAMP, ' 
+                 'end_date DATETIME DEFAULT (datetime("now", "+30 days")), '
                  'topic TEXT, '
                  'participants INTEGER, '
                  'reward_id INTEGER, '
@@ -102,7 +103,72 @@ def challenges_table():
     conn.commit()
     conn.close()
 
-#Hent oplysninger
+def users_challenges():
+    conn = get_connection()
+    conn.execute('CREATE TABLE IF NOT EXISTS users_challenges('
+                 'users_id INTEGER, '
+                 'challenges_id INTEGER, '
+                 'FOREIGN KEY(users_id) REFERENCES users(id), '
+                 'FOREIGN KEY(challenges_id) REFERENCES challenges(id)'
+                 ')')
+    conn.commit()
+    conn.close()
+
+#Handlinger
+################################################################################
+
+#Hent oplysninger om brugerens specifikke challenges og benyt count her til antal af deltagere
+def get_users_challenges(users_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+                   SELECT challenges.*, COUNT(users_challenges.users_id) AS participants_count
+                   FROM users_challenges
+                   INNER JOIN challenges ON users_challenges.challenges_id = challenges_id
+                   WHERE users_challenges.users_id = ?
+                   GROUP BY challenges.id
+                   ''',(users_id,))
+    challenges = cursor.fetchall()
+    conn.close()
+
+    if challenges:
+            return challenges #Der er et match
+    return None #Intet match
+
+
+#Hent udfordringer fra databasen og find antal deltagere
+def get_challenges():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+                   SELECT challenges.id,
+                   challenges.name,
+                   challenges.created,
+                   challenges.end_date,
+                   challenges.topic,  
+                   COUNT(users_challenges.users_id) AS participants_count 
+                   FROM challenges  
+                   LEFT JOIN users_challenges ON challenges.id = users_challenges.challenges_id 
+                   GROUP BY challenges.id
+                   ''')
+    challenges = cursor.fetchall()
+    conn.close()
+
+    if challenges:
+        return challenges #Der er et match
+    return None #Intet match
+
+
+#Brugere kan deltage i challenges når de klikker deltag
+def join_challenge_action(users_id, challenges_id):
+    conn = get_connection()
+    query =  'INSERT INTO users_challenges (users_id, challenges_id) VALUES (?, ?)'
+    conn.execute(query, (users_id, challenges_id))
+    conn.commit()
+    conn.close()
+
+
+#Hent belønninger
 def get_rewards(users_id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -113,6 +179,7 @@ def get_rewards(users_id):
     if rewards:
             return rewards #Der er et match
     return None #Intet match
+
 
 #Validering
 def validate_user(email, password):
@@ -142,6 +209,19 @@ def check_for_emails(email):
 
     return False
 
+
+def check_joined_challenges(users_id, challenges_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users_challenges WHERE users_id = ? AND challenges_id = ?', (users_id, challenges_id))
+    result = cursor.fetchone()
+    conn.close()
+
+    if result:
+        return True
+
+    return False
+
 #Registrer bruger i DB
 def register_user_db(name, email, hashed_password):
     conn = get_connection()
@@ -156,6 +236,9 @@ def register_user_db(name, email, hashed_password):
     finally: 
         conn.close()
 
+#Lav tables
+#################################################################################
+
 friends_table()
 posts_table()
 groups_table()
@@ -163,3 +246,4 @@ users_groups()
 users_rewards()
 rewards_table()
 challenges_table()
+users_challenges()

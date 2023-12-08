@@ -290,15 +290,27 @@ body{
 .challenge_container{
     background: #d6d6d6;
     border-radius: 1rem;
-    padding: 2rem;
+    padding: 0.3rem 2rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: auto;
+    max-height: 300px;
 }
 .challenge_container p{
     font-size: 1.2em;
     padding: 1rem;
     text-align: center;
-    background: #e7e7e7;
 }
-
+.challenge_container::-webkit-scrollbar{
+    background: #e7e7e7;
+    width: 10px;
+    border-radius: 5px;
+}
+.challenge_container::-webkit-scrollbar-thumb{
+    background: #2D728f;
+    border-radius: 5px;
+    min-height: 10px;
+}
 
 /* CHALLENGES */
 .challenges{
@@ -336,13 +348,32 @@ body{
     padding: 1rem;
 }
 .challenge{
-    display: flex;
-    padding: 2rem 1rem;
+    padding: 2rem;
+    margin: 1rem 0rem;
     width: 80%;
     height: fit-content;
     background: #2D728f;
-    color: #e7e7e7;
     border-radius: 5px;
+}
+.challenge h3{
+    padding: 0.3rem;
+    color: #d6d6d6;
+    text-align: center;
+}
+.challenge p{
+    padding: 0.3rem;
+    font-size: 1.2em;
+    color: #d6d6d6;
+}
+.join_challenge{
+    margin: 0 auto;
+    width: 90%;
+    padding: 0.7rem;
+    border: solid 2px #28657f;
+    border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background: #e7e7e7;
 }
 
 /* FEED */
@@ -528,29 +559,32 @@ body{
     .posts_component{
         width: 30%;
     }
-    .post_container::-webkit-scrollbar{
-        display: none;
-    }
     .challenges_component{
         width: 30%;
     }
+    .challenge_container{
+        max-height: 210px;
+    }
 
     /* CHALLENGES */
+    .challenges{
+        text-align: center;
+    }
     .challenges_content{
         display: flex;
-        flex-direction: row;
-        width: 100%;
-        align-items: start;
-        justify-content: center;
-    }
-    .challenge{
-        width: 45%;
+        flex-direction: column;
+        width: 50%;
+        margin: 0 auto;
     }
     .search{
         width: 50%;
         margin: 0 auto;
         padding: 1rem 0rem;
+    }   
+    .join_challenge{
+        width: 50%;
     }
+
     /* FEED */
     .make_post{
         width: 50%;
