@@ -3,6 +3,9 @@
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+*:focus{
+    outline: none; /* FJERN OUTLINE FRA INPUT FIELDS ETC, NÅR DE BRUGES*/
+}
 
 body{
     min-height: 100vh;
