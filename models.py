@@ -181,14 +181,16 @@ def get_rewards(users_id):
     return None #Intet match
 
 
-def get_posts():
+def get_posts(): #We fetch the users name also
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM posts')
+    cursor.execute('SELECT posts.id, posts.users_id, posts.content, posts.created, users.name '
+                   'FROM posts '
+                   'INNER JOIN users ON posts.users_id = users.id')
     posts = cursor.fetchall()
     conn.close()
 
-    return posts
+    return posts   
 
 #Validering
 def validate_user(email, password):
@@ -235,10 +237,10 @@ def check_joined_challenges(users_id, challenges_id):
 ################################################################################
 
 #Lav post opslag
-def make_post(content):
+def make_post(users_id, content):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO posts (content) VALUES (?)', (content,))
+    cursor.execute('INSERT INTO posts (users_id, content) VALUES (?, ?)', (users_id, content,))
     conn.commit()
     conn.close()
 

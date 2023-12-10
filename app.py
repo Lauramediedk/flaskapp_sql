@@ -140,11 +140,12 @@ def posts():
         return redirect(url_for('login'))
     
     form = PostForm()
+    users_id = session['user_id']
     
     if request.method =='POST':
         if form.validate_on_submit():
             content = form.content.data
-            make_post(content)
+            make_post(users_id, content)
             flash('Opslag oprettet', 'success')
             return redirect(url_for('posts'))
         else:

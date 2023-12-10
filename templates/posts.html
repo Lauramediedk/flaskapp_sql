@@ -11,7 +11,7 @@
     {% if posts_data %}
         {% for post in posts_data %}
             <div class="post">
-                <p>{{session.name}}</p>
+                <p>{{post.name}}</p>
                 <p class="post_date">{{ post.created}}</p>
                 <p>{{ post.content}}</p>
             </div>
