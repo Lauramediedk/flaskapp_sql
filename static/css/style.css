@@ -402,24 +402,19 @@ body{
 .f_categories a:active{
     color: #f49e4c;
 }
-.make_post{
+#post_form{
     border: none;
     border: solid 1px #9e9e9e;
     border-radius: 5px;
-    margin: 0rem 0rem 2rem 0rem;
+    margin: 2rem 0rem 2rem 0rem;
     position: relative;
 }
-.post_content input{
-    width: 100%;
+.post_form_field{
     border: none;
-    outline: none;
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    padding: 1rem;
-    box-sizing: border-box;
+    width: 95%;
+    padding: 2rem 0rem 2rem 1rem;
 }
+
 .post_actions{
     display: flex;
     justify-content: space-between;
@@ -435,6 +430,25 @@ body{
     border-radius: 5px;
     color: #e7e7e7;
 }
+.submit_post_btn{
+    background: #2D728f;
+    padding: 0.2rem;
+    border: none;
+    outline: none;
+    border: solid 1px #28657f;
+    border-radius: 5px;
+    color: #e7e7e7;
+}
+.post{
+    background: #d6d6d6;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    padding: 1rem;
+}
+.post_date{
+    padding-bottom: 1rem;
+}
+
 
 /* PEOPLE */
 .people{
@@ -586,11 +600,11 @@ body{
     }
 
     /* FEED */
-    .make_post{
+    #post_form{
         width: 50%;
         margin: 0 auto;
     }
-    .posts{
+    #posts_content{
         width: 50%;
         padding: 3rem 0rem;
         margin: 0 auto;

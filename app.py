@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import SignupForm, LoginForm
+from forms import SignupForm, LoginForm, PostForm
 from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post
 
 app = Flask(__name__)
@@ -116,12 +116,14 @@ def join_challenge(challenges_id):
 
     return redirect(url_for('challenges'))
 
-@app.route("/feed")
+
+@app.route("/feed", methods=['GET', 'POST'])
 def feed():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
     return render_template("feed.html")
+
 
 @app.route("/people")
 def people():
@@ -130,19 +132,32 @@ def people():
         return redirect(url_for('login'))
     return render_template("people.html")
 
-@app.route("/posts")
+
+@app.route("/posts", methods=['GET', 'POST'])
 def posts():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
     
-    posts_data = get_posts()
+    form = PostForm()
+    
+    if request.method =='POST':
+        if form.validate_on_submit():
+            content = form.content.data
+            make_post(content)
+            flash('Opslag oprettet', 'success')
+            return redirect(url_for('posts'))
+        else:
+            flash('Noget gik galt', 'error')
+            return render_template("posts.html", form=form, posts_data=posts_data)
 
+    posts_data = get_posts()
     if posts_data: 
-        return render_template("posts.html", posts_data=posts_data)
+        return render_template("posts.html", posts_data=posts_data, form=form)
     else: 
         flash('Ingen opslag i øjeblikket', 'error')
-        return render_template("posts.html")
+        return render_template("posts.html", form=form)
+
 
 @app.route("/logout")
 def logout():

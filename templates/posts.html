@@ -1,37 +1,28 @@
-<div class="make_post">
-    <div class="post_content">
-        <input type="text" placeholder="Hvad vil du dele?...">
-    </div>
+<form id="post_form" hx-post="/posts" hx-trigger="submit" hx-target="#posts_content">
+    {{ form.hidden_tag() }}
+    {{ form.content(class_="post_form_field", placeholder="Hvad vil du dele?...")}}
     <div class="post_actions">
         <button>Vedhæft billede</button>
-        <button>Slå op</button>
+        {{ form.submit(class_="submit_post_btn") }}
     </div>
-</div>
-<div class="posts">
-    <div class="post_container">
-        <div class="user_info">
-            <div class="user_image">
-                <img src="/static/images/user_image.jpg" alt="user">
+</form>
+
+<div id="posts_content" hx-get="/posts">
+    {% if posts_data %}
+        {% for post in posts_data %}
+            <div class="post">
+                <p>{{session.name}}</p>
+                <p class="post_date">{{ post.created}}</p>
+                <p>{{ post.content}}</p>
             </div>
-            {% if posts_data %}
-                {% for post in posts_data %}
-                    <div class="user_details">
-                        <p>{{session.name}}</p>
-                        <p class="post_date">{{ post.created}}</p>
-                    </div>
-        </div>
-        <div class="post_content">
-            <p>{{ post.content}}</p>
         {% endfor %}
-            {% else %}
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% for category, message in messages %}
-                        {% if category == 'error' %}
-                            <p>{{ message }}</p>
-                        {% endif %}
-                    {% endfor %}
-                {% endwith %}
-            {% endif %}
-        </div>
-    </div>
+    {% else %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <p>{{ message }}</p>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+    {% endif %}
 </div>

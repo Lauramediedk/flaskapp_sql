@@ -25,3 +25,8 @@ class LoginForm(FlaskForm):
         #render_kw --> tilføj ekstra felt i ens html som placeholder eller en class
 
     submit = SubmitField("Log ind")
+
+#Make post form
+class PostForm(FlaskForm):
+    content = StringField(validators=[InputRequired()])
+    submit = SubmitField("Slå op")
