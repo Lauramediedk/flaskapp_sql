@@ -236,6 +236,10 @@ body{
     background: #d6d6d6;
     border-radius: 1rem;
     overflow-y: scroll;
+    max-height: 220px;
+}
+.post_container p {
+    padding: 0.8rem;
 }
 .post_container::-webkit-scrollbar{
     background: #e7e7e7;
@@ -246,9 +250,6 @@ body{
     background: #2D728f;
     border-radius: 5px;
     min-height: 10px;
-}
-.post_content{
-    height: 100px;
 }
 .posts_component h1{
     font-size: 1.5em;

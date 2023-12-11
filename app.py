@@ -17,7 +17,7 @@ def dashboard():
         flash('Du skal være logget ind for at tilgå dashboard', 'error')
         return redirect(url_for('login'))
     
-    user_id = session.get('user_id')
+    user_id = session['user_id']
     rewards = get_rewards(user_id)
     challenges = get_users_challenges(user_id)
     user_posts = get_users_posts(user_id)

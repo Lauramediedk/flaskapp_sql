@@ -26,9 +26,10 @@
         <div class="post_container">
             {% if user_posts %}
                 {% for user_post in user_posts %}
-                    <p>{{ user_post.id }}</p>
+                    <p>{{ session.name}}</p>
                     <p class="post_date">{{ user_post.created }}</p>
-                    <p>{{ user_post.content }}</p>
+                    <p class="post_content">{{ user_post.content }}</p>
+                    <hr>
                 {% endfor %}
             {% else %}
                 <p>{{ no_posts_found }}</p>
