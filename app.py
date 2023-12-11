@@ -146,9 +146,10 @@ def posts():
         if form.validate_on_submit():
             content = form.content.data
             make_post(users_id, content)
+            flash('Opslag oprettet')
             return redirect(url_for('posts'))
         else:
-            flash('Noget gik galt', 'error')
+            flash('Noget gik galt')
             return render_template("posts.html", form=form, posts_data=posts_data)
 
     posts_data = get_posts()
