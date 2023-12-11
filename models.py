@@ -206,7 +206,8 @@ def delete_post_db(post_id, user_id): #Tjek først om post eksisterer og matcher
     else:
         conn.close()
         return False
-
+    
+    
 #Validering
 def validate_user(email, password):
     conn = get_connection()

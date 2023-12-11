@@ -10,15 +10,16 @@
 <div id="posts_content">
     {% if posts_data %}
         {% for post in posts_data %}
+        <!--See the posts-->
             <div class="post">
                 <p>{{post.name}}</p>
                 <p class="post_date">{{ post.created}}</p>
                 <p>{{ post.content}}</p>
-                
+        <!--Edit the posts-->
                 {% if post.users_id == session.user_id %}
                     <button class="delete_post_btn" hx-delete="/posts/{{ post.id }}" 
-                    hx-target="#posts_content"
-                    hx-confirm="Er du sikker på at du vil slette opslaget?">
+                        hx-target="#posts_content"
+                        hx-confirm="Er du sikker på at du vil slette opslaget?">
                     Slet opslag</button>
                 {% endif %}
             </div>
