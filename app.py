@@ -146,7 +146,6 @@ def posts():
         if form.validate_on_submit():
             content = form.content.data
             make_post(users_id, content)
-            flash('Opslag oprettet', 'success')
             return redirect(url_for('posts'))
         else:
             flash('Noget gik galt', 'error')
