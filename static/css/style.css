@@ -451,6 +451,18 @@ body{
 .post_date{
     padding-bottom: 1rem;
 }
+.delete_post_btn{
+    border: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: #9e9e9e;
+}
+.delete_post_btn:hover{
+    transition: 0.3s;
+    background: #2D728f;
+    color: #d6d6d6;
+}
 
 
 /* PEOPLE */

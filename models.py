@@ -192,6 +192,21 @@ def get_posts(): #We fetch the users name also
 
     return posts   
 
+def delete_post_db(post_id, user_id): #Tjek først om post eksisterer og matcher med brugeren
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM posts WHERE id = ? AND users_id = ?', (post_id, user_id))
+    post = cursor.fetchone()
+
+    if post:
+        cursor.execute('DELETE FROM posts WHERE id = ? AND users_id = ?', (post_id, user_id))
+        conn.commit()
+        conn.close()
+        return True
+    else:
+        conn.close()
+        return False
+
 #Validering
 def validate_user(email, password):
     conn = get_connection()

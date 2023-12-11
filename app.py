@@ -1,7 +1,7 @@
-from flask import Flask, redirect, url_for, render_template, request, session, flash 
+from flask import Flask, redirect, url_for, render_template, request, session, flash, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import SignupForm, LoginForm, PostForm
-from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post
+from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -159,6 +159,12 @@ def posts():
         flash('Ingen opslag i øjeblikket', 'error')
         return render_template("posts.html", form=form)
 
+@app.route("/posts/<int:post_id>", methods=['DELETE'])  
+def delete_post(post_id):
+    if delete_post_db(post_id, session['user_id']):
+        return ''
+    else:
+        abort(403)
 
 @app.route("/logout")
 def logout():

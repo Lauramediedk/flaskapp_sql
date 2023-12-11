@@ -7,13 +7,20 @@
     </div>
 </form>
 
-<div id="posts_content" hx-get="/posts">
+<div id="posts_content">
     {% if posts_data %}
         {% for post in posts_data %}
             <div class="post">
                 <p>{{post.name}}</p>
                 <p class="post_date">{{ post.created}}</p>
                 <p>{{ post.content}}</p>
+                
+                {% if post.users_id == session.user_id %}
+                    <button class="delete_post_btn" hx-delete="/posts/{{ post.id }}" 
+                    hx-target="#posts_content"
+                    hx-confirm="Er du sikker på at du vil slette opslaget?">
+                    Slet opslag</button>
+                {% endif %}
             </div>
         {% endfor %}
     {% else %}
