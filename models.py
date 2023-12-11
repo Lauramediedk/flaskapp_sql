@@ -177,7 +177,7 @@ def get_rewards(users_id):
     conn.close()
 
     if rewards:
-            return rewards #Der er et match
+        return rewards #Der er et match
     return None #Intet match
 
 
@@ -191,6 +191,16 @@ def get_posts(): #We fetch the users name also
     conn.close()
 
     return posts   
+
+def get_users_posts(user_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM posts WHERE users_id = ?', (user_id,))
+    user_posts = cursor.fetchall()
+    conn.close()
+
+    return user_posts
+
 
 def delete_post_db(post_id, user_id): #Tjek først om post eksisterer og matcher med brugeren
     conn = get_connection()

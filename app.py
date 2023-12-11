@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import SignupForm, LoginForm, PostForm
-from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db
+from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -20,18 +20,24 @@ def dashboard():
     user_id = session.get('user_id')
     rewards = get_rewards(user_id)
     challenges = get_users_challenges(user_id)
+    user_posts = get_users_posts(user_id)
 
     no_rewards_found = "Du har ingen belønninger endnu"
     no_challenges_found = "Du har ingen udfordringer endnu"
+    no_posts_found = "Du har ingen opslag endnu"
 
-    if rewards and challenges:
-        return render_template("dashboard.html", rewards=rewards, challenges=challenges)
-    elif rewards:
-        return render_template("dashboard.html", rewards=rewards, no_challenges_found=no_challenges_found)
-    elif challenges:
-        return render_template("dashboard.html", challenges=challenges, no_rewards_found=no_rewards_found)
+    if rewards and challenges and user_posts:
+        return render_template("dashboard.html", rewards=rewards, challenges=challenges, user_posts=user_posts)
+
+    if not (rewards or challenges or user_posts):
+        return render_template("dashboard.html", no_rewards_found=no_rewards_found, no_challenges_found=no_challenges_found, no_posts_found=no_posts_found)
     else:
-        return render_template("dashboard.html", no_rewards_found=no_rewards_found, no_challenges_found=no_challenges_found)
+        if not user_posts:
+            return render_template("dashboard.html", rewards=rewards, challenges=challenges, no_posts_found=no_posts_found)
+        if not challenges:
+            return render_template("dashboard.html", rewards=rewards, no_challenges_found=no_challenges_found, user_posts=user_posts)
+        if not rewards:
+            return render_template("dashboard.html", no_rewards_found=no_rewards_found, challenges=challenges, user_posts=user_posts)
 
 #Login
 @app.route("/login", methods=['GET', 'POST'])
