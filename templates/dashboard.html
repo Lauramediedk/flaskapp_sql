@@ -23,16 +23,22 @@
 <section class="main_content">
     <div class="posts_component">
         <h1>Seneste opslag</h1>
-        <div class="post_container">
+        <div class="post_container" hx-get="/dashboard/posts">
             {% if user_posts %}
                 {% for user_post in user_posts %}
+                <div class="post">
                     <p>{{ session.name}}</p>
                     <p class="post_date">{{ user_post.created }}</p>
                     <p class="post_content">{{ user_post.content }}</p>
+                    <button class="delete_post_btn" hx-delete="/dashboard/{{ user_post.id }}" 
+                        hx-target=".post"
+                        hx-confirm="Er du sikker på at du vil slette opslaget?">
+                    Slet opslag</button>
+                </div>
                     <hr>
                 {% endfor %}
             {% else %}
-                <p>{{ no_posts_found }}</p>
+                <p class="no_posts_found">{{ no_posts_found }}</p>
             {% endif %}
         </div>
     </div>

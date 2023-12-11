@@ -114,6 +114,17 @@ def users_challenges():
     conn.commit()
     conn.close()
 
+def users_posts():
+    conn = get_connection()
+    conn.execute('CREATE TABLE IF NOT EXISTS users_posts('
+                 'users_id INTEGER, '
+                 'post_id INTEGER, '
+                 'FOREIGN KEY(users_id) REFERENCES users(id), '
+                 'FOREIGN KEY(post_id) REFERENCES posts(id)'
+                 ')')
+    conn.commit()
+    conn.close()
+
 #Handlinger
 ################################################################################
 
@@ -296,3 +307,4 @@ users_rewards()
 rewards_table()
 challenges_table()
 users_challenges()
+users_posts()

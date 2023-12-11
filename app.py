@@ -39,6 +39,14 @@ def dashboard():
         if not rewards:
             return render_template("dashboard.html", no_rewards_found=no_rewards_found, challenges=challenges, user_posts=user_posts)
 
+
+@app.route("/dashboard/<int:post_id>", methods=['DELETE'])  
+def delete_dashboard_post(post_id):
+    if delete_post_db(post_id, session['user_id']):
+        return ''
+    else:
+        abort(403)
+
 #Login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
