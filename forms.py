@@ -30,5 +30,5 @@ class LoginForm(FlaskForm):
 #Make post form
 class PostForm(FlaskForm):
     content = StringField(validators=[InputRequired()])
-    post_image = FileField(validators=[FileAllowed(['jpg', 'png'], 'jpg og png format kun tilladt')])
+    image_path = FileField(validators=[FileAllowed(['jpg', 'png'], 'jpg og png format kun tilladt')])
     submit = SubmitField("Slå op")

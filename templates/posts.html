@@ -3,7 +3,7 @@
     {{ form.hidden_tag() }}
     {{ form.content(class_="post_form_field", placeholder="Hvad vil du dele?...")}}
     <div class="post_actions">
-        <input type="file" name="post_image">
+        {{ form.image_path(class_="post_image_upload")}}
         {{ form.submit(class_="submit_post_btn") }}
     </div>
 </form>

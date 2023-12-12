@@ -163,12 +163,13 @@ def posts():
     if request.method =='POST':
         if form.validate_on_submit():
             content = form.content.data
-            post_image = form.post_image.data
-            file = request.files['post_image']
+            image_path = form.image_path.data
+            file = request.files.get('image_path') 
+            #Vi siger .get for at tjekke om vores image_path er tilstede før vi tilgår den. Vigtigt at gøre, for at undgå error
             if file:
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                filename = secure_filename(file.filename) #Sikkerhed
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) #Gem til folder
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) #Lav path som kan bruges
                 make_post(users_id, content, image_path)
                 flash('Opslag oprettet')
                 return redirect(url_for('posts'))
