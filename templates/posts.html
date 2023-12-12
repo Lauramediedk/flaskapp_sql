@@ -1,4 +1,5 @@
-<form id="post_form" hx-post="/posts" hx-trigger="submit" hx-target="#posts_content">
+<form id="post_form" hx-post="/posts" hx-trigger="submit" hx-target="#posts_content" hx-select="#posts_content">
+    <!--The hx-select is needed to avoid duplicating the form itself on page refresh-->
     {{ form.hidden_tag() }}
     {{ form.content(class_="post_form_field", placeholder="Hvad vil du dele?...")}}
     <div class="post_actions">
