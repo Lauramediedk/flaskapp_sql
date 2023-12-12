@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed, FileField
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, Email
 
@@ -29,4 +30,5 @@ class LoginForm(FlaskForm):
 #Make post form
 class PostForm(FlaskForm):
     content = StringField(validators=[InputRequired()])
+    post_image = FileField(validators=[FileAllowed(['jpg', 'png'], 'jpg og png format kun tilladt')])
     submit = SubmitField("Slå op")

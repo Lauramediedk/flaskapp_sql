@@ -1,10 +1,13 @@
-from flask import Flask, redirect, url_for, render_template, request, session, flash, abort
+from flask import Flask, redirect, url_for, render_template, request, session, flash, abort, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm
 from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
+app.config['UPLOAD_FOLDER'] = 'uploads'
 
 #Routes
 @app.route("/")
@@ -156,22 +159,40 @@ def posts():
     form = PostForm()
     users_id = session['user_id']
     
+    #Lav posts
     if request.method =='POST':
         if form.validate_on_submit():
             content = form.content.data
-            make_post(users_id, content)
-            flash('Opslag oprettet')
-            return redirect(url_for('posts'))
+            post_image = form.post_image.data
+            file = request.files['post_image']
+            if file:
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                make_post(users_id, content, image_path)
+                flash('Opslag oprettet')
+                return redirect(url_for('posts'))
+            else:
+                make_post(users_id, content) #Hvis der ikke uploades et billede
+                flash('Opslag oprettet')
+                return redirect(url_for('posts'))
         else:
             flash('Noget gik galt')
             return render_template("posts.html", form=form, posts_data=posts_data)
-
+    
+    #Hent posts
     posts_data = get_posts()
     if posts_data: 
         return render_template("posts.html", posts_data=posts_data, form=form)
     else: 
         flash('Ingen opslag i øjeblikket', 'error')
         return render_template("posts.html", form=form)
+    
+#Image
+@app.route("/uploads/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 @app.route("/posts/<int:post_id>", methods=['DELETE'])  
 def delete_post(post_id):

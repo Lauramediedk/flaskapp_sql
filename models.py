@@ -40,6 +40,7 @@ def posts_table():
                  'users_id INTEGER, '
                  'content TEXT, '
                  'created DATETIME DEFAULT CURRENT_TIMESTAMP, '
+                 'image_path TEXT, '
                  'FOREIGN KEY(users_id) REFERENCES users(id)'
                  ')')
     conn.commit()
@@ -195,7 +196,7 @@ def get_rewards(users_id):
 def get_posts(): #We fetch the users name also
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT posts.id, posts.users_id, posts.content, posts.created, users.name '
+    cursor.execute('SELECT posts.id, posts.users_id, posts.content, posts.created, posts.image_path, users.name '
                    'FROM posts '
                    'INNER JOIN users ON posts.users_id = users.id')
     posts = cursor.fetchall()
@@ -274,10 +275,14 @@ def check_joined_challenges(users_id, challenges_id):
 ################################################################################
 
 #Lav post opslag
-def make_post(users_id, content):
+def make_post(users_id, content, image_path=None):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO posts (users_id, content) VALUES (?, ?)', (users_id, content,))
+
+    if image_path:
+        cursor.execute('INSERT INTO posts (users_id, content, image_path) VALUES (?, ?, ?)', (users_id, content, image_path))
+    else:
+        cursor.execute('INSERT INTO posts (users_id, content) VALUES (?, ?)', (users_id, content))
     conn.commit()
     conn.close()
 

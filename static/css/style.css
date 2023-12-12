@@ -445,12 +445,19 @@ body{
 }
 .post{
     background: #d6d6d6;
+    margin: 0 auto;
     margin-bottom: 1rem;
     border-radius: 5px;
     padding: 1rem;
 }
 .post_date{
     padding-bottom: 1rem;
+}
+.post_image{
+    display: block;
+    margin: auto;
+    padding: 0.8rem 0rem;
+    width: 100%;
 }
 .delete_post_btn{
     border: none;
@@ -624,6 +631,9 @@ body{
         width: 50%;
         padding: 3rem 0rem;
         margin: 0 auto;
+    }
+    .post_image{
+        width: 50%;
     }
 
     /* PEOPLE */
