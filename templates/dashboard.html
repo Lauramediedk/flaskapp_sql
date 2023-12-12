@@ -30,6 +30,9 @@
                     <p>{{ session.name}}</p>
                     <p class="post_date">{{ user_post.created }}</p>
                     <p class="post_content">{{ user_post.content }}</p>
+                    {% if user_post.image_path %}
+                        <img src="/{{ user_post.image_path }}" alt="post image" class="post_image">
+                    {% endif %}
                     <button class="delete_post_btn" hx-delete="/dashboard/{{ user_post.id }}" 
                         hx-target=".post"
                         hx-confirm="Er du sikker på at du vil slette opslaget?">
