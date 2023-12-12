@@ -31,9 +31,6 @@ def dashboard():
 
     if rewards and challenges and user_posts:
         return render_template("dashboard.html", rewards=rewards, challenges=challenges, user_posts=user_posts)
-
-    if not (rewards or challenges or user_posts):
-        return render_template("dashboard.html", no_rewards_found=no_rewards_found, no_challenges_found=no_challenges_found, no_posts_found=no_posts_found)
     else:
         if not user_posts:
             return render_template("dashboard.html", rewards=rewards, challenges=challenges, no_posts_found=no_posts_found)
