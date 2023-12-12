@@ -1,30 +1,40 @@
-<div class="make_post">
-    <div class="post_content">
-        <input type="text" placeholder="Hvad vil du dele?...">
-    </div>
+<form id="post_form" hx-post="/posts" hx-trigger="submit" hx-target="#posts_content" hx-select="#posts_content" enctype="multipart/form-data">
+    <!--The hx-select is needed to avoid duplicating the form itself on page refresh-->
+    {{ form.hidden_tag() }}
+    {{ form.content(class_="post_form_field", placeholder="Hvad vil du dele?...")}}
     <div class="post_actions">
-        <button>Vedhæft billede</button>
-        <button>Slå op</button>
+        {{ form.image_path(class_="post_image_upload")}}
+        {{ form.submit(class_="submit_post_btn") }}
     </div>
-</div>
-<div class="posts">
-    <div class="post_container">
-        <div class="user_info">
-            <div class="user_image">
-                <img src="/static/images/user_image.jpg" alt="user">
+</form>
+
+<div id="posts_content">
+    {% if posts_data %}
+        {% for post in posts_data %}
+        <!--See the posts-->
+            <div class="post">
+                <p>{{post.name}}</p>
+                <p class="post_date">{{ post.created}}</p>
+                <p>{{ post.content}}</p>
+                {% if post.image_path %}
+                    <img src="/{{ post.image_path }}" alt="post image" class="post_image">
+                {% endif %}
+        <!--Edit the posts-->
+                {% if post.users_id == session.user_id %}
+                    <button class="delete_post_btn" hx-delete="/posts/{{ post.id }}" 
+                        hx-target="#posts_content"
+                        hx-confirm="Er du sikker på at du vil slette opslaget?">
+                    Slet opslag</button>
+                {% endif %}
             </div>
-            <div class="user_details">
-                <p>{{session.name}}</p>
-                <p>Dato</p> <!--Later use db for this-->
-            </div>
-        </div>
-        <div class="post_content"> <!--Later use db for this-->
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                A quae veritatis ad, voluptate beatae debitis harum numquam 
-                recusandae aut. Porro perspiciatis expedita aspernatur, 
-                doloribus incidunt voluptatibus illo necessitatibus commodi 
-                magni nisi ut temporibus corrupti consectetur libero molestiae 
-                qui vel sed.</p>
-        </div>
-    </div>
+        {% endfor %}
+    {% else %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    {% endif %}
 </div>
