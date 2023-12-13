@@ -148,6 +148,16 @@ def people():
     users = get_users()
     return render_template("people.html", users=users)
 
+#Tilføj venner og fjern venner
+@app.route("/people/<int:friends_id>", methods=['POST'])
+def befriend_users(friends_id):
+
+    users_id = session['user_id']
+
+    if users_id:
+        befriend_user(users_id, friends_id)
+        return redirect(url_for('people'))
+    
 
 @app.route("/posts", methods=['GET', 'POST'])
 def posts():
