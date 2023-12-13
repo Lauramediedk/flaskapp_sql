@@ -1,14 +1,24 @@
 <div class="people">
     <div class="profiles">
-        <div class="user" x-data="{open: false }">
+        <div class="user" x-data="{open: false}">
             {% for user in users %}
                 {% if user.id != session['user_id'] %}
                     <p>{{user.name}}</p>
-                    <form action="{{url_for('befriend_users', friends_id=user.id) }}" method="POST">
-                        <button type="submit" x-on:click="open = ! open">Tilføj bruger</button>
+                    <form action="{{url_for('befriend_users', friends_id=user.id) }}" method="POST" 
+                    hx-post="{{url_for('befriend_users', friends_id=user.id) }}" 
+                    hx-target=".message" 
+                    hx-select=".message">
+                        <!--hx post bruges til at undgå et fuldt page refresh-->
+                        <button type="submit" x-on:click="open = !open">Tilføj bruger</button>
                     </form>
                     <div class="message" x-show="open" @click.outside="open = false">
-                        <p>Anmodning afsendt</p>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% for category, message in messages %}
+                                {% if category %}
+                                    <p>{{ message }}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
                     </div>
                 {% endif %}
             {% endfor %}

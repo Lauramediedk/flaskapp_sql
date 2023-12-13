@@ -243,10 +243,16 @@ def get_users():
 def befriend_user(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (users_id, friends_id))
-    cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (friends_id, users_id))
-    conn.commit()
-    conn.close()
+    try:
+        cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (users_id, friends_id))
+        cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (friends_id, users_id))
+        conn.commit()
+
+    except sqlite3.Error as e:
+        print(f"Error: {e}")
+        return False
+    finally: 
+        conn.close()
 
 def unfriend_user(users_id, friends_id):
     conn = get_connection()
@@ -254,6 +260,20 @@ def unfriend_user(users_id, friends_id):
     cursor.execute('DELETE FROM friends WHERE (users_id = ? AND friends_id = ?) OR (friends_id = ? AND users_id = ?)', (users_id, friends_id, friends_id, users_id))
     conn.commit()
     conn.close()
+
+
+def check_existing_friends(users_id, friends_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+    friends = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    if friends:
+        return True
+
+    return False
 
 
 #Validering

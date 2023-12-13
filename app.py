@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm
-from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts, befriend_user, unfriend_user, get_users
+from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts, befriend_user, unfriend_user, get_users, check_existing_friends
 import os
 
 app = Flask(__name__)
@@ -154,9 +154,13 @@ def befriend_users(friends_id):
 
     users_id = session['user_id']
 
-    if users_id:
+    if check_existing_friends(users_id, friends_id):
+        flash('Du er allerede venner med denne person', 'error')
+    else: 
         befriend_user(users_id, friends_id)
-        return redirect(url_for('people'))
+        flash('Person tilføjet til venner', 'success')
+
+    return redirect(url_for('people'))
     
 
 @app.route("/posts", methods=['GET', 'POST'])
