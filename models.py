@@ -229,7 +229,33 @@ def delete_post_db(post_id, user_id): #Tjek først om post eksisterer og matcher
         conn.close()
         return False
     
-    
+def get_users():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, name FROM users')
+    users = cursor.fetchall()
+    conn.commit()
+    conn.close()
+
+    return users
+
+#Friends handlinger
+def befriend_user(users_id, friends_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (users_id, friends_id))
+    cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (friends_id, users_id))
+    conn.commit()
+    conn.close()
+
+def unfriend_user(users_id, friends_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM friends WHERE (users_id = ? AND friends_id = ?) OR (friends_id = ? AND users_id = ?)', (users_id, friends_id, friends_id, users_id))
+    conn.commit()
+    conn.close()
+
+
 #Validering
 def validate_user(email, password):
     conn = get_connection()

@@ -1,12 +1,9 @@
 <div class="people">
     <div class="profiles">
         <div class="user" x-data="{open: false }">
-            <img src="/static/images/user_image.jpg" alt="person">
-            <p>Test</p>
-            <button x-on:click="open = ! open">Tilføj bruger</button>
-            <div class="message" x-show="open" @click.outside="open = false">
-                <p>Anmodning afsendt</p>
-            </div>
+            {% for user in users %}
+                <p>{{user.name}}</p>
+            {% endfor %}
         </div>
     </div>
 </div>
