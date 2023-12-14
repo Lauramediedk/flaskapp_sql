@@ -5,10 +5,9 @@ from config import DATABASE
 
 #DB connect
 def get_connection():
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    conn.row_factory = sqlite3.Row
-    return conn
+    with sqlite3.connect(DATABASE) as connection:
+        connection.row_factory = sqlite3.Row
+        return connection
 
 #DB tables
 def make_table():
@@ -20,7 +19,6 @@ def make_table():
                  'password TEXT)'
                  )
     conn.commit()
-    conn.close()
 
 def friends_table():
     conn = get_connection()
@@ -31,7 +29,6 @@ def friends_table():
                  'FOREIGN KEY(friends_id) REFERENCES users(id)'
                  ')')
     conn.commit()
-    conn.close()
 
 def posts_table():
     conn = get_connection()
@@ -44,7 +41,6 @@ def posts_table():
                  'FOREIGN KEY(users_id) REFERENCES users(id)'
                  ')')
     conn.commit()
-    conn.close()
 
 def groups_table():
     conn = get_connection()
@@ -55,7 +51,6 @@ def groups_table():
                  'FOREIGN KEY(author_id) REFERENCES users(id)'
                  ')')
     conn.commit()
-    conn.close()
 
 def users_groups():
     conn = get_connection()
@@ -66,7 +61,6 @@ def users_groups():
                  'FOREIGN KEY(group_id) REFERENCES groups(id)'
                  ')')
     conn.commit()
-    conn.close()
 
 def users_rewards():
     conn = get_connection()
@@ -77,7 +71,6 @@ def users_rewards():
                  'FOREIGN KEY(rewards_id) REFERENCES rewards(id)'
                  ')')
     conn.commit()
-    conn.close()
 
 def rewards_table():
     conn = get_connection()
@@ -87,7 +80,6 @@ def rewards_table():
                  'description TEXT' 
                  ')')
     conn.commit()
-    conn.close()
 
 def challenges_table():
     conn = get_connection()
@@ -102,7 +94,6 @@ def challenges_table():
                  'FOREIGN KEY(reward_id) REFERENCES rewards(id)'
                  ')')
     conn.commit()
-    conn.close()
 
 def users_challenges():
     conn = get_connection()
@@ -113,7 +104,6 @@ def users_challenges():
                  'FOREIGN KEY(challenges_id) REFERENCES challenges(id)'
                  ')')
     conn.commit()
-    conn.close()
 
 def users_posts():
     conn = get_connection()
@@ -124,7 +114,6 @@ def users_posts():
                  'FOREIGN KEY(post_id) REFERENCES posts(id)'
                  ')')
     conn.commit()
-    conn.close()
 
 #Handlinger
 ################################################################################
@@ -141,7 +130,6 @@ def get_users_challenges(users_id):
                    GROUP BY challenges.id
                    ''',(users_id,))
     challenges = cursor.fetchall()
-    conn.close()
 
     if challenges:
             return challenges #Der er et match
@@ -164,7 +152,6 @@ def get_challenges():
                    GROUP BY challenges.id
                    ''')
     challenges = cursor.fetchall()
-    conn.close()
 
     if challenges:
         return challenges #Der er et match
@@ -177,7 +164,6 @@ def join_challenge_action(users_id, challenges_id):
     query =  'INSERT INTO users_challenges (users_id, challenges_id) VALUES (?, ?)'
     conn.execute(query, (users_id, challenges_id))
     conn.commit()
-    conn.close()
 
 
 #Hent belønninger
@@ -186,7 +172,6 @@ def get_rewards(users_id):
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users_rewards WHERE users_id = ?', (users_id,))
     rewards = cursor.fetchall()
-    conn.close()
 
     if rewards:
         return rewards #Der er et match
@@ -200,7 +185,6 @@ def get_posts(): #We fetch the users name also
                    'FROM posts '
                    'INNER JOIN users ON posts.users_id = users.id')
     posts = cursor.fetchall()
-    conn.close()
 
     return posts   
 
@@ -209,7 +193,6 @@ def get_users_posts(user_id):
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM posts WHERE users_id = ?', (user_id,))
     user_posts = cursor.fetchall()
-    conn.close()
 
     return user_posts
 
@@ -223,10 +206,10 @@ def delete_post_db(post_id, user_id): #Tjek først om post eksisterer og matcher
     if post:
         cursor.execute('DELETE FROM posts WHERE id = ? AND users_id = ?', (post_id, user_id))
         conn.commit()
-        conn.close()
+
         return True
     else:
-        conn.close()
+
         return False
     
 def get_users(search=None):
@@ -240,7 +223,6 @@ def get_users(search=None):
     
     users = cursor.fetchall()
     conn.commit()
-    conn.close()
 
     return users
 
@@ -255,15 +237,12 @@ def follow_user(users_id, friends_id):
     except sqlite3.Error as e:
         print(f"Error: {e}")
         return False
-    finally: 
-        conn.close()
 
 def unfollow_user(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('DELETE FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
     conn.commit()
-    conn.close()
 
 
 def check_existing_follow(users_id, friends_id):
@@ -272,7 +251,6 @@ def check_existing_follow(users_id, friends_id):
     cursor.execute('SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
     follows = cursor.fetchone()
     conn.commit()
-    conn.close()
 
     if follows:
         return True
@@ -285,7 +263,6 @@ def get_users_follow(user_id):
     cursor = conn.cursor() #Hent navn fra users table og join tables
     cursor.execute('SELECT users.name FROM friends JOIN users ON friends.friends_id = users.id WHERE friends.users_id = ?', (user_id,))
     result = cursor.fetchall()
-    conn.close()
 
     return result
 
@@ -296,7 +273,6 @@ def validate_user(email, password):
     cursor = conn.cursor()
     cursor.execute('SELECT password FROM users WHERE email = ?', (email,))
     result = cursor.fetchone()  # Fetch the hashed password
-    conn.close()
 
     if result:
         hashed_password = result[0]
@@ -310,7 +286,6 @@ def check_for_emails(email):
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
     result = cursor.fetchone()
-    conn.close()
 
     if result:
         print("Existing email found:", email)
@@ -324,7 +299,6 @@ def check_joined_challenges(users_id, challenges_id):
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users_challenges WHERE users_id = ? AND challenges_id = ?', (users_id, challenges_id))
     result = cursor.fetchone()
-    conn.close()
 
     if result:
         return True
@@ -344,7 +318,6 @@ def make_post(users_id, content, image_path=None):
     else:
         cursor.execute('INSERT INTO posts (users_id, content) VALUES (?, ?)', (users_id, content))
     conn.commit()
-    conn.close()
 
 
 #Registrer bruger i DB
@@ -358,8 +331,7 @@ def register_user_db(name, email, hashed_password):
     except sqlite3.Error as e:
         print(f"Error inserting user: {e}")
         return False
-    finally: 
-        conn.close()
+
 
 #Lav tables
 #################################################################################

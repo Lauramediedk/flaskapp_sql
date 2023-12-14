@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm
-from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts, follow_user, get_users, check_existing_follow, get_users_follow
+from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts, follow_user, get_users, check_existing_follow, get_users_follow, unfollow_user
 import os
 
 app = Flask(__name__)
@@ -155,6 +155,18 @@ def follow_users(friends_id):
         flash('Person tilføjet', 'success')
 
     return redirect(url_for('people'))
+
+
+@app.route("/dashboard/<int:friends_id>", methods=['POST'])
+def unfollow_user(friends_id):
+
+    users_id = session['user_id']
+
+    unfollow_user(users_id, friends_id)
+    flash('Person fjernet', 'success')
+
+    return redirect(url_for('dashboard'))
+
     
 
 @app.route("/posts", methods=['GET', 'POST'])

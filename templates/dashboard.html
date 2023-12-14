@@ -71,7 +71,13 @@
         {% if follows %}
             {% for user in follows %}
                 <div class="follows_list">
-                    <p>{{ user.name }}</p>
+                    <p class="person">{{ user.name }}</p>
+                    <button 
+                    hx-delete="/dashboard/{{ user }}"
+                    hx-target=".follows_list"
+                    hx-confirm="Er du sikker på at du vil fjerne {{ user.name }}">
+                    Fjern
+                </button> <!--TODO: Fix delete af follows-->
                 </div>
             {% endfor %}
         {% endif %}
