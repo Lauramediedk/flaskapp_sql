@@ -240,12 +240,11 @@ def get_users():
     return users
 
 #Friends handlinger
-def befriend_user(users_id, friends_id):
+def follow_user(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
     try:
         cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (users_id, friends_id))
-        cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (friends_id, users_id))
         conn.commit()
 
     except sqlite3.Error as e:
@@ -254,23 +253,23 @@ def befriend_user(users_id, friends_id):
     finally: 
         conn.close()
 
-def unfriend_user(users_id, friends_id):
+def unfollow_user(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM friends WHERE (users_id = ? AND friends_id = ?) OR (friends_id = ? AND users_id = ?)', (users_id, friends_id, friends_id, users_id))
+    cursor.execute('DELETE FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
     conn.commit()
     conn.close()
 
 
-def check_existing_friends(users_id, friends_id):
+def check_existing_follow(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
-    friends = cursor.fetchone()
+    follows = cursor.fetchone()
     conn.commit()
     conn.close()
 
-    if friends:
+    if follows:
         return True
 
     return False

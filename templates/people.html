@@ -4,8 +4,8 @@
             {% for user in users %}
                 {% if user.id != session['user_id'] %}
                     <p>{{user.name}}</p>
-                    <form action="{{url_for('befriend_users', friends_id=user.id) }}" method="POST" 
-                    hx-post="{{url_for('befriend_users', friends_id=user.id) }}" 
+                    <form action="{{url_for('follow_users', friends_id=user.id) }}" method="POST" 
+                    hx-post="{{url_for('follow_users', friends_id=user.id) }}" 
                     hx-target=".message" 
                     hx-select=".message">
                         <!--hx post bruges til at undgå et fuldt page refresh-->
