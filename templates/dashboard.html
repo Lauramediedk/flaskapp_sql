@@ -66,11 +66,16 @@
 </div>
 
 <div class="follows">
-    {% if follows %}
-        {% for user in follows %}
-            <p>{{ user.name }}</p>
-        {% endfor %}
-    {% endif %}
+    <h1>Personer du følger</h1>
+    <div class="follows_container">
+        {% if follows %}
+            {% for user in follows %}
+                <div class="follows_list">
+                    <p>{{ user.name }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 </div>
 </section>
 
