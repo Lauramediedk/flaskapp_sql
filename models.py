@@ -280,6 +280,16 @@ def check_existing_follow(users_id, friends_id):
     return False
 
 
+def get_users_follow(user_id):
+    conn = get_connection()
+    cursor = conn.cursor() #Hent navn fra users table og join tables
+    cursor.execute('SELECT users.name FROM friends JOIN users ON friends.friends_id = users.id WHERE friends.users_id = ?', (user_id,))
+    result = cursor.fetchall()
+    conn.close()
+
+    return result
+
+
 #Validering
 def validate_user(email, password):
     conn = get_connection()

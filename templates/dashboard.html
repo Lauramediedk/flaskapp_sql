@@ -64,6 +64,14 @@
         {% endif %}
     </div>
 </div>
+
+<div class="follows">
+    {% if follows %}
+        {% for user in follows %}
+            <p>{{ user.name }}</p>
+        {% endfor %}
+    {% endif %}
+</div>
 </section>
 
 {% endblock %}
