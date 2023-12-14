@@ -139,13 +139,18 @@ def feed():
     return render_template("feed.html")
 
 
-@app.route("/people", methods=['GET'])
+@app.route("/people", methods=['GET', 'POST'])
 def people():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
     
-    users = get_users()
+    if request.method == 'POST':
+        search = request.form['search']
+        users = get_users(search)
+    else:
+        users = get_users()
+
     return render_template("people.html", users=users)
 
 #Tilføj venner og fjern venner

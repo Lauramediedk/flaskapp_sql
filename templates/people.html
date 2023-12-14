@@ -1,3 +1,10 @@
+<form action="/people" hx-post="/people" hx-target=".people" hx-select=".people">
+    <div class="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input class="input_field" type="search" name="search" placeholder="Søg...">
+    </div>
+</form>
+
 <div class="people">
     <div class="profiles">
         <div class="user" x-data="{open: false}">

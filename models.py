@@ -229,10 +229,15 @@ def delete_post_db(post_id, user_id): #Tjek først om post eksisterer og matcher
         conn.close()
         return False
     
-def get_users():
+def get_users(search=None):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT id, name FROM users')
+
+    if search:
+        cursor.execute('SELECT id, name FROM users WHERE name LIKE ?', ('%' + search + '%',))
+    else: 
+        cursor.execute('SELECT id, name FROM users')
+    
     users = cursor.fetchall()
     conn.commit()
     conn.close()
