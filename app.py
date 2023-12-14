@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm
-from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts
+from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts, follow_user, get_users, check_existing_follow
 import os
 
 app = Flask(__name__)
@@ -139,13 +139,34 @@ def feed():
     return render_template("feed.html")
 
 
-@app.route("/people")
+@app.route("/people", methods=['GET', 'POST'])
 def people():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
-    return render_template("people.html")
+    
+    if request.method == 'POST':
+        search = request.form['search']
+        users = get_users(search)
+    else:
+        users = get_users()
 
+    return render_template("people.html", users=users)
+
+#Tilføj venner og fjern venner
+@app.route("/people/<int:friends_id>", methods=['POST'])
+def follow_users(friends_id):
+
+    users_id = session['user_id']
+
+    if check_existing_follow(users_id, friends_id):
+        flash('Du følger allerede denne person', 'error')
+    else: 
+        follow_user(users_id, friends_id)
+        flash('Person tilføjet', 'success')
+
+    return redirect(url_for('people'))
+    
 
 @app.route("/posts", methods=['GET', 'POST'])
 def posts():

@@ -1,12 +1,34 @@
+<form action="/people" hx-post="/people" hx-target=".people" hx-select=".people">
+    <div class="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input class="input_field" type="search" name="search" placeholder="Søg...">
+    </div>
+</form>
+
 <div class="people">
     <div class="profiles">
-        <div class="user" x-data="{open: false }">
-            <img src="/static/images/user_image.jpg" alt="person">
-            <p>Test</p>
-            <button x-on:click="open = ! open">Tilføj bruger</button>
-            <div class="message" x-show="open" @click.outside="open = false">
-                <p>Anmodning afsendt</p>
-            </div>
+        <div class="user" x-data="{open: false}">
+            {% for user in users %}
+                {% if user.id != session['user_id'] %}
+                    <p>{{user.name}}</p>
+                    <form action="{{url_for('follow_users', friends_id=user.id) }}" method="POST" 
+                    hx-post="{{url_for('follow_users', friends_id=user.id) }}" 
+                    hx-target=".message" 
+                    hx-select=".message">
+                        <!--hx post bruges til at undgå et fuldt page refresh-->
+                        <button type="submit" x-on:click="open = !open">Tilføj bruger</button>
+                    </form>
+                    <div class="message" x-show="open" @click.outside="open = false">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% for category, message in messages %}
+                                {% if category %}
+                                    <p>{{ message }}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 </div>

@@ -229,7 +229,57 @@ def delete_post_db(post_id, user_id): #Tjek først om post eksisterer og matcher
         conn.close()
         return False
     
+def get_users(search=None):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if search:
+        cursor.execute('SELECT id, name FROM users WHERE name LIKE ?', ('%' + search + '%',))
+    else: 
+        cursor.execute('SELECT id, name FROM users')
     
+    users = cursor.fetchall()
+    conn.commit()
+    conn.close()
+
+    return users
+
+#Friends handlinger
+def follow_user(users_id, friends_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (users_id, friends_id))
+        conn.commit()
+
+    except sqlite3.Error as e:
+        print(f"Error: {e}")
+        return False
+    finally: 
+        conn.close()
+
+def unfollow_user(users_id, friends_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+    conn.commit()
+    conn.close()
+
+
+def check_existing_follow(users_id, friends_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+    follows = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    if follows:
+        return True
+
+    return False
+
+
 #Validering
 def validate_user(email, password):
     conn = get_connection()

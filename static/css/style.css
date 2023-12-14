@@ -480,9 +480,9 @@ body{
 }
 .user{
     display: inline-block;
-    width: 60%;
+    width: 90%;
     border: solid 1px;
-    border-radius: 5%;
+    border-radius: 2%;
     overflow: hidden;
     margin: 0 10px 1.5rem 0;
     padding-bottom: 1rem;
@@ -638,12 +638,11 @@ body{
 
     /* PEOPLE */
     .people{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+        width: 60%;
+        margin: 0 auto;
     }
     .user{
-        width: calc(20% - 10px);
+        border-radius: 5px;
         box-sizing: border-box;
         overflow: hidden;
 
