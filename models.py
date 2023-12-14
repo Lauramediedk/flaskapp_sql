@@ -40,6 +40,7 @@ def posts_table():
                  'users_id INTEGER, '
                  'content TEXT, '
                  'created DATETIME DEFAULT CURRENT_TIMESTAMP, '
+                 'image_path TEXT, '
                  'FOREIGN KEY(users_id) REFERENCES users(id)'
                  ')')
     conn.commit()
@@ -114,6 +115,17 @@ def users_challenges():
     conn.commit()
     conn.close()
 
+def users_posts():
+    conn = get_connection()
+    conn.execute('CREATE TABLE IF NOT EXISTS users_posts('
+                 'users_id INTEGER, '
+                 'post_id INTEGER, '
+                 'FOREIGN KEY(users_id) REFERENCES users(id), '
+                 'FOREIGN KEY(post_id) REFERENCES posts(id)'
+                 ')')
+    conn.commit()
+    conn.close()
+
 #Handlinger
 ################################################################################
 
@@ -177,8 +189,95 @@ def get_rewards(users_id):
     conn.close()
 
     if rewards:
-            return rewards #Der er et match
+        return rewards #Der er et match
     return None #Intet match
+
+
+def get_posts(): #We fetch the users name also
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT posts.id, posts.users_id, posts.content, posts.created, posts.image_path, users.name '
+                   'FROM posts '
+                   'INNER JOIN users ON posts.users_id = users.id')
+    posts = cursor.fetchall()
+    conn.close()
+
+    return posts   
+
+def get_users_posts(user_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM posts WHERE users_id = ?', (user_id,))
+    user_posts = cursor.fetchall()
+    conn.close()
+
+    return user_posts
+
+
+def delete_post_db(post_id, user_id): #Tjek først om post eksisterer og matcher med brugeren
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM posts WHERE id = ? AND users_id = ?', (post_id, user_id))
+    post = cursor.fetchone()
+
+    if post:
+        cursor.execute('DELETE FROM posts WHERE id = ? AND users_id = ?', (post_id, user_id))
+        conn.commit()
+        conn.close()
+        return True
+    else:
+        conn.close()
+        return False
+    
+def get_users(search=None):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if search:
+        cursor.execute('SELECT id, name FROM users WHERE name LIKE ?', ('%' + search + '%',))
+    else: 
+        cursor.execute('SELECT id, name FROM users')
+    
+    users = cursor.fetchall()
+    conn.commit()
+    conn.close()
+
+    return users
+
+#Friends handlinger
+def follow_user(users_id, friends_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (users_id, friends_id))
+        conn.commit()
+
+    except sqlite3.Error as e:
+        print(f"Error: {e}")
+        return False
+    finally: 
+        conn.close()
+
+def unfollow_user(users_id, friends_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+    conn.commit()
+    conn.close()
+
+
+def check_existing_follow(users_id, friends_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+    follows = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    if follows:
+        return True
+
+    return False
 
 
 #Validering
@@ -222,6 +321,22 @@ def check_joined_challenges(users_id, challenges_id):
 
     return False
 
+# Indsæt
+################################################################################
+
+#Lav post opslag
+def make_post(users_id, content, image_path=None):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if image_path:
+        cursor.execute('INSERT INTO posts (users_id, content, image_path) VALUES (?, ?, ?)', (users_id, content, image_path))
+    else:
+        cursor.execute('INSERT INTO posts (users_id, content) VALUES (?, ?)', (users_id, content))
+    conn.commit()
+    conn.close()
+
+
 #Registrer bruger i DB
 def register_user_db(name, email, hashed_password):
     conn = get_connection()
@@ -247,3 +362,4 @@ users_rewards()
 rewards_table()
 challenges_table()
 users_challenges()
+users_posts()
