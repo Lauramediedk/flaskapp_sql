@@ -14,9 +14,9 @@
     <h1>Dine belønninger</h1>
     <div class="rewards_content">
         {% if rewards %}
-        <div class="reward">Belønning</div>
+        <!--TODO: Håndter dette-->
         {% else %}
-        <p>{{ no_rewards_found }}</p>
+            <p>Ingen belønninger fundet</p>
         {% endif %}
     </div>
 </div>
@@ -41,29 +41,52 @@
                     <hr>
                 {% endfor %}
             {% else %}
-                <p class="no_posts_found">{{ no_posts_found }}</p>
+                <p>Du har ingen opslag</p>
             {% endif %}
         </div>
     </div>
     
-<div class="challenges_component">
-    <h1>Dine udfordringer</h1>
-    <div class="challenge_container">
-        {% if challenges %}
-            {% for challenge in challenges %}
-                <div class="challenge">
-                    <h3>{{ challenge.name }}</h3>
-                        <p>Oprettet: <i class="fa-solid fa-clock"></i> {{ challenge.created }}</p>
-                        <p>Slutter {{ challenge.end_date }}</p>
-                        <p>Emne: {{ challenge.topic }}</p>
-                        <p>Deltagere: <i class="fa-solid fa-user-group"></i> {{ challenge.participants_count}}</p>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>{{ no_challenges_found }}</p>
-        {% endif %}
+    <div class="challenges_component">
+        <h1>Dine udfordringer</h1>
+        <div class="challenge_container">
+            {% if challenges %}
+                {% for challenge in challenges %}
+                    <div class="challenge">
+                        <h3>{{ challenge.name }}</h3>
+                            <p>Oprettet: <i class="fa-solid fa-clock"></i> {{ challenge.created }}</p>
+                            <p>Slutter {{ challenge.end_date }}</p>
+                            <p>Emne: {{ challenge.topic }}</p>
+                            <p>Deltagere: <i class="fa-solid fa-user-group"></i> {{ challenge.participants_count}}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Du har ingen udfordringer</p>
+            {% endif %}
+        </div>
     </div>
-</div>
+
+    <div class="follows">
+        <h1>Personer du følger</h1>
+        <div class="follows_container">
+            {% if follows %}
+                {% for user in follows %}
+                    <div class="follows_list">
+                        <p class="person">{{ user.name }}</p>
+                        <form 
+                            hx-delete="/dashboard/unfollow/{{ user.id }}" 
+                            hx-confirm="Er du sikker på at du vil fjerne {{ user.name }}"
+                            hx-target=".follows_list">
+                            <button class="unfollow_person">
+                                Fjern
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Du følger ikke nogen</p>
+            {% endif %}
+        </div>
+    </div>
 </section>
 
 {% endblock %}

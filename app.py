@@ -1,12 +1,14 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash, abort, send_from_directory
+from flask import Flask, redirect, url_for, render_template, request, session, flash, abort, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm
-from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts, follow_user, get_users, check_existing_follow
+from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts, follow_user, get_users, check_existing_follow, get_users_follow, unfollow_user
 import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
+app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 #Routes
@@ -21,23 +23,13 @@ def dashboard():
         return redirect(url_for('login'))
     
     user_id = session['user_id']
+    user_id = session['user_id']
     rewards = get_rewards(user_id)
     challenges = get_users_challenges(user_id)
     user_posts = get_users_posts(user_id)
-
-    no_rewards_found = "Du har ingen belønninger endnu"
-    no_challenges_found = "Du har ingen udfordringer endnu"
-    no_posts_found = "Du har ingen opslag endnu"
-
-    if rewards and challenges and user_posts:
-        return render_template("dashboard.html", rewards=rewards, challenges=challenges, user_posts=user_posts)
-    else:
-        if not user_posts:
-            return render_template("dashboard.html", rewards=rewards, challenges=challenges, no_posts_found=no_posts_found)
-        if not challenges:
-            return render_template("dashboard.html", rewards=rewards, no_challenges_found=no_challenges_found, user_posts=user_posts)
-        if not rewards:
-            return render_template("dashboard.html", no_rewards_found=no_rewards_found, challenges=challenges, user_posts=user_posts)
+    follows = get_users_follow(user_id)
+    #Vi render det hele med template, og tjekker med if i vores template
+    return render_template("dashboard.html", rewards=rewards, challenges=challenges, user_posts=user_posts, follows=follows)
 
 
 @app.route("/dashboard/<int:post_id>", methods=['DELETE'])  
@@ -46,6 +38,19 @@ def delete_dashboard_post(post_id):
         return ''
     else:
         abort(403)
+
+
+@app.route("/dashboard/unfollow/<int:friends_id>", methods=['DELETE'])  
+def unfollow_users(friends_id):
+
+    users_id = session['user_id']
+
+    if unfollow_user(users_id, friends_id):
+        return '', 204
+    else:
+        flash('Handling fejlede', 'error')
+        abort(403)
+
 
 #Login
 @app.route("/login", methods=['GET', 'POST'])
@@ -132,6 +137,8 @@ def join_challenge(challenges_id):
 
 
 @app.route("/feed", methods=['GET', 'POST'])
+
+@app.route("/feed", methods=['GET', 'POST'])
 def feed():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
@@ -140,10 +147,20 @@ def feed():
 
 
 @app.route("/people", methods=['GET', 'POST'])
+
+@app.route("/people", methods=['GET', 'POST'])
 def people():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        search = request.form['search']
+        users = get_users(search)
+    else:
+        users = get_users()
+
+    return render_template("people.html", users=users)
     
     if request.method == 'POST':
         search = request.form['search']
@@ -166,13 +183,60 @@ def follow_users(friends_id):
         flash('Person tilføjet', 'success')
 
     return redirect(url_for('people'))
-    
+
+
 
 @app.route("/posts", methods=['GET', 'POST'])
 def posts():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
+    
+    form = PostForm()
+    users_id = session['user_id']
+    
+    #Lav posts
+    if request.method =='POST':
+        if form.validate_on_submit():
+            content = form.content.data
+            image_path = form.image_path.data
+            file = request.files.get('image_path') 
+            #Vi siger .get for at tjekke om vores image_path er tilstede før vi tilgår den. Vigtigt at gøre, for at undgå error
+            if file:
+                filename = secure_filename(file.filename) #Sikkerhed
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) #Gem til folder
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) #Lav path som kan bruges
+                make_post(users_id, content, image_path)
+                flash('Opslag oprettet')
+                return redirect(url_for('posts'))
+            else:
+                make_post(users_id, content) #Hvis der ikke uploades et billede
+                flash('Opslag oprettet')
+                return redirect(url_for('posts'))
+        else:
+            flash('Noget gik galt')
+            return render_template("posts.html", form=form, posts_data=posts_data)
+    
+    #Hent posts
+    posts_data = get_posts()
+    if posts_data: 
+        return render_template("posts.html", posts_data=posts_data, form=form)
+    else: 
+        flash('Ingen opslag i øjeblikket', 'error')
+        return render_template("posts.html", form=form)
+    
+#Image
+@app.route("/uploads/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+@app.route("/posts/<int:post_id>", methods=['DELETE'])  
+def delete_post(post_id):
+    if delete_post_db(post_id, session['user_id']):
+        return ''
+    else:
+        abort(403)
     
     form = PostForm()
     users_id = session['user_id']
