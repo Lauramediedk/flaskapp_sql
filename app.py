@@ -3,7 +3,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm
-from models import get_connection, get_rewards, get_challenges, get_users_challenges, validate_user, check_for_emails, register_user_db, join_challenge_action, check_joined_challenges, get_posts, make_post, delete_post_db, get_users_posts, follow_user, get_users, check_existing_follow, get_users_follow, unfollow_user
+import models
 import os
 
 app = Flask(__name__)
@@ -23,17 +23,17 @@ def dashboard():
     
     user_id = session['user_id']
     user_id = session['user_id']
-    rewards = get_rewards(user_id)
-    challenges = get_users_challenges(user_id)
-    user_posts = get_users_posts(user_id)
-    follows = get_users_follow(user_id)
+    rewards = models.get_rewards(user_id)
+    challenges = models.get_users_challenges(user_id)
+    user_posts = models.get_users_posts(user_id)
+    follows = models.get_users_follow(user_id)
     #Vi render det hele med template, og tjekker med if i vores template
     return render_template("dashboard.html", rewards=rewards, challenges=challenges, user_posts=user_posts, follows=follows)
 
 
 @app.route("/dashboard/<int:post_id>", methods=['DELETE'])  
 def delete_dashboard_post(post_id):
-    if delete_post_db(post_id, session['user_id']):
+    if models.delete_post_db(post_id, session['user_id']):
         return ''
     else:
         abort(403)
@@ -44,7 +44,7 @@ def unfollow_users(friends_id):
 
     users_id = session['user_id']
 
-    if unfollow_user(users_id, friends_id):
+    if models.unfollow_user(users_id, friends_id):
         return '', 204
     else:
         flash('Handling fejlede', 'error')
@@ -58,10 +58,10 @@ def login():
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
-        if validate_user(email, password):
+        if models.validate_user(email, password):
             session['email'] = email
             #Hent id og navn på bruger
-            conn = get_connection()
+            conn = models.get_connection()
             cursor = conn.cursor()
             cursor.execute('SELECT id, name FROM users WHERE email = ?', (email,))
             user = cursor.fetchone()
@@ -95,11 +95,11 @@ def signup():
         password = form.password.data
         hashed_password = generate_password_hash(password)
         #Check for eksisterende email
-        if check_for_emails(email):
+        if models.check_for_emails(email):
             flash('Den indtastede email er allerede i brug', 'error')
             return render_template('signup.html', form=form)
         #Hvis alt er godkendt
-        if register_user_db(name, email, hashed_password):
+        if models.register_user_db(name, email, hashed_password):
             flash('Registrering godkendt', 'succes')
             return redirect(url_for('login'))
         else: 
@@ -114,7 +114,7 @@ def challenges():
         flash('Du skal være logget ind for at tilgå dashboard', 'error')
         return redirect(url_for('login'))
     
-    challenges = get_challenges()
+    challenges = models.get_challenges()
 
     if challenges: 
         return render_template("challenges.html", challenges=challenges)
@@ -127,10 +127,10 @@ def challenges():
 def join_challenge(challenges_id):
     user_id = session.get('user_id')
 
-    if check_joined_challenges(user_id, challenges_id):
+    if models.check_joined_challenges(user_id, challenges_id):
         flash('Du er allerede tilmeldt denne udfordring', 'error')
     else: 
-        join_challenge_action(user_id, challenges_id)
+        models.join_challenge_action(user_id, challenges_id)
 
     return redirect(url_for('challenges'))
 
@@ -151,9 +151,9 @@ def people():
     
     if request.method == 'POST':
         search = request.form['search']
-        users = get_users(search)
+        users = models.get_users(search)
     else:
-        users = get_users()
+        users = models.get_users()
 
     return render_template("people.html", users=users)
 
@@ -164,10 +164,10 @@ def follow_users(friends_id):
 
     users_id = session['user_id']
 
-    if check_existing_follow(users_id, friends_id):
+    if models.check_existing_follow(users_id, friends_id):
         flash('Du følger allerede denne person', 'error')
     else: 
-        follow_user(users_id, friends_id)
+        models.follow_user(users_id, friends_id)
         flash('Person tilføjet', 'success')
 
     return redirect(url_for('people'))
@@ -193,11 +193,11 @@ def posts():
                 filename = secure_filename(file.filename) #Sikkerhed
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) #Gem til folder
                 image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) #Lav path som kan bruges
-                make_post(users_id, content, image_path)
+                models.make_post(users_id, content, image_path)
                 flash('Opslag oprettet')
                 return redirect(url_for('posts'))
             else:
-                make_post(users_id, content) #Hvis der ikke uploades et billede
+                models.make_post(users_id, content) #Hvis der ikke uploades et billede
                 flash('Opslag oprettet')
                 return redirect(url_for('posts'))
         else:
@@ -205,7 +205,7 @@ def posts():
             return render_template("posts.html", form=form, posts_data=posts_data)
     
     #Hent posts
-    posts_data = get_posts()
+    posts_data = models.get_posts()
     if posts_data: 
         return render_template("posts.html", posts_data=posts_data, form=form)
     else: 
@@ -220,7 +220,7 @@ def uploaded_file(filename):
 
 @app.route("/posts/<int:post_id>", methods=['DELETE'])  
 def delete_post(post_id):
-    if delete_post_db(post_id, session['user_id']):
+    if models.delete_post_db(post_id, session['user_id']):
         return ''
     else:
         abort(403)
