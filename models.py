@@ -241,9 +241,15 @@ def follow_user(users_id, friends_id):
 def unfollow_user(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
-    conn.commit()
+    cursor.execute('SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+    result = cursor.fetchone()
+    
+    if result:
+        cursor.execute('DELETE FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+        conn.commit()
 
+        return cursor.rowcount > 0 
+    
 
 def check_existing_follow(users_id, friends_id):
     conn = get_connection()
@@ -261,7 +267,7 @@ def check_existing_follow(users_id, friends_id):
 def get_users_follow(user_id):
     conn = get_connection()
     cursor = conn.cursor() #Hent navn fra users table og join tables
-    cursor.execute('SELECT users.name FROM friends JOIN users ON friends.friends_id = users.id WHERE friends.users_id = ?', (user_id,))
+    cursor.execute('SELECT users.id, users.name FROM friends JOIN users ON friends.friends_id = users.id WHERE friends.users_id = ?', (user_id,))
     result = cursor.fetchall()
 
     return result

@@ -325,19 +325,19 @@ body{
     padding-bottom: 0.5rem;
 }
 .follows_container{
-    overflow-y: scroll;
-    overflow-x: hidden;
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
     background: #d6d6d6;
     border-radius: 1rem;
     margin: 0 auto;
     width: 100%;
-    max-height: 300px;
 }
 .follows_list{
     height: auto;
     width: 100%;
     max-height: 300px;
-    padding: 1rem 0rem;
+    padding: 1rem 1rem 0.8rem 1rem;
 }
 .follows p{
     padding-top: 0.7em;
@@ -346,13 +346,24 @@ body{
 }
 .follows_container::-webkit-scrollbar{
     background: #e7e7e7;
-    width: 10px;
+    height: 10px;
     border-radius: 5px;
 }
 .follows_container::-webkit-scrollbar-thumb{
     background: #2D728f;
+    border-radius: 10px;
+}
+.follows_list form{
+    text-align: center;
+    margin: 0 auto;
+}
+.unfollow_person{
+    margin-top: 0.7rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    background: #2D728f;
     border-radius: 5px;
-    min-height: 10px;
+    color: #e7e7e7;
 }
 
 /* CHALLENGES */
@@ -642,8 +653,14 @@ body{
         max-height: 210px;
     }
     .follows_container{
-        max-height: 225px;
-        padding: 0rem 2rem;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        display: block;
+        height: 225px;
+        padding: 0rem 4rem;
+    }
+    .follows_container::-webkit-scrollbar{
+        width: 10px;
     }
 
     /* CHALLENGES */

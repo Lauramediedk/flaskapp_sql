@@ -36,6 +36,19 @@ def delete_dashboard_post(post_id):
     else:
         abort(403)
 
+
+@app.route("/dashboard/unfollow/<int:friends_id>", methods=['DELETE'])  
+def unfollow_users(friends_id):
+
+    users_id = session['user_id']
+
+    if unfollow_user(users_id, friends_id):
+        return '', 204
+    else:
+        flash('Handling fejlede', 'error')
+        abort(403)
+
+
 #Login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -157,17 +170,6 @@ def follow_users(friends_id):
     return redirect(url_for('people'))
 
 
-@app.route("/dashboard/<int:friends_id>", methods=['POST'])
-def unfollow_user(friends_id):
-
-    users_id = session['user_id']
-
-    unfollow_user(users_id, friends_id)
-    flash('Person fjernet', 'success')
-
-    return redirect(url_for('dashboard'))
-
-    
 
 @app.route("/posts", methods=['GET', 'POST'])
 def posts():
