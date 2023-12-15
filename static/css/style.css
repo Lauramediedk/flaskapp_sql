@@ -211,6 +211,14 @@ body{
 .dashboard_message h1{
     font-size: 1.5em;
 }
+.user_profile{
+    padding: 0.5rem 0rem 1rem 0.5rem;
+}
+.user_profile i{
+    background: #d6d6d6;
+    padding: 1.5rem 1rem;
+    border-radius: 50%;
+}
 
 /* REWARDS - DASHBOARD */
 .rewards_component{
