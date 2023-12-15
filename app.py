@@ -9,7 +9,6 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['UPLOAD_FOLDER'] = 'uploads'
 
 #Routes
 @app.route("/")
@@ -137,16 +136,12 @@ def join_challenge(challenges_id):
 
 
 @app.route("/feed", methods=['GET', 'POST'])
-
-@app.route("/feed", methods=['GET', 'POST'])
 def feed():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
     return render_template("feed.html")
 
-
-@app.route("/people", methods=['GET', 'POST'])
 
 @app.route("/people", methods=['GET', 'POST'])
 def people():
@@ -161,14 +156,7 @@ def people():
         users = get_users()
 
     return render_template("people.html", users=users)
-    
-    if request.method == 'POST':
-        search = request.form['search']
-        users = get_users(search)
-    else:
-        users = get_users()
 
-    return render_template("people.html", users=users)
 
 #Tilføj venner og fjern venner
 @app.route("/people/<int:friends_id>", methods=['POST'])
@@ -183,7 +171,6 @@ def follow_users(friends_id):
         flash('Person tilføjet', 'success')
 
     return redirect(url_for('people'))
-
 
 
 @app.route("/posts", methods=['GET', 'POST'])
@@ -237,52 +224,7 @@ def delete_post(post_id):
         return ''
     else:
         abort(403)
-    
-    form = PostForm()
-    users_id = session['user_id']
-    
-    #Lav posts
-    if request.method =='POST':
-        if form.validate_on_submit():
-            content = form.content.data
-            image_path = form.image_path.data
-            file = request.files.get('image_path') 
-            #Vi siger .get for at tjekke om vores image_path er tilstede før vi tilgår den. Vigtigt at gøre, for at undgå error
-            if file:
-                filename = secure_filename(file.filename) #Sikkerhed
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) #Gem til folder
-                image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) #Lav path som kan bruges
-                make_post(users_id, content, image_path)
-                flash('Opslag oprettet')
-                return redirect(url_for('posts'))
-            else:
-                make_post(users_id, content) #Hvis der ikke uploades et billede
-                flash('Opslag oprettet')
-                return redirect(url_for('posts'))
-        else:
-            flash('Noget gik galt')
-            return render_template("posts.html", form=form, posts_data=posts_data)
-    
-    #Hent posts
-    posts_data = get_posts()
-    if posts_data: 
-        return render_template("posts.html", posts_data=posts_data, form=form)
-    else: 
-        flash('Ingen opslag i øjeblikket', 'error')
-        return render_template("posts.html", form=form)
-    
-#Image
-@app.route("/uploads/<filename>")
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-
-@app.route("/posts/<int:post_id>", methods=['DELETE'])  
-def delete_post(post_id):
-    if delete_post_db(post_id, session['user_id']):
-        return ''
-    else:
-        abort(403)
 
 @app.route("/logout")
 def logout():
