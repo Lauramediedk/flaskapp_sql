@@ -1,5 +1,4 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash, abort, send_from_directory
-from flask import Flask, redirect, url_for, render_template, request, session, flash, abort, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm
