@@ -263,11 +263,11 @@ body{
     font-size: 1.5em;
     padding-bottom: 0.5rem;
 }
-.post{
+.user_profile_post{
     display: flex;
 }
 .post i {
-    padding-top: 1.5rem;
+    padding-top: 1.3rem;
 }
 .post_content{
     padding: 0.5rem 1rem;
@@ -494,6 +494,9 @@ body{
     border-radius: 5px;
     padding: 1rem;
 }
+.user_profile_post p {
+    padding: 0.8rem 0.5rem;
+}
 .post_date{
     padding-bottom: 1rem;
 }
@@ -531,11 +534,8 @@ body{
     margin: 0 10px 1.5rem 0;
     padding-bottom: 1rem;
 }
-.profiles img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+.user i {
+    padding-top: 3rem;
 }
 .profiles p{
     text-align: center;

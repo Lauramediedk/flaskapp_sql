@@ -13,7 +13,10 @@
         {% for post in posts_data %}
         <!--See the posts-->
             <div class="post">
-                <p>{{post.name}}</p>
+                <div class="user_profile_post">
+                    <i class="fa-solid fa-user fa-xl"></i>
+                    <p>{{post.name}}</p>
+                </div>
                 <p class="post_date">{{ post.created}}</p>
                 <p>{{ post.content}}</p>
                 {% if post.image_path %}
