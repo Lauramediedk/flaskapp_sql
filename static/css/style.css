@@ -644,6 +644,12 @@ body{
     }
 
     /* DASHBOARD */
+    .dashboard_message{
+        display: flex;
+    }
+    .user_profile {
+        padding-top: 0;
+    }
     .rewards_component{
         width: 40%;
     }
