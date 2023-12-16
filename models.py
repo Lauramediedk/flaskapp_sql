@@ -195,15 +195,28 @@ def get_users_rewards(users_id):
     return None #Intet match
 
 
-def get_posts(): #We fetch the users name also
+def get_posts(search=None):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT posts.id, posts.users_id, posts.content, posts.created, posts.image_path, users.name '
-                   'FROM posts '
-                   'INNER JOIN users ON posts.users_id = users.id')
+
+    if search:
+        cursor.execute(
+            'SELECT posts.id, posts.users_id, posts.content, posts.created, posts.image_path, users.name '
+            'FROM posts '
+            'INNER JOIN users ON posts.users_id = users.id '
+            'WHERE posts.content LIKE ?', ('%' + search + '%',)
+        )
+    else:
+        cursor.execute(
+            'SELECT posts.id, posts.users_id, posts.content, posts.created, posts.image_path, users.name '
+            'FROM posts '
+            'INNER JOIN users ON posts.users_id = users.id'
+        )
+
     posts = cursor.fetchall()
 
-    return posts   
+    return posts  
+
 
 def get_users_posts(user_id):
     conn = get_connection()
