@@ -229,11 +229,40 @@ body{
     padding-bottom: 0.5rem;
 }
 .rewards_content{
-    border-radius: 1rem;
-    padding: 2rem 0rem;
-    background: #d6d6d6;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+}
+.rewards_content::-webkit-scrollbar{
+    height: 7px;
+}
+.rewards_content::-webkit-scrollbar-thumb{
+    background: #2D728f;
+    border-radius: 5px;
+}
+.reward{
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    min-width: 8rem;
+    background: #d6d6d6;
+    border-radius: 5px;
+}
+.unearned_rewards{
+    text-align: center;
+}
+.unearned_rewards h3{
+    color: #9e9e9e;
+    height: 2rem;
+    padding: 1rem 0rem;
+}
+.users_rewards{
+    color: #2D728f;
+    height: 2rem;
+    padding: 1rem 0rem;
+    text-align: center;
 }
 
 /* POSTS - DASHBOARD */
@@ -250,14 +279,12 @@ body{
     padding: 0.8rem;
 }
 .post_container::-webkit-scrollbar{
-    background: #e7e7e7;
-    width: 10px;
+    width: 8px;
     border-radius: 5px;
 }
 .post_container::-webkit-scrollbar-thumb{
     background: #2D728f;
     border-radius: 5px;
-    min-height: 10px;
 }
 .posts_component h1{
     font-size: 1.5em;
@@ -297,14 +324,12 @@ body{
     text-align: center;
 }
 .challenge_container::-webkit-scrollbar{
-    background: #e7e7e7;
-    width: 10px;
+    width: 8px;
     border-radius: 5px;
 }
 .challenge_container::-webkit-scrollbar-thumb{
     background: #2D728f;
     border-radius: 5px;
-    min-height: 10px;
 }
 
 /* FOLLOWS - DASHBOARD */
@@ -339,9 +364,7 @@ body{
     text-align: center;
 }
 .follows_container::-webkit-scrollbar{
-    background: #e7e7e7;
-    height: 10px;
-    border-radius: 5px;
+    height: 7px;
 }
 .follows_container::-webkit-scrollbar-thumb{
     background: #2D728f;
@@ -660,7 +683,7 @@ body{
         padding: 0rem 4rem;
     }
     .follows_container::-webkit-scrollbar{
-        width: 10px;
+        width: 7px;
     }
 
     /* CHALLENGES */
