@@ -13,26 +13,33 @@
     {% endif %}
 </div>
 
-<div class="rewards_component"> <!--Later use db for this-->
+<div class="rewards_component">
     <h1>Belønninger</h1>
     <div class="rewards_content">
         {% if rewards %}
             {% for reward in rewards %}
-            <div class="reward">
-                {% if users_rewards and reward in users_rewards %}
-                    <h3 class="earned_rewards">{{ reward.title }}</h3>
-                {% else %}
-                    <div class="unearned_rewards">
-                        <h3 class="unearned_rewards">{{ reward.title }}</h3>
-                    </div>
-            </div>
-                {% endif %}
+                <div class="reward">
+                    {% if users_rewards %}
+                        {% for user_reward in users_rewards %}
+                            {% if reward.title == user_reward[0] %}
+                                <div class="users_rewards">
+                                    <h3>{{ reward.title }} <i class="fa-solid fa-medal" style="color: #2d728f;"></i></h3>
+                                </div>
+                            {% else %}
+                                <div class="unearned_rewards">
+                                    <h3>{{ reward.title }}</h3>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p>Ingen belønninger tilgængelige</p>
+                    {% endif %}
+                </div> <!-- Moved the closing div here -->
             {% endfor %}
-        {% else %}
-            <p>Ingen belønninger tilgængelige</p>
         {% endif %}
     </div>
 </div>
+
 <section class="main_content">
     <div class="posts_component">
         <h1>Seneste opslag</h1>

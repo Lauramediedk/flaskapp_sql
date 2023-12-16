@@ -258,6 +258,12 @@ body{
     height: 2rem;
     padding: 1rem 0rem;
 }
+.users_rewards{
+    color: #2D728f;
+    height: 2rem;
+    padding: 1rem 0rem;
+    text-align: center;
+}
 
 /* POSTS - DASHBOARD */
 .posts_component{
@@ -677,7 +683,7 @@ body{
         padding: 0rem 4rem;
     }
     .follows_container::-webkit-scrollbar{
-        width: 10px;
+        width: 7px;
     }
 
     /* CHALLENGES */

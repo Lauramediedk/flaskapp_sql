@@ -182,7 +182,12 @@ def get_rewards():
 def get_users_rewards(users_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users_rewards WHERE users_id = ?', (users_id,))
+    cursor.execute('''
+        SELECT r.title
+        FROM users_rewards AS ur
+        INNER JOIN rewards AS r ON ur.rewards_id = r.id
+        WHERE ur.users_id = ?
+    ''', (users_id,))
     user_rewards = cursor.fetchall()
 
     if user_rewards:
