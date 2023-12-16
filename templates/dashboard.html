@@ -77,7 +77,10 @@
             {% if follows %}
                 {% for user in follows %}
                     <div class="follows_list">
-                        <p class="person">{{ user.name }}</p>
+                        <div class="follows_profile">
+                            <i class="fa-solid fa-user fa-xl"></i>
+                            <p class="person">{{ user.name }}</p>
+                        </div>
                         <form 
                             hx-delete="/dashboard/unfollow/{{ user.id }}" 
                             hx-confirm="Er du sikker på at du vil fjerne {{ user.name }}"

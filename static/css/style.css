@@ -335,6 +335,9 @@ body{
     text-align: center;
     font-weight: 500;
 }
+.follows_profile{
+    text-align: center;
+}
 .follows_container::-webkit-scrollbar{
     background: #e7e7e7;
     height: 10px;
