@@ -211,6 +211,14 @@ body{
 .dashboard_message h1{
     font-size: 1.5em;
 }
+.user_profile{
+    padding: 0.5rem 0rem 1rem 0.5rem;
+}
+.user_profile i{
+    background: #d6d6d6;
+    padding: 1.5rem 1rem;
+    border-radius: 50%;
+}
 
 /* REWARDS - DASHBOARD */
 .rewards_component{
@@ -255,28 +263,11 @@ body{
     font-size: 1.5em;
     padding-bottom: 0.5rem;
 }
-.user_image{
-    width: 80px;
-    height: 70px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 10px;
-}
-.user_image img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.user_info{
+.user_profile_post{
     display: flex;
-    align-items: center;
-    padding: 1rem 0rem 1rem 0.8rem
 }
-.user_details p{
-    display: flex;
-    flex-direction: column;
-    padding: 0.5rem 0.5rem;
+.post i {
+    padding-top: 1.3rem;
 }
 .post_content{
     padding: 0.5rem 1rem;
@@ -343,6 +334,9 @@ body{
     padding-top: 0.7em;
     text-align: center;
     font-weight: 500;
+}
+.follows_profile{
+    text-align: center;
 }
 .follows_container::-webkit-scrollbar{
     background: #e7e7e7;
@@ -500,6 +494,9 @@ body{
     border-radius: 5px;
     padding: 1rem;
 }
+.user_profile_post p {
+    padding: 0.8rem 0.5rem;
+}
 .post_date{
     padding-bottom: 1rem;
 }
@@ -537,11 +534,8 @@ body{
     margin: 0 10px 1.5rem 0;
     padding-bottom: 1rem;
 }
-.profiles img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+.user i {
+    padding-top: 3rem;
 }
 .profiles p{
     text-align: center;
@@ -636,6 +630,12 @@ body{
     }
 
     /* DASHBOARD */
+    .dashboard_message{
+        display: flex;
+    }
+    .user_profile {
+        padding-top: 0;
+    }
     .rewards_component{
         width: 40%;
     }
