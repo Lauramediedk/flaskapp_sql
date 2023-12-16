@@ -30,7 +30,10 @@
             {% if user_posts %}
                 {% for user_post in user_posts %}
                 <div class="post">
-                    <p>{{ session.name}}</p>
+                    <div class="user_profile_post"></div>
+                        <i class="fa-solid fa-user fa-xl"></i>
+                        <p>{{ session.name}}</p>
+                    </div>
                     <p class="post_date">{{ user_post.created }}</p>
                     <p class="post_content">{{ user_post.content }}</p>
                     {% if user_post.image_path %}

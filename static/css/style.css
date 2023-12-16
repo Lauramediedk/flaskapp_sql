@@ -263,28 +263,11 @@ body{
     font-size: 1.5em;
     padding-bottom: 0.5rem;
 }
-.user_image{
-    width: 80px;
-    height: 70px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 10px;
-}
-.user_image img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.user_info{
+.post{
     display: flex;
-    align-items: center;
-    padding: 1rem 0rem 1rem 0.8rem
 }
-.user_details p{
-    display: flex;
-    flex-direction: column;
-    padding: 0.5rem 0.5rem;
+.post i {
+    padding-top: 1.5rem;
 }
 .post_content{
     padding: 0.5rem 1rem;
