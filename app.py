@@ -22,12 +22,13 @@ def dashboard():
     
     user_id = session['user_id']
     user_id = session['user_id']
-    rewards = models.get_rewards(user_id)
+    rewards = models.get_rewards()
+    users_rewards = models.get_users_rewards(user_id)
     challenges = models.get_users_challenges(user_id)
     user_posts = models.get_users_posts(user_id)
     follows = models.get_users_follow(user_id)
     #Vi render det hele med template, og tjekker med if i vores template
-    return render_template("dashboard.html", rewards=rewards, challenges=challenges, user_posts=user_posts, follows=follows)
+    return render_template("dashboard.html", rewards=rewards, users_rewards=users_rewards, challenges=challenges, user_posts=user_posts, follows=follows)
 
 
 @app.route("/dashboard/<int:post_id>", methods=['DELETE'])  
