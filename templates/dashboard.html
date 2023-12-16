@@ -18,15 +18,14 @@
     <div class="rewards_content">
         {% if rewards %}
             {% for reward in rewards %}
+            <div class="reward">
                 {% if users_rewards and reward in users_rewards %}
-                    <div class="reward">
-                        <h3 class="earned_rewards">{{ reward.title }}</h3>
-                    </div>
+                    <h3 class="earned_rewards">{{ reward.title }}</h3>
                 {% else %}
-                    <div class="unearned_rewards_content">
+                    <div class="unearned_rewards">
                         <h3 class="unearned_rewards">{{ reward.title }}</h3>
-                        <p>Mulig belønning</p>
                     </div>
+            </div>
                 {% endif %}
             {% endfor %}
         {% else %}
