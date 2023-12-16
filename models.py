@@ -78,7 +78,6 @@ def rewards_table():
     conn.execute('CREATE TABLE IF NOT EXISTS rewards('
                  'id INTEGER PRIMARY KEY AUTOINCREMENT, ' 
                  'title TEXT, '
-                 'description TEXT' 
                  ')')
     conn.commit()
 
