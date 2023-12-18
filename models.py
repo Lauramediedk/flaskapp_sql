@@ -20,6 +20,7 @@ def make_table():
                  )
     conn.commit()
 
+
 def friends_table():
     conn = get_connection()
     conn.execute('CREATE TABLE IF NOT EXISTS friends('
@@ -29,6 +30,7 @@ def friends_table():
                  'FOREIGN KEY(friends_id) REFERENCES users(id)'
                  ')')
     conn.commit()
+
 
 def posts_table():
     conn = get_connection()
@@ -43,6 +45,7 @@ def posts_table():
                  ')')
     conn.commit()
 
+
 def groups_table():
     conn = get_connection()
     conn.execute('CREATE TABLE IF NOT EXISTS groups('
@@ -52,6 +55,7 @@ def groups_table():
                  'FOREIGN KEY(author_id) REFERENCES users(id)'
                  ')')
     conn.commit()
+
 
 def users_groups():
     conn = get_connection()
@@ -63,6 +67,7 @@ def users_groups():
                  ')')
     conn.commit()
 
+
 def users_rewards():
     conn = get_connection()
     conn.execute('CREATE TABLE IF NOT EXISTS users_rewards('
@@ -73,6 +78,7 @@ def users_rewards():
                  ')')
     conn.commit()
 
+
 def rewards_table():
     conn = get_connection()
     conn.execute('CREATE TABLE IF NOT EXISTS rewards('
@@ -80,6 +86,7 @@ def rewards_table():
                  'title TEXT'
                  ')')
     conn.commit()
+
 
 def challenges_table():
     conn = get_connection()
@@ -95,6 +102,7 @@ def challenges_table():
                  ')')
     conn.commit()
 
+
 def users_challenges():
     conn = get_connection()
     conn.execute('CREATE TABLE IF NOT EXISTS users_challenges('
@@ -105,6 +113,7 @@ def users_challenges():
                  ')')
     conn.commit()
 
+
 def users_posts():
     conn = get_connection()
     conn.execute('CREATE TABLE IF NOT EXISTS users_posts('
@@ -112,6 +121,19 @@ def users_posts():
                  'post_id INTEGER, '
                  'FOREIGN KEY(users_id) REFERENCES users(id), '
                  'FOREIGN KEY(post_id) REFERENCES posts(id)'
+                 ')')
+    conn.commit()
+
+
+def fitness_data():
+    conn = get_connection()
+    conn.execute('CREATE TABLE IF NOT EXISTS fitness_data('
+                 'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                 'users_id INTEGER, '
+                 'date DATE, '
+                 'distance FLOAT, '
+                 'calories_burned INTEGER, '
+                 'FOREIGN KEY(users_id) REFERENCES users(id)'
                  ')')
     conn.commit()
 
@@ -303,6 +325,15 @@ def get_users_follow(user_id):
     return result
 
 
+def get_users_fitness(user_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM fitness_data WHERE users_id = ?', (user_id,))
+    result = cursor.fetchall()
+
+    return result
+
+
 #Validering
 def validate_user(email, password):
     conn = get_connection()
@@ -381,3 +412,4 @@ rewards_table()
 challenges_table()
 users_challenges()
 users_posts()
+fitness_data()

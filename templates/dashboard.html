@@ -13,6 +13,22 @@
     {% endif %}
 </div>
 
+<div class="users_fitness">
+    <h1>Se dine fremskridt</h1>
+    <div class="progress_content">
+        <h3>Din daglige aktivitet</h3>
+        {% if users_fitness %}
+            {% for user_fitness in users_fitness %}
+                <p>{{ user_fitness.date}}</p>
+                <p>{{ user_fitness.distance}}</p>
+                <p>{{ user_fitness.calories_burned}}</p>
+            {% endfor %}
+        {% else %}
+            <p>Generate error message here later</p>
+        {% endif %}
+    </div>
+</div>
+
 <div class="rewards_component">
     <h1>Belønninger</h1>
     <div class="rewards_content">

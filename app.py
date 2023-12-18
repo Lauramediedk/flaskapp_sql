@@ -27,10 +27,11 @@ def dashboard():
     challenges = models.get_users_challenges(user_id)
     user_posts = models.get_users_posts(user_id)
     follows = models.get_users_follow(user_id)
+    users_fitness = models.get_users_fitness(user_id)
     #Hent navnet på title feltet i vores rewards, hvis der er nogle associeret i users_rewards, ellers er den empty
     users_rewards = [reward[0] for reward in users_rewards] if users_rewards else []
     #Vi render det hele med template, og tjekker med if i vores template
-    return render_template("dashboard.html", rewards=rewards, users_rewards=users_rewards, challenges=challenges, user_posts=user_posts, follows=follows)
+    return render_template("dashboard.html", rewards=rewards, users_rewards=users_rewards, challenges=challenges, user_posts=user_posts, follows=follows, users_fitness=users_fitness)
 
 
 @app.route("/dashboard/<int:post_id>", methods=['DELETE'])  
