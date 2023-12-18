@@ -191,7 +191,7 @@ def posts():
                 return render_template("posts.html", posts_data=search_post, form=form)
             else:
                 flash('Ingen resultater fundet', 'error')
-                return redirect(url_for('posts'))
+                return render_template("posts.html", posts_data=[], form=form)
 
         # Håndter oprettelsen af post
         if form.validate_on_submit():
@@ -203,10 +203,10 @@ def posts():
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 models.make_post(users_id, content, image_path)
-                flash('Opslag oprettet')
+                flash('Opslag oprettet', 'success')
             else:
                 models.make_post(users_id, content)
-                flash('Opslag oprettet')
+                flash('Opslag oprettet', 'success')
 
             return redirect(url_for('posts'))
 
