@@ -541,6 +541,22 @@ body{
     background: #2D728f;
     color: #d6d6d6;
 }
+.flash_messages{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.success_message{
+    background: #2d728f8e;
+    border-radius: 5px;
+    padding: 1rem;
+}
+.error_message{
+    background: #f49e4c8e;
+    border-radius: 5px;
+    padding: 1rem;
+}
 
 
 /* PEOPLE */

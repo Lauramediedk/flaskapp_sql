@@ -1,3 +1,10 @@
+<form action="/posts" hx-post="/posts" hx-target="#posts_content" hx-select="#posts_content">
+    <div class="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input class="input_field" type="search" name="search" placeholder="Search...">
+    </div>
+</form>
+
 <form id="post_form" hx-post="/posts" hx-trigger="submit" hx-target="#posts_content" hx-select="#posts_content" enctype="multipart/form-data">
     <!--The hx-select is needed to avoid duplicating the form itself on page refresh-->
     {{ form.hidden_tag() }}
@@ -31,13 +38,18 @@
                 {% endif %}
             </div>
         {% endfor %}
-    {% else %}
-        {% with messages = get_flashed_messages() %}
+    {% endif %}
+    <div class="flash_messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for message in messages %}
-                    <p>{{ message }}</p>
+                {% for category, message in messages %}
+                    {% if category == 'error' %}
+                        <p class="error_message" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 2000)">{{ message }}</p>
+                    {% elif category == 'success' %}
+                        <p class="success_message" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 2000)">{{ message }}</p>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         {% endwith %}
-    {% endif %}
+    </div>
 </div>
