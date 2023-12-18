@@ -17,22 +17,24 @@
     <h1>Din daglige aktivitet</h1>
         {% if users_fitness %}
             {% for user_fitness in users_fitness %}
-            <div class="date_time">
-                <p>{{ user_fitness.date | datetimeformat }}</p>
-            </div>
-            <div class="progress_data">
-                <div class="progress_field">
-                    <h3>{{ user_fitness.distance}}</h3>
-                    <p>km</p>
+            <div class="fitness_content">
+                <div class="date_time">
+                    <p>{{ user_fitness.date | datetimeformat }}</p>
                 </div>
-                <div class="progress_field">
-                    <h3>{{ user_fitness.calories_burned}}</h3>
-                    <p>Kalorier</p>
+                <div class="progress_data">
+                    <div class="progress_field">
+                        <h3>{{ user_fitness.distance}}</h3>
+                        <p>km</p>
+                    </div>
+                    <div class="progress_field">
+                        <h3>{{ user_fitness.calories_burned}}</h3>
+                        <p>Kalorier</p>
                 </div>
             </div>
+        </div>
             {% endfor %}
         {% else %}
-            <p>Generate error message here later</p>
+            <p>Ingen aktivitet målt endnu</p>
         {% endif %}
 </div>
 

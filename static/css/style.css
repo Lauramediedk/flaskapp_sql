@@ -713,6 +713,18 @@ body{
     .user_profile {
         padding-top: 0;
     }
+    .users_fitness{
+        text-align: left;
+        padding: 1rem 1rem 2rem 1rem;
+        width: 20%;
+        margin-left: 0 auto;
+        margin-bottom: 2rem;
+    } 
+    .fitness_content{
+        padding: 1rem;
+        background: #e7e7e7;
+        border-radius: 5px;
+    }
     .rewards_component{
         width: 40%;
     }
