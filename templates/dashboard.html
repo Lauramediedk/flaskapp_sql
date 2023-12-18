@@ -19,23 +19,19 @@
         {% if rewards %}
             {% for reward in rewards %}
                 <div class="reward">
-                    {% if users_rewards %}
-                        {% for user_reward in users_rewards %}
-                            {% if reward.title == user_reward[0] %}
-                                <div class="users_rewards">
-                                    <h3>{{ reward.title }} <i class="fa-solid fa-medal" style="color: #2d728f;"></i></h3>
-                                </div>
-                            {% else %}
-                                <div class="unearned_rewards">
-                                    <h3>{{ reward.title }}</h3>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                    {% if users_rewards and reward.title in users_rewards %}
+                        <div class="users_rewards">
+                            <h3>{{ reward.title }} <i class="fa-solid fa-medal" style="color: #2d728f;"></i></h3>
+                        </div>
                     {% else %}
-                        <p>Ingen belønninger tilgængelige</p>
+                        <div class="unearned_rewards">
+                            <h3>{{ reward.title }}</h3>
+                        </div>
                     {% endif %}
                 </div> <!-- Moved the closing div here -->
             {% endfor %}
+        {% else %}
+            <p>Ingen belønninger tilgængelige</p>
         {% endif %}
     </div>
 </div>
