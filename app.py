@@ -4,10 +4,18 @@ from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm
 import models
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 app.config['UPLOAD_FOLDER'] = 'uploads'
+
+#Vi laver vores eget custom filter for dato og bruger Python's datetime
+def datetime_format(value):
+    date_obj = datetime.strptime(value, '%Y-%m-%d')
+    return date_obj.strftime("%d %B")
+
+app.jinja_env.filters['datetimeformat'] = datetime_format
 
 #Routes
 @app.route("/")

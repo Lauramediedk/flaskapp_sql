@@ -220,6 +220,29 @@ body{
     border-radius: 50%;
 }
 
+/* FITNESS PROGRESS - DASHBOARD */
+.users_fitness{
+    text-align: center;
+    padding-bottom: 2rem;
+}
+.users_fitness h1{
+    font-size: 1.5em;
+    padding-bottom: 0.5rem;
+}
+.users_fitness p{
+    font-weight: bold;
+}
+.progress_data{
+    display: flex;
+    justify-content: center;
+}
+.progress_data p{
+    background: #f49e4c;
+    padding: 0.7rem 1rem;
+    margin: 1rem;
+    border-radius: 50px;
+}
+
 /* REWARDS - DASHBOARD */
 .rewards_component{
     padding: 0rem 0.8rem 3rem 0.8rem;
