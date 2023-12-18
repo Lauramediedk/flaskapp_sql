@@ -229,19 +229,34 @@ body{
     font-size: 1.5em;
     padding-bottom: 0.5rem;
 }
-.users_fitness p{
+.date_time{
+    text-align: center;
+    margin: 0 auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 5px solid #2D728f;
+}
+.date_time p{
+    color: #9e9e9e;
     font-weight: bold;
+    font-size: 1.3em;
+    width: 6rem;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 1.5rem;
 }
 .progress_data{
     display: flex;
-    justify-content: center;
+    justify-content: center
 }
-.progress_data p{
-    background: #f49e4c;
-    padding: 0.7rem 1rem;
-    margin: 1rem;
-    border-radius: 50px;
+.progress_field{
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 1rem 0rem 1rem;
 }
+
 
 /* REWARDS - DASHBOARD */
 .rewards_component{

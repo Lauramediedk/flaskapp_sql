@@ -17,10 +17,18 @@
     <h1>Din daglige aktivitet</h1>
         {% if users_fitness %}
             {% for user_fitness in users_fitness %}
-            <p>{{ user_fitness.date | datetimeformat }}</p>
+            <div class="date_time">
+                <p>{{ user_fitness.date | datetimeformat }}</p>
+            </div>
             <div class="progress_data">
-                <p>{{ user_fitness.distance}}<br>km</p>
-                <p>{{ user_fitness.calories_burned}}<br>Forbrændt</p>
+                <div class="progress_field">
+                    <h3>{{ user_fitness.distance}}</h3>
+                    <p>km</p>
+                </div>
+                <div class="progress_field">
+                    <h3>{{ user_fitness.calories_burned}}</h3>
+                    <p>Kalorier</p>
+                </div>
             </div>
             {% endfor %}
         {% else %}
