@@ -178,44 +178,43 @@ def posts():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
-    
+
     form = PostForm()
     users_id = session['user_id']
-    
-    # Handle search functionality
+
     if request.method == 'POST':
-        search = request.form['search']
-        search_post = models.get_posts(search)
+        # Håndter søge funktionalitet
+        search = request.form.get('search')
+        if search:
+            search_post = models.get_posts(search)
+            if search_post:
+                return render_template("posts.html", posts_data=search_post, form=form)
+            else:
+                flash('Ingen resultater fundet', 'error')
+                return redirect(url_for('posts'))
 
-        if search_post:
-            return render_template("posts.html", posts_data=search_post, form=form)
-        else:
-            flash('Ingen resultater fundet', 'error')
-            return redirect(url_for('posts'))
-    
-    # Handle post creation if it's a POST request and form is valid
-    if request.method == 'POST' and form.validate_on_submit():
-        content = form.content.data
-        image_path = form.image_path.data
-        file = request.files.get('image_path') 
-        
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            models.make_post(users_id, content, image_path)
-            flash('Opslag oprettet')
-            return redirect(url_for('posts'))
-        else:
-            models.make_post(users_id, content)
-            flash('Opslag oprettet')
+        # Håndter oprettelsen af post
+        if form.validate_on_submit():
+            content = form.content.data
+            file = request.files.get('image_path')
+
+            if file:
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                models.make_post(users_id, content, image_path)
+                flash('Opslag oprettet')
+            else:
+                models.make_post(users_id, content)
+                flash('Opslag oprettet')
+
             return redirect(url_for('posts'))
 
-    # For GET request or failed form submission, fetch and display posts
+    # Hent opslag eller fejl. 
     posts_data = models.get_posts()
-    if posts_data: 
+    if posts_data:
         return render_template("posts.html", posts_data=posts_data, form=form)
-    else: 
+    else:
         flash('Ingen opslag i øjeblikket', 'error')
         return render_template("posts.html", form=form)
     
