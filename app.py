@@ -178,37 +178,43 @@ def posts():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå feed', 'error')
         return redirect(url_for('login'))
-    
+
     form = PostForm()
     users_id = session['user_id']
-    
-    #Lav posts
-    if request.method =='POST':
+
+    if request.method == 'POST':
+        # Håndter søge funktionalitet
+        search = request.form.get('search')
+        if search:
+            search_post = models.get_posts(search)
+            if search_post:
+                return render_template("posts.html", posts_data=search_post, form=form)
+            else:
+                flash('Ingen resultater fundet', 'error')
+                return render_template("posts.html", posts_data=[], form=form)
+
+        # Håndter oprettelsen af post
         if form.validate_on_submit():
             content = form.content.data
-            image_path = form.image_path.data
-            file = request.files.get('image_path') 
-            #Vi siger .get for at tjekke om vores image_path er tilstede før vi tilgår den. Vigtigt at gøre, for at undgå error
+            file = request.files.get('image_path')
+
             if file:
-                filename = secure_filename(file.filename) #Sikkerhed
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) #Gem til folder
-                image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) #Lav path som kan bruges
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 models.make_post(users_id, content, image_path)
-                flash('Opslag oprettet')
-                return redirect(url_for('posts'))
+                flash('Opslag oprettet', 'success')
             else:
-                models.make_post(users_id, content) #Hvis der ikke uploades et billede
-                flash('Opslag oprettet')
-                return redirect(url_for('posts'))
-        else:
-            flash('Noget gik galt')
-            return render_template("posts.html", form=form, posts_data=posts_data)
-    
-    #Hent posts
+                models.make_post(users_id, content)
+                flash('Opslag oprettet', 'success')
+
+            return redirect(url_for('posts'))
+
+    # Hent opslag eller fejl. 
     posts_data = models.get_posts()
-    if posts_data: 
+    if posts_data:
         return render_template("posts.html", posts_data=posts_data, form=form)
-    else: 
+    else:
         flash('Ingen opslag i øjeblikket', 'error')
         return render_template("posts.html", form=form)
     
