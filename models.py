@@ -325,6 +325,14 @@ def get_users_follow(user_id):
     return result
 
 
+def add_fitness_data(user_id, distance, calories_burned):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO fitness_data (users_id, date, distance, calories_burned) VALUES (?, CURRENT_DATE, ?, ?)',
+                   (user_id, distance, calories_burned))
+    conn.commit()
+
+
 def get_users_fitness(user_id):
     conn = get_connection()
     cursor = conn.cursor()

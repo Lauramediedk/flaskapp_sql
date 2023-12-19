@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, FloatField, IntegerField
 from wtforms.validators import InputRequired, Length, Email
 
 #Vores registrerings form som bruger wtforms
@@ -32,3 +32,9 @@ class PostForm(FlaskForm):
     content = StringField(validators=[InputRequired()])
     image_path = FileField(validators=[FileAllowed(['jpg', 'png'], 'jpg og png format kun tilladt')])
     submit = SubmitField("Slå op")
+
+#Fitness form
+class FitnessForm(FlaskForm):
+    distance = FloatField(validators=[InputRequired()], render_kw={"placeholder": "Distance"})
+    calories = IntegerField(validators=[InputRequired()], render_kw={"placeholder": "Kalorier forbrændt"})
+    submit = SubmitField("Tilføj data")

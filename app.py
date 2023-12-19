@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash, abort, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from forms import SignupForm, LoginForm, PostForm
+from forms import SignupForm, LoginForm, PostForm, FitnessForm
 import models
 import os
 from datetime import datetime
@@ -22,11 +22,13 @@ app.jinja_env.filters['datetimeformat'] = datetime_format
 def index():
     return render_template("index.html")
 
-@app.route("/dashboard")
+@app.route("/dashboard", methods=['GET', 'POST'])
 def dashboard():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå dashboard', 'error')
         return redirect(url_for('login'))
+    
+    form = FitnessForm()
     
     user_id = session['user_id']
     user_id = session['user_id']
@@ -38,8 +40,16 @@ def dashboard():
     users_fitness = models.get_users_fitness(user_id)
     #Hent navnet på title feltet i vores rewards, hvis der er nogle associeret i users_rewards, ellers er den empty
     users_rewards = [reward[0] for reward in users_rewards] if users_rewards else []
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            distance = form.distance.data
+            calories_burned = form.calories.data
+            models.add_fitness_data(user_id, distance, calories_burned)
+        else:
+            flash('Data kunne ikke uploades', 'error')
     #Vi render det hele med template, og tjekker med if i vores template
-    return render_template("dashboard.html", rewards=rewards, users_rewards=users_rewards, challenges=challenges, user_posts=user_posts, follows=follows, users_fitness=users_fitness)
+    return render_template("dashboard.html", form=form, rewards=rewards, users_rewards=users_rewards, challenges=challenges, user_posts=user_posts, follows=follows, users_fitness=users_fitness)
 
 
 @app.route("/dashboard/<int:post_id>", methods=['DELETE'])  
