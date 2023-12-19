@@ -27,7 +27,7 @@
 
 <div class="users_fitness">
     <h1>Tilføj din daglige fremskridt</h1>
-    <form action="/dashboard" method="POST">
+    <form hx-post="/dashboard" hx-trigger="submit" hx-target=".fitness_content" hx-select=".fitness_content">
         {{ form.hidden_tag() }}
         <div class="fitness_input">
             {{ form.distance}}

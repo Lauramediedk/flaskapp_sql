@@ -28,8 +28,6 @@ def dashboard():
         flash('Du skal være logget ind for at tilgå dashboard', 'error')
         return redirect(url_for('login'))
     
-    form = FitnessForm()
-    
     user_id = session['user_id']
     user_id = session['user_id']
     rewards = models.get_rewards()
@@ -38,6 +36,8 @@ def dashboard():
     user_posts = models.get_users_posts(user_id)
     follows = models.get_users_follow(user_id)
     users_fitness = models.get_users_fitness(user_id)
+    form = FitnessForm()
+
     #Hent navnet på title feltet i vores rewards, hvis der er nogle associeret i users_rewards, ellers er den empty
     users_rewards = [reward[0] for reward in users_rewards] if users_rewards else []
 
@@ -46,6 +46,9 @@ def dashboard():
             distance = form.distance.data
             calories_burned = form.calories.data
             models.add_fitness_data(user_id, distance, calories_burned)
+            flash('Data uploadet', 'success')
+            return redirect(url_for('dashboard')) 
+        #Vi laver redirect med det nye data, og undgår resubmission når refresh af siden sker.
         else:
             flash('Data kunne ikke uploades', 'error')
     #Vi render det hele med template, og tjekker med if i vores template
