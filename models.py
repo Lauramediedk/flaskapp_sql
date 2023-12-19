@@ -2,6 +2,7 @@ from flask import Flask
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import DATABASE
+from datetime import date
 
 #DB connect
 def get_connection():
@@ -328,7 +329,22 @@ def get_users_follow(user_id):
 def add_fitness_data(user_id, distance, calories_burned):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO fitness_data (users_id, date, distance, calories_burned) VALUES (?, CURRENT_DATE, ?, ?)',
+    today = date.today()
+
+    #Checker for eksisterende data for denne dato
+    cursor.execute('SELECT * FROM fitness_data WHERE users_id = ? AND date= ?', (user_id, today))
+    data_exists = cursor.fetchone()
+
+    if data_exists: #Opdater rækkerne med ny data
+        new_distance = data_exists[3] + distance
+        new_calories = data_exists[4] + calories_burned
+
+        cursor.execute('UPDATE fitness_data SET distance = ?, calories_burned = ? WHERE id = ?', (new_distance, new_calories, data_exists[0]))
+        #Vi opdaterer nuværende data hvis ny data bliver indsat, og sikrer os at det sker på baggrund af det rigtige id
+        conn.commit()
+    else:
+        #Indsæt nyt hvis der ikke allerede ligger noget data for denne dag.
+        cursor.execute('INSERT INTO fitness_data (users_id, date, distance, calories_burned) VALUES (?, CURRENT_DATE, ?, ?)',
                    (user_id, distance, calories_burned))
     conn.commit()
 
@@ -336,10 +352,14 @@ def add_fitness_data(user_id, distance, calories_burned):
 def get_users_fitness(user_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM fitness_data WHERE users_id = ?', (user_id,))
+    today = date.today()
+    cursor.execute('SELECT * FROM fitness_data WHERE users_id = ? AND date = ?', (user_id, today))
     result = cursor.fetchall()
 
-    return result
+    if result:
+        return result
+    else: 
+        return None
 
 
 #Validering
