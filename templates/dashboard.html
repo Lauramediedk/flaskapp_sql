@@ -27,7 +27,7 @@
 
 <div class="users_fitness">
     <h1>Tilføj din daglige fremskridt</h1>
-    <form action="/dashboard" method="post">
+    <form action="/dashboard" method="post"> <!--Tilføj HTMX-->
         {{ form.hidden_tag() }}
         <div class="fitness_input">
             {{ form.distance(class_="fitness_field") }}
