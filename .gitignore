@@ -1,2 +1,5 @@
 #Ignore flask env
 flask_env/
+
+#Ignore Python bytecode files
+*.pyc
