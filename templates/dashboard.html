@@ -13,10 +13,31 @@
     {% endif %}
 </div>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <div class="flash_message">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
 <div class="users_fitness">
-    <h1>Din daglige aktivitet</h1>
-        {% if users_fitness %}
-            {% for user_fitness in users_fitness %}
+    <h1>Tilføj din daglige fremskridt</h1>
+    <form action="/dashboard" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="fitness_input">
+            {{ form.distance}}
+            {{ form.calories }}
+            {{ form.submit(class_="submit_fitness") }}
+        </div>
+    </form>
+
+    {% if users_fitness %}
+        {% for user_fitness in users_fitness %}
             <div class="fitness_content">
                 <div class="date_time">
                     <p>{{ user_fitness.date | datetimeformat }}</p>
@@ -29,13 +50,13 @@
                     <div class="progress_field">
                         <h3>{{ user_fitness.calories_burned}}</h3>
                         <p>Kalorier</p>
+                    </div>
                 </div>
             </div>
-        </div>
-            {% endfor %}
-        {% else %}
-            <p class="no_fitness">Ingen aktivitet målt endnu</p>
-        {% endif %}
+        {% endfor %}
+    {% else %}
+        <p class="no_fitness">Ingen aktivitet målt endnu</p>
+    {% endif %}
 </div>
 
 <div class="rewards_component">
