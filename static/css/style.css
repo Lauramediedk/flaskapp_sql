@@ -259,9 +259,29 @@ body{
 .no_fitness{
     background: #e7e7e7;
     border-radius: 5px;
-    width: 50%;
     padding: 1rem;
+}
+.fitness_input{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
     margin: 0 auto;
+    padding: 2rem 1rem;
+}
+.fitness_field{
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 2px solid #d6d6d6;
+}
+.submit_fit_data{
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0.8rem;
+    background: #2D728f;
+    color: #e7e7e7;
+    border-radius: 5px;
+    border: none;
 }
 
 
@@ -736,6 +756,13 @@ body{
         width: 70%;
         margin-left: 0;
         text-align: center;
+    }
+    .fitness_input{
+        width: 100%;
+        padding: 1rem 0rem;
+    }
+    .submit_fit_data{
+        margin-left: 0;
     }
     .rewards_component{
         width: 40%;

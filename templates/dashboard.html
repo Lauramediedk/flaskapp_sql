@@ -30,9 +30,9 @@
     <form hx-post="/dashboard" hx-trigger="submit" hx-target=".fitness_content" hx-select=".fitness_content">
         {{ form.hidden_tag() }}
         <div class="fitness_input">
-            {{ form.distance}}
-            {{ form.calories }}
-            {{ form.submit(class_="submit_fitness") }}
+            {{ form.distance(class_="fitness_field") }}
+            {{ form.calories(class_="fitness_field") }}
+            {{ form.submit(class_="submit_fit_data") }}
         </div>
     </form>
 
