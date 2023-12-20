@@ -1,20 +1,28 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash, abort, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from forms import SignupForm, LoginForm, PostForm
+from forms import SignupForm, LoginForm, PostForm, FitnessForm
 import models
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 app.config['UPLOAD_FOLDER'] = 'uploads'
+
+#Vi laver vores eget custom filter for dato og bruger Python's datetime
+def datetime_format(value):
+    date_obj = datetime.strptime(value, '%Y-%m-%d')
+    return date_obj.strftime("%d %B")
+
+app.jinja_env.filters['datetimeformat'] = datetime_format
 
 #Routes
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/dashboard")
+@app.route("/dashboard", methods=['GET', 'POST'])
 def dashboard():
     if not is_logged_in():
         flash('Du skal være logget ind for at tilgå dashboard', 'error')
@@ -27,8 +35,24 @@ def dashboard():
     challenges = models.get_users_challenges(user_id)
     user_posts = models.get_users_posts(user_id)
     follows = models.get_users_follow(user_id)
+    users_fitness = models.get_users_fitness(user_id)
+    form = FitnessForm()
+
+    #Hent navnet på title feltet i vores rewards, hvis der er nogle associeret i users_rewards, ellers er den empty
+    users_rewards = [reward[0] for reward in users_rewards] if users_rewards else []
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            distance = form.distance.data
+            calories_burned = form.calories.data
+            models.add_fitness_data(user_id, distance, calories_burned)
+            flash('Data uploadet', 'success')
+            return redirect(url_for('dashboard')) 
+        #Vi laver redirect med det nye data, og undgår resubmission når refresh af siden sker.
+        else:
+            flash('Data kunne ikke uploades', 'error')
     #Vi render det hele med template, og tjekker med if i vores template
-    return render_template("dashboard.html", rewards=rewards, users_rewards=users_rewards, challenges=challenges, user_posts=user_posts, follows=follows)
+    return render_template("dashboard.html", form=form, rewards=rewards, users_rewards=users_rewards, challenges=challenges, user_posts=user_posts, follows=follows, users_fitness=users_fitness)
 
 
 @app.route("/dashboard/<int:post_id>", methods=['DELETE'])  

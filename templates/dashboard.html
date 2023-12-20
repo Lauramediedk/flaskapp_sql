@@ -13,29 +13,71 @@
     {% endif %}
 </div>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <div class="flash_message">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+<div class="users_fitness">
+    <h1>Tilføj din daglige fremskridt</h1>
+    <form action="/dashboard" method="post"> <!--Tilføj HTMX-->
+        {{ form.hidden_tag() }}
+        <div class="fitness_input">
+            {{ form.distance(class_="fitness_field") }}
+            {{ form.calories(class_="fitness_field") }}
+            {{ form.submit(class_="submit_fit_data") }}
+        </div>
+    </form>
+
+    {% if users_fitness %}
+        {% for user_fitness in users_fitness %}
+            <div class="fitness_content">
+                <div class="date_time">
+                    <p>{{ user_fitness.date | datetimeformat }}</p>
+                </div>
+                <div class="progress_data">
+                    <div class="progress_field">
+                        <h3>{{ user_fitness.distance}}</h3>
+                        <p>km</p>
+                    </div>
+                    <div class="progress_field">
+                        <h3>{{ user_fitness.calories_burned}}</h3>
+                        <p>Kalorier</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="no_fitness">Ingen aktivitet målt endnu</p>
+    {% endif %}
+</div>
+
 <div class="rewards_component">
     <h1>Belønninger</h1>
     <div class="rewards_content">
         {% if rewards %}
             {% for reward in rewards %}
                 <div class="reward">
-                    {% if users_rewards %}
-                        {% for user_reward in users_rewards %}
-                            {% if reward.title == user_reward[0] %}
-                                <div class="users_rewards">
-                                    <h3>{{ reward.title }} <i class="fa-solid fa-medal" style="color: #2d728f;"></i></h3>
-                                </div>
-                            {% else %}
-                                <div class="unearned_rewards">
-                                    <h3>{{ reward.title }}</h3>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                    {% if users_rewards and reward.title in users_rewards %}
+                        <div class="users_rewards">
+                            <h3>{{ reward.title }} <i class="fa-solid fa-medal" style="color: #2d728f;"></i></h3>
+                        </div>
                     {% else %}
-                        <p>Ingen belønninger tilgængelige</p>
+                        <div class="unearned_rewards">
+                            <h3>{{ reward.title }}</h3>
+                        </div>
                     {% endif %}
                 </div> <!-- Moved the closing div here -->
             {% endfor %}
+        {% else %}
+            <p>Ingen belønninger tilgængelige</p>
         {% endif %}
     </div>
 </div>
