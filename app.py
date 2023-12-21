@@ -269,9 +269,4 @@ def create_app():
 
 #app run
 if __name__=="__main__":
-    if os.environ.get('APP_ENV') == 'dev':
-        load_dotenv('env_dev') #Load dev env fra .env_dev filen
-    elif os.environ.get('APP_ENV') == 'test':
-        load_dotenv('.env_test') #Load test env fra .env_test filen
-
     create_app().run(host='0.0.0.0', port=80, debug=True)
