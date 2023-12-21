@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    image: my_flask_app:v1.0
+    ports:
+      - "8080:5000"
+    volumes:
+      - .:/app #Mount nuværende dir fra host til /app inde i vores container
+      #Undgå at rebuild Docker image hver gang for at se de nye ændringer
+    environment:
+      - ENVIRONMENT=development
+    env_file:
+      - .env_dev
+
+  test:
+    image: my_flask_app:v1.0
+    environment:
+      - ENVIRONMENT=test
+    env_file:
+      - .env_test #Test env
