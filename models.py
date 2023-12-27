@@ -1,6 +1,5 @@
-from flask import Flask
 import sqlite3
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from config import DATABASE
 from datetime import date
 
@@ -9,6 +8,7 @@ def get_connection():
     with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         return connection
+
 
 # DB tables
 def make_table():
