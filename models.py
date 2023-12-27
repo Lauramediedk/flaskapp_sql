@@ -3,6 +3,7 @@ from werkzeug.security import check_password_hash
 from config import DATABASE
 from datetime import date
 
+
 # DB connect
 def get_connection():
     with sqlite3.connect(DATABASE) as connection:
@@ -142,7 +143,8 @@ def fitness_data():
 # Handlinger
 # ###############################################################################
 
-# Hent oplysninger om brugerens specifikke challenges og benyt count her til antal af deltagere
+# Hent oplysninger om brugerens specifikke challenges og benyt count her
+# til antal af deltagere
 def get_users_challenges(users_id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -169,10 +171,10 @@ def get_challenges():
                    challenges.name,
                    challenges.created,
                    challenges.end_date,
-                   challenges.topic,  
-                   COUNT(users_challenges.users_id) AS participants_count 
-                   FROM challenges  
-                   LEFT JOIN users_challenges ON challenges.id = users_challenges.challenges_id 
+                   challenges.topic,
+                   COUNT(users_challenges.users_id) AS participants_count
+                   FROM challenges
+                   LEFT JOIN users_challenges ON challenges.id = users_challenges.challenges_id
                    GROUP BY challenges.id
                    ''')
     challenges = cursor.fetchall()
@@ -357,7 +359,8 @@ def add_fitness_data(user_id, distance, calories_burned):
 
         cursor.execute('UPDATE fitness_data SET distance = ?, calories_burned = ? WHERE id = ?',
                        (new_distance, new_calories, data_exists[0]))
-        # Vi opdaterer nuværende data hvis ny data bliver indsat, og sikrer os at det sker på baggrund af det rigtige id
+        # Vi opdaterer nuværende data hvis ny data bliver indsat, og sikrer os
+        # at det sker på baggrund af det rigtige id
         conn.commit()
     else:
         # Indsæt nyt hvis der ikke allerede ligger noget data for denne dag.

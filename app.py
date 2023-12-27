@@ -159,7 +159,8 @@ def create_app():
             return render_template("challenges.html", challenges=challenges)
         else:
             no_challenges_found = "Der er i øjeblikket ingen udfordringer"
-            return render_template("challenges.html", no_challenges_found=no_challenges_found)
+            return render_template(
+                "challenges.html", no_challenges_found=no_challenges_found)
 
     # join challenge
     @app.route("/join_challenge/<int:challenges_id>", methods=['POST'])
@@ -223,10 +224,12 @@ def create_app():
             if search:
                 search_post = models.get_posts(search)
                 if search_post:
-                    return render_template("posts.html", posts_data=search_post, form=form)
+                    return render_template(
+                        "posts.html", posts_data=search_post, form=form)
                 else:
                     flash('Ingen resultater fundet', 'error')
-                    return render_template("posts.html", posts_data=[], form=form)
+                    return render_template(
+                        "posts.html", posts_data=[], form=form)
 
             # Håndter oprettelsen af post
             if form.validate_on_submit():
@@ -250,7 +253,8 @@ def create_app():
         # Hent opslag eller fejl.
         posts_data = models.get_posts()
         if posts_data:
-            return render_template("posts.html", posts_data=posts_data, form=form)
+            return render_template(
+                "posts.html", posts_data=posts_data, form=form)
         else:
             flash('Ingen opslag i øjeblikket', 'error')
             return render_template("posts.html", form=form)

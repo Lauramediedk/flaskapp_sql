@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField
-from wtforms import StringField, PasswordField, SubmitField, FloatField, IntegerField
+from wtforms import(
+    StringField, PasswordField, SubmitField, FloatField, IntegerField
+)
 from wtforms.validators import InputRequired, Length, Email
 
 # Vores registrerings form som bruger wtforms
@@ -27,7 +29,8 @@ class LoginForm(FlaskForm):
 
     password = PasswordField(validators=[InputRequired(), Length(
         min=4, max=20)], render_kw={"placeholder": "Kodeord"})
-    # render_kw --> tilføj ekstra felt i ens html som placeholder eller en class
+    # render_kw --> tilføj ekstra felt i ens html som placeholder eller en
+    # class
 
     submit = SubmitField("Log ind")
 
