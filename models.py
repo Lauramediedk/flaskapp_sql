@@ -240,7 +240,7 @@ def get_posts(search=None):
                        INNER JOIN users ON posts.users_id = users.id
                        WHERE posts.content LIKE ?
                        ''', ('%' + search + '%',)
-        )
+                       )
     else:
         cursor.execute('''
                        SELECT posts.*, users.name
@@ -266,13 +266,17 @@ def get_users_posts(user_id):
 def delete_post_db(post_id, user_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        'SELECT * FROM posts WHERE id = ? AND users_id = ?', (post_id, user_id))
+    cursor.execute('''
+                   SELECT * FROM posts
+                   WHERE id = ? AND users_id = ?
+                   ''', (post_id, user_id))
     post = cursor.fetchone()
 
     if post:
-        cursor.execute(
-            'DELETE FROM posts WHERE id = ? AND users_id = ?', (post_id, user_id))
+        cursor.execute('''
+                       DELETE FROM posts
+                       WHERE id = ? AND users_id = ?
+                       ''', (post_id, user_id))
         conn.commit()
 
         return True
@@ -286,8 +290,10 @@ def get_users(search=None):
     cursor = conn.cursor()
 
     if search:
-        cursor.execute(
-            'SELECT id, name FROM users WHERE name LIKE ?', ('%' + search + '%',))
+        cursor.execute('''
+                       SELECT id, name FROM users
+                       WHERE name LIKE ?'
+                       ''', ('%' + search + '%',))
     else:
         cursor.execute('SELECT id, name FROM users')
 
@@ -337,7 +343,8 @@ def check_existing_follow(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('''
-                   SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)
+                   SELECT * FROM friends
+                   WHERE (users_id = ? AND friends_id = ?)
                    ''', (users_id, friends_id))
     follows = cursor.fetchone()
     conn.commit()
@@ -368,16 +375,22 @@ def add_fitness_data(user_id, distance, calories_burned):
     today = date.today()
 
     # Checker for eksisterende data for denne dato
-    cursor.execute(
-        'SELECT * FROM fitness_data WHERE users_id = ? AND date= ?', (user_id, today))
+    cursor.execute('''
+                   SELECT * FROM fitness_data
+                   WHERE users_id = ? AND date = ?
+                   ''', (user_id, today))
     data_exists = cursor.fetchone()
 
-    if data_exists:  # Opdater rækkerne med ny data
+    if data_exists:
+        # Opdater rækkerne med ny data
         new_distance = data_exists[3] + distance
         new_calories = data_exists[4] + calories_burned
 
-        cursor.execute('UPDATE fitness_data SET distance = ?, calories_burned = ? WHERE id = ?',
-                       (new_distance, new_calories, data_exists[0]))
+        cursor.execute('''
+                       UPDATE fitness_data
+                       SET distance = ?, calories_burned = ?
+                       WHERE id = ?
+                       ''', (new_distance, new_calories, data_exists[0]))
         # Vi opdaterer nuværende data hvis ny data bliver indsat, og sikrer os
         # at det sker på baggrund af det rigtige id
         conn.commit()
@@ -460,11 +473,15 @@ def make_post(users_id, content, image_path=None):
     cursor = conn.cursor()
 
     if image_path:
-        cursor.execute('INSERT INTO posts (users_id, content, image_path) VALUES (?, ?, ?)',
-                       (users_id, content, image_path))
+        cursor.execute('''
+                       INSERT INTO posts (users_id, content, image_path)
+                       VALUES (?, ?, ?)
+                       ''', (users_id, content, image_path))
     else:
-        cursor.execute(
-            'INSERT INTO posts (users_id, content) VALUES (?, ?)', (users_id, content))
+        cursor.execute('''
+                       INSERT INTO posts (users_id, content)
+                       VALUES (?, ?)
+                       ''', (users_id, content))
     conn.commit()
 
 
@@ -473,8 +490,10 @@ def register_user_db(name, email, hashed_password):
     conn = get_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute('INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-                       (name, email, hashed_password))
+        cursor.execute('''
+                       INSERT INTO users (name, email, password)
+                       VALUES (?, ?, ?)
+                       ''', (name, email, hashed_password))
         conn.commit()
         return True
     except sqlite3.Error as e:
