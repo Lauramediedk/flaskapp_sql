@@ -44,7 +44,8 @@ def create_app():
         form = FitnessForm()
         # Hent navnet på title feltet i vores rewards,
         # hvis der er nogle associeret i users_rewards, ellers er den empty
-        users_rewards = [reward[0] for reward in users_rewards] if users_rewards else []
+        users_rewards = [reward[0] for reward in users_rewards] \
+            if users_rewards else []
 
         if request.method == 'POST':
             if form.validate_on_submit():
@@ -53,7 +54,8 @@ def create_app():
                 models.add_fitness_data(user_id, distance, calories_burned)
                 flash('Data uploadet', 'success')
                 return redirect(url_for('dashboard'))
-            # Vi laver redirect med det nye data, og undgår resubmission når refresh af siden sker.
+            # Vi laver redirect med det nye data,
+            # og undgår resubmission når refresh af siden sker.
             else:
                 flash('Data kunne ikke uploades', 'error')
         # Vi render det hele med template, og tjekker med if i vores template
@@ -86,7 +88,7 @@ def create_app():
             flash('Handling fejlede', 'error')
             abort(403)
 
-    #Login
+    # Login
     @app.route("/login", methods=['GET', 'POST'])
     def login():
         form = LoginForm()
@@ -98,7 +100,9 @@ def create_app():
                 # Hent id og navn på bruger
                 conn = models.get_connection()
                 cursor = conn.cursor()
-                cursor.execute('SELECT id, name FROM users WHERE email = ?', (email,))
+                cursor.execute('''
+                               SELECT id, name FROM users WHERE email = ?
+                               ''', (email,))
                 user = cursor.fetchone()
                 conn.close()
                 # Brug info i session
@@ -107,20 +111,20 @@ def create_app():
                     user_name = user['name']
                     session['user_id'] = user_id
                     session['name'] = user_name
-                else: 
+                else:
                     flash('Navn ikke fundet', 'error')
 
                 return redirect(url_for('dashboard'))
             else:
                 flash('Email eller password matchede ikke, prøv igen', 'error')
                 return redirect(url_for('login'))
-            
+
         return render_template('login.html', form=form)
 
-    def is_logged_in(): # Check om email er inkluderet i vores session
+    def is_logged_in():  # Check om email er inkluderet i vores session
         return 'email' in session
 
-    #Signup
+    # Signup
     @app.route("/signup", methods=['GET', 'POST'])
     def signup():
         form = SignupForm()
@@ -148,10 +152,10 @@ def create_app():
         if not is_logged_in():
             flash('Du skal være logget ind for at tilgå dashboard', 'error')
             return redirect(url_for('login'))
-        
+
         challenges = models.get_challenges()
 
-        if challenges: 
+        if challenges:
             return render_template("challenges.html", challenges=challenges)
         else:
             no_challenges_found = "Der er i øjeblikket ingen udfordringer"
@@ -241,7 +245,7 @@ def create_app():
 
                 return redirect(url_for('posts'))
 
-        # Hent opslag eller fejl. 
+        # Hent opslag eller fejl.
         posts_data = models.get_posts()
         if posts_data:
             return render_template("posts.html", posts_data=posts_data, form=form)
@@ -266,9 +270,8 @@ def create_app():
         session.clear()
         return redirect(url_for('index'))
 
-
     return app
 
-#app run
+# app run
 if __name__=="__main__":
     create_app().run(host='0.0.0.0', port=80, debug=True)
