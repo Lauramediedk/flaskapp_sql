@@ -10,7 +10,7 @@ def get_connection():
         connection.row_factory = sqlite3.Row
         return connection
 
-#DB tables
+# DB tables
 def make_table():
     conn = get_connection()
     conn.execute('CREATE TABLE IF NOT EXISTS users ('
@@ -139,10 +139,10 @@ def fitness_data():
     conn.commit()
 
 
-#Handlinger
-################################################################################
+# Handlinger
+# ###############################################################################
 
-#Hent oplysninger om brugerens specifikke challenges og benyt count her til antal af deltagere
+# Hent oplysninger om brugerens specifikke challenges og benyt count her til antal af deltagere
 def get_users_challenges(users_id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -156,11 +156,11 @@ def get_users_challenges(users_id):
     challenges = cursor.fetchall()
 
     if challenges:
-            return challenges #Der er et match
-    return None #Intet match
+            return challenges # Der er et match
+    return None # Intet match
 
 
-#Hent udfordringer fra databasen og find antal deltagere
+# Hent udfordringer fra databasen og find antal deltagere
 def get_challenges():
     conn = get_connection()
     cursor = conn.cursor()
@@ -178,11 +178,11 @@ def get_challenges():
     challenges = cursor.fetchall()
 
     if challenges:
-        return challenges #Der er et match
-    return None #Intet match
+        return challenges # Der er et match
+    return None # Intet match
 
 
-#Brugere kan deltage i challenges når de klikker deltag
+# Brugere kan deltage i challenges når de klikker deltag
 def join_challenge_action(users_id, challenges_id):
     conn = get_connection()
     query =  'INSERT INTO users_challenges (users_id, challenges_id) VALUES (?, ?)'
@@ -190,7 +190,7 @@ def join_challenge_action(users_id, challenges_id):
     conn.commit()
 
 
-#Hent belønninger
+# Hent belønninger
 def get_rewards():
     conn = get_connection()
     cursor = conn.cursor()
@@ -198,10 +198,10 @@ def get_rewards():
     rewards = cursor.fetchall()
 
     if rewards:
-        return rewards #Der er et match
-    return None #Intet match
+        return rewards # Der er et match
+    return None # Intet match
 
-#Hent belønninger som brugeren har fået
+# Hent belønninger som brugeren har fået
 def get_users_rewards(users_id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -214,8 +214,8 @@ def get_users_rewards(users_id):
     user_rewards = cursor.fetchall()
 
     if user_rewards:
-        return user_rewards #Der er et match
-    return None #Intet match
+        return user_rewards # Der er et match
+    return None # Intet match
 
 
 def get_posts(search=None):
@@ -250,7 +250,7 @@ def get_users_posts(user_id):
     return user_posts
 
 
-def delete_post_db(post_id, user_id): #Tjek først om post eksisterer og matcher med brugeren
+def delete_post_db(post_id, user_id): # Tjek først om post eksisterer og matcher med brugeren
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM posts WHERE id = ? AND users_id = ?', (post_id, user_id))
@@ -279,7 +279,7 @@ def get_users(search=None):
 
     return users
 
-#Friends handlinger
+# Friends handlinger
 def follow_user(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -319,7 +319,7 @@ def check_existing_follow(users_id, friends_id):
 
 def get_users_follow(user_id):
     conn = get_connection()
-    cursor = conn.cursor() #Hent navn fra users table og join tables
+    cursor = conn.cursor() # Hent navn fra users table og join tables
     cursor.execute('SELECT users.id, users.name FROM friends JOIN users ON friends.friends_id = users.id WHERE friends.users_id = ?', (user_id,))
     result = cursor.fetchall()
 
@@ -331,19 +331,19 @@ def add_fitness_data(user_id, distance, calories_burned):
     cursor = conn.cursor()
     today = date.today()
 
-    #Checker for eksisterende data for denne dato
+    # Checker for eksisterende data for denne dato
     cursor.execute('SELECT * FROM fitness_data WHERE users_id = ? AND date= ?', (user_id, today))
     data_exists = cursor.fetchone()
 
-    if data_exists: #Opdater rækkerne med ny data
+    if data_exists: # Opdater rækkerne med ny data
         new_distance = data_exists[3] + distance
         new_calories = data_exists[4] + calories_burned
 
         cursor.execute('UPDATE fitness_data SET distance = ?, calories_burned = ? WHERE id = ?', (new_distance, new_calories, data_exists[0]))
-        #Vi opdaterer nuværende data hvis ny data bliver indsat, og sikrer os at det sker på baggrund af det rigtige id
+        # Vi opdaterer nuværende data hvis ny data bliver indsat, og sikrer os at det sker på baggrund af det rigtige id
         conn.commit()
     else:
-        #Indsæt nyt hvis der ikke allerede ligger noget data for denne dag.
+        # Indsæt nyt hvis der ikke allerede ligger noget data for denne dag.
         cursor.execute('INSERT INTO fitness_data (users_id, date, distance, calories_burned) VALUES (?, CURRENT_DATE, ?, ?)',
                    (user_id, distance, calories_burned))
     conn.commit()
@@ -362,7 +362,7 @@ def get_users_fitness(user_id):
         return None
 
 
-#Validering
+# Validering
 def validate_user(email, password):
     conn = get_connection()
     cursor = conn.cursor()
@@ -372,10 +372,10 @@ def validate_user(email, password):
     if result:
         hashed_password = result[0]
         if check_password_hash(hashed_password, password):
-            return True #Passwords matcher
-        return False #Intet match med password eller user
+            return True # Passwords matcher
+        return False # Intet match med password eller user
     
-#Email validering for signup
+# Email validering for signup
 def check_for_emails(email):
     conn = get_connection()
     cursor = conn.cursor()
@@ -401,9 +401,9 @@ def check_joined_challenges(users_id, challenges_id):
     return False
 
 # Indsæt
-################################################################################
+# ###############################################################################
 
-#Lav post opslag
+# Lav post opslag
 def make_post(users_id, content, image_path=None):
     conn = get_connection()
     cursor = conn.cursor()
@@ -415,7 +415,7 @@ def make_post(users_id, content, image_path=None):
     conn.commit()
 
 
-#Registrer bruger i DB
+# Registrer bruger i DB
 def register_user_db(name, email, hashed_password):
     conn = get_connection()
     cursor = conn.cursor()
@@ -428,8 +428,8 @@ def register_user_db(name, email, hashed_password):
         return False
 
 
-#Lav tables
-#################################################################################
+# Lav tables
+# ################################################################################
 
 friends_table()
 posts_table()
