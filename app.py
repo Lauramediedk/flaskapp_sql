@@ -141,7 +141,7 @@ def create_app():
             if models.register_user_db(name, email, hashed_password):
                 flash('Registrering godkendt', 'succes')
                 return redirect(url_for('login'))
-            else: 
+            else:
                 flash('Registrering mislykkedes, prøv igen', 'error')
                 return redirect(url_for('signup'))
 
@@ -168,7 +168,7 @@ def create_app():
 
         if models.check_joined_challenges(user_id, challenges_id):
             flash('Du er allerede tilmeldt denne udfordring', 'error')
-        else: 
+        else:
             models.join_challenge_action(user_id, challenges_id)
 
         return redirect(url_for('challenges'))
@@ -202,7 +202,7 @@ def create_app():
 
         if models.check_existing_follow(users_id, friends_id):
             flash('Du følger allerede denne person', 'error')
-        else: 
+        else:
             models.follow_user(users_id, friends_id)
             flash('Person tilføjet', 'success')
 
@@ -235,8 +235,10 @@ def create_app():
 
                 if file:
                     filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    file.save(os.path.join(
+                        app.config['UPLOAD_FOLDER'], filename))
+                    image_path = os.path.join(
+                        app.config['UPLOAD_FOLDER'], filename)
                     models.make_post(users_id, content, image_path)
                     flash('Opslag oprettet', 'success')
                 else:
@@ -272,6 +274,7 @@ def create_app():
 
     return app
 
+
 # app run
-if __name__=="__main__":
+if __name__ == "__main__":
     create_app().run(host='0.0.0.0', port=80, debug=True)
