@@ -399,7 +399,7 @@ def add_fitness_data(user_id, distance, calories_burned):
         cursor.execute('''
                        INSERT INTO fitness_data (users_id, date, distance, calories_burned)
                        VALUES (?, CURRENT_DATE, ?, ?)
-                       ''',(user_id, distance, calories_burned))
+                       ''', (user_id, distance, calories_burned))
     conn.commit()
 
 
