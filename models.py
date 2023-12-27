@@ -141,7 +141,7 @@ def fitness_data():
 
 
 # Handlinger
-# ###############################################################################
+# ##########
 
 # Hent oplysninger om brugerens specifikke challenges og benyt count her
 # til antal af deltagere
@@ -149,9 +149,11 @@ def get_users_challenges(users_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('''
-                   SELECT challenges.*, COUNT(users_challenges.users_id) AS participants_count
+                   SELECT challenges.*, COUNT(users_challenges.users_id)
+                   AS participants_count
                    FROM users_challenges
-                   INNER JOIN challenges ON users_challenges.challenges_id = challenges_id
+                   INNER JOIN challenges
+                   ON users_challenges.challenges_id = challenges.id
                    WHERE users_challenges.users_id = ?
                    GROUP BY challenges.id
                    ''', (users_id,))
@@ -172,9 +174,11 @@ def get_challenges():
                    challenges.created,
                    challenges.end_date,
                    challenges.topic,
-                   COUNT(users_challenges.users_id) AS participants_count
+                   COUNT(users_challenges.users_id)
+                   AS participants_count
                    FROM challenges
-                   LEFT JOIN users_challenges ON challenges.id = users_challenges.challenges_id
+                   LEFT JOIN users_challenges
+                   ON challenges.id = users_challenges.challenges_id
                    GROUP BY challenges.id
                    ''')
     challenges = cursor.fetchall()
@@ -187,8 +191,11 @@ def get_challenges():
 # Brugere kan deltage i challenges når de klikker deltag
 def join_challenge_action(users_id, challenges_id):
     conn = get_connection()
-    query = 'INSERT INTO users_challenges (users_id, challenges_id) VALUES (?, ?)'
-    conn.execute(query, (users_id, challenges_id))
+    cursor = conn.cursor()
+    cursor.execute('''
+                   INSERT INTO users_challenges (users_id, challenges_id)
+                   VALUES (?, ?)
+                   ''', (users_id, challenges_id))
     conn.commit()
 
 
@@ -227,18 +234,19 @@ def get_posts(search=None):
     cursor = conn.cursor()
 
     if search:
-        cursor.execute(
-            'SELECT posts.id, posts.users_id, posts.content, posts.created, posts.image_path, users.name '
-            'FROM posts '
-            'INNER JOIN users ON posts.users_id = users.id '
-            'WHERE posts.content LIKE ?', ('%' + search + '%',)
+        cursor.execute('''
+                       SELECT posts.*, users.name
+                       FROM posts
+                       INNER JOIN users ON posts.users_id = users.id
+                       WHERE posts.content LIKE ?
+                       ''', ('%' + search + '%',)
         )
     else:
-        cursor.execute(
-            'SELECT posts.id, posts.users_id, posts.content, posts.created, posts.image_path, users.name '
-            'FROM posts '
-            'INNER JOIN users ON posts.users_id = users.id'
-        )
+        cursor.execute('''
+                       SELECT posts.*, users.name
+                       FROM posts
+                       INNER JOIN users ON posts.users_id = users.id
+                       ''')
 
     posts = cursor.fetchall()
 
@@ -295,8 +303,10 @@ def follow_user(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute(
-            'INSERT INTO friends (users_id, friends_id) VALUES (?, ?)', (users_id, friends_id))
+        cursor.execute('''
+                       INSERT INTO friends (users_id, friends_id)
+                       VALUES (?, ?)
+                       ''', (users_id, friends_id))
         conn.commit()
 
     except sqlite3.Error as e:
@@ -307,13 +317,17 @@ def follow_user(users_id, friends_id):
 def unfollow_user(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        'SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+    cursor.execute('''
+                   SELECT * FROM friends
+                   WHERE (users_id = ? AND friends_id = ?)
+                   ''', (users_id, friends_id))
     result = cursor.fetchone()
 
     if result:
-        cursor.execute(
-            'DELETE FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+        cursor.execute('''
+                       DELETE FROM friends
+                       WHERE (users_id = ? AND friends_id = ?)
+                       ''', (users_id, friends_id))
         conn.commit()
 
         return cursor.rowcount > 0
@@ -322,8 +336,9 @@ def unfollow_user(users_id, friends_id):
 def check_existing_follow(users_id, friends_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        'SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)', (users_id, friends_id))
+    cursor.execute('''
+                   SELECT * FROM friends WHERE (users_id = ? AND friends_id = ?)
+                   ''', (users_id, friends_id))
     follows = cursor.fetchone()
     conn.commit()
 
@@ -336,8 +351,12 @@ def check_existing_follow(users_id, friends_id):
 def get_users_follow(user_id):
     conn = get_connection()
     cursor = conn.cursor()  # Hent navn fra users table og join tables
-    cursor.execute(
-        'SELECT users.id, users.name FROM friends JOIN users ON friends.friends_id = users.id WHERE friends.users_id = ?', (user_id,))
+    cursor.execute('''
+                   SELECT users.id, users.name
+                   FROM friends
+                   JOIN users ON friends.friends_id = users.id
+                   WHERE friends.users_id = ?
+                   ''', (user_id,))
     result = cursor.fetchall()
 
     return result
@@ -364,8 +383,10 @@ def add_fitness_data(user_id, distance, calories_burned):
         conn.commit()
     else:
         # Indsæt nyt hvis der ikke allerede ligger noget data for denne dag.
-        cursor.execute('INSERT INTO fitness_data (users_id, date, distance, calories_burned) VALUES (?, CURRENT_DATE, ?, ?)',
-                       (user_id, distance, calories_burned))
+        cursor.execute('''
+                       INSERT INTO fitness_data (users_id, date, distance, calories_burned)
+                       VALUES (?, CURRENT_DATE, ?, ?)
+                       ''',(user_id, distance, calories_burned))
     conn.commit()
 
 
@@ -373,8 +394,10 @@ def get_users_fitness(user_id):
     conn = get_connection()
     cursor = conn.cursor()
     today = date.today()
-    cursor.execute(
-        'SELECT * FROM fitness_data WHERE users_id = ? AND date = ?', (user_id, today))
+    cursor.execute('''
+                   SELECT * FROM fitness_data
+                   WHERE users_id = ? AND date = ?
+                   ''', (user_id, today))
     result = cursor.fetchall()
 
     if result:
@@ -415,8 +438,10 @@ def check_for_emails(email):
 def check_joined_challenges(users_id, challenges_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        'SELECT * FROM users_challenges WHERE users_id = ? AND challenges_id = ?', (users_id, challenges_id))
+    cursor.execute('''
+                   SELECT * FROM users_challenges
+                   WHERE users_id = ? AND challenges_id = ?
+                   ''', (users_id, challenges_id))
     result = cursor.fetchone()
 
     if result:
@@ -425,7 +450,7 @@ def check_joined_challenges(users_id, challenges_id):
     return False
 
 # Indsæt
-# ###############################################################################
+# ######
 
 # Lav post opslag
 
@@ -458,7 +483,7 @@ def register_user_db(name, email, hashed_password):
 
 
 # Lav tables
-# ################################################################################
+# ##########
 
 friends_table()
 posts_table()
