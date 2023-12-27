@@ -3,7 +3,3 @@ flask_env/
 
 # Ignore Python bytecode files
 *.pyc
-
-# Ignore length warnings
-[flake8]
-ignore = E501

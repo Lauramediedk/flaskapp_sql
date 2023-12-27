@@ -1,0 +1,3 @@
+# Ignore length warnings
+[flake8]
+ignore = E501
