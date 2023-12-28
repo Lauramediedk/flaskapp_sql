@@ -5,7 +5,7 @@ from flask import (
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm, FitnessForm
-from datetime import datetime
+from datetime import datetime, timedelta
 import models
 import os
 
@@ -14,6 +14,20 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'mysecretkey'
     app.config['UPLOAD_FOLDER'] = 'uploads'
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+
+    app.permanent_session_lifetime = timedelta(days=1)  # session udløber efter 1 dag
+
+    @app.after_request # Tilføj dem til alle requests
+    def security_headers(response):
+        response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+        # Konverter request til https
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        # Forhindrer MIME
+        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        # Forhindrer clickjacking
+        return response
 
     # Vi laver vores eget custom filter for dato og bruger Python's datetime
     def datetime_format(value):
