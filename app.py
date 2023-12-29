@@ -19,7 +19,7 @@ def create_app():
 
     app.permanent_session_lifetime = timedelta(days=1)  # session udløber efter 1 dag
 
-    @app.after_request # Tilføj dem til alle requests
+    @app.after_request  # Tilføj dem til alle requests
     def security_headers(response):
         response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
         # Konverter request til https
