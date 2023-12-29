@@ -42,7 +42,6 @@ def posts_table():
                  'content TEXT, '
                  'created DATETIME DEFAULT CURRENT_TIMESTAMP, '
                  'image_path TEXT, '
-                 'image_path TEXT, '
                  'FOREIGN KEY(users_id) REFERENCES users(id)'
                  ')')
     conn.commit()
