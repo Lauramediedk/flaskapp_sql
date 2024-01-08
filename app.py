@@ -297,4 +297,4 @@ def create_app():
 # app run
 if __name__ == "__main__":
     app = create_app()
-    serve(app, host='0.0.0.0', port=80) #  WSGI server suited for production
+    serve(app, host='0.0.0.0', port=80)  # WSGI server suited for production
