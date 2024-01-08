@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 from forms import SignupForm, LoginForm, PostForm, FitnessForm
 from datetime import datetime, timedelta
+from waitress import serve
 import models
 import os
 
@@ -295,4 +296,5 @@ def create_app():
 
 # app run
 if __name__ == "__main__":
-    create_app().run(host='0.0.0.0', port=80, debug=True)
+    app = create_app()
+    serve(app, host='0.0.0.0', port=80) #WSGI server suited for production
