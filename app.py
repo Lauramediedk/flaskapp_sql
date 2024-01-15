@@ -249,14 +249,14 @@ def create_app():
             # Håndter oprettelsen af post
             if form.validate_on_submit():
                 content = form.content.data
-                file = request.files.get('image_path')
+                file = request.files.get('image_path')  # fra forms
 
                 if file:
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(
-                        app.config['UPLOAD_FOLDER'], filename))
+                        app.config['UPLOAD_FOLDER'], filename))  # Gem fil i upload folder
                     image_path = os.path.join(
-                        app.config['UPLOAD_FOLDER'], filename)
+                        app.config['UPLOAD_FOLDER'], filename)  # Gem den fulde sti til filen
                     models.make_post(users_id, content, image_path)
                     flash('Opslag oprettet', 'success')
                 else:
